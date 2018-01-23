@@ -5,5 +5,5 @@
 
 - Module development
 
-- Module list
-  - [MContraction](mcontraction.md)
+- Module reference
+  - [MScalarSUN](mscalarsun.md)

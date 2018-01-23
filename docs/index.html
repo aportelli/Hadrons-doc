@@ -46,6 +46,7 @@
              function(x){ return x.replace(/(\[subscript\])/g,'_')}
           )
             MathJax.Hub.Queue(["Typeset", MathJax.Hub])
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub])
             next(html)
           })
         }
