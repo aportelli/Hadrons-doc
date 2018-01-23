@@ -1,5 +1,8 @@
+![logo](logo.svg)
+
 # Hadrons
 
-[Get Started](#Hadrons)
+> __[Grid](https://github.com/paboyle/Grid)__-powered Workflow Management System for lattice calculations
 
-![color](#f0f0f0)
+[GitHub](https://github.com/paboyle/Grid)
+[Get Started](#Hadrons)
