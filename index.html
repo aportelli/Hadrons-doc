@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hadrons</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Hadrons user documenation">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+</head>
+
+<body>
+  <div id="app"></div>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="//cdn.bootcss.com/mathjax/2.6.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: false
+    });
+    window.$docsify = {
+      name: 'Hadrons',
+      coverpage: true,
+      loadSidebar: true,
+      subMaxLevel: 2,
+      plugins: [
+      function (hook) {
+        hook.beforeEach(function (content) {
+          return content.replace(/\$\$([\s\S]*?)\$\$/g,
+             function(x){ return x.replace(/[_]/g,'[subscript]')}
+          )
+        })
+        hook.beforeEach(function (content) {
+          return content.replace(/\$([\s\S]*?)\$/g,
+             function(x){ return x.replace('_','[subscript]')}
+          )
+        })
+        hook.afterEach(function(html, next) {
+          html = html.replace(/\$\$([\s\S]*?)\$\$/g,
+             function(x){ return x.replace(/(\[subscript\])/g,'_') }
+          )
+          html = html.replace(/\$([\s\S]*?)\$/g,
+             function(x){ return x.replace(/(\[subscript\])/g,'_')}
+          )
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub])
+            next(html)
+          })
+        }
+      ],
+      markdown: {
+        renderer: {
+          code: function (code, lang) {
+            if (lang === "mermaid") {
+              return (
+                '<div class="mermaid">' + mermaid.render(lang, code) + "</div>"
+              );
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      }
+    }
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ 
+      extensions: ["tex2jax.js"], 
+      jax: ["input/TeX", "output/HTML-CSS"], 
+      tex2jax: { inlineMath: [ ['$','$'],
+                             ["\\(","\\)"] ], 
+                 displayMath: [ ['$$','$$'], ["\\[","\\]"] ], 
+                 processEscapes: true }, 
+      "HTML-CSS": { availableFonts: ["TeX"]} 
+    });
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-bash.min.js"></script>
+  <script src="//unpkg.com/prismjs/components/prism-cpp.min.js"></script>
+</body>
+
+</html>
