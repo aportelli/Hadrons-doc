@@ -7,3 +7,4 @@
 
 - Module reference
   - [MScalarSUN](mscalarsun.md)
+  - [MSource](msource.md)
