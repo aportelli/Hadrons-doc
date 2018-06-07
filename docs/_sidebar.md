@@ -6,5 +6,6 @@
 - Module development
 
 - Module reference
+  - [MFermion](mfermion.md)
   - [MScalarSUN](mscalarsun.md)
   - [MSource](msource.md)
