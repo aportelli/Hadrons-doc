@@ -111,13 +111,29 @@ The `PropagatorField` $source(x)$.
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
+
+Generates a source,
+
+$source(x) = delta(x_3 - tW) * exp(i x.mom)$
 
 ### Parameters
 
+| Parameter   | Type           | Description                                                            $
+|-------------|----------------|------------------------------------------------------------------------$
+|    `tW`     | `unsigned int` | The source timeslice.
+|    `mom`    | `std::string`  | Momentum insertion, spaces separated float sequence (e.g ".1 .2 1. 0.").
+
+
 ### Dependencies
 
+This module has no dependencies
+
 ### Products
+
+The `PropagatorField` $Source(x)$.
 
 -----------
 
@@ -129,9 +145,9 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Generates the source,
+Generates a source,
 
-$src(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$
+$sourse(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$
 
 where the $\eta(x)$ are independent uniform random numbers in the set ${+/- 1 +/- i}$ 
 
@@ -149,7 +165,7 @@ However if `tA` and `tB` are unequal a Z_2 band in generated.
 
 ### Dependencies
 
-This module has no dependancies.
+This module has no dependencies.
 
 ### Products
 
