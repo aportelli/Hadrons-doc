@@ -6,14 +6,24 @@
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
 
+Point source is a delta function at a given position.
+
 ### Parameters
+| Parameter   | Type           | Description                                                            $
+|-------------|----------------|------------------------------------------------------------------------$
+| `position`  | `std::string`  | A space separated integer sequence (e.g. "0 1 1 0")
 
 ### Dependencies
 
+This module has no dependancies.
+
 ### Products
 
+The `PropagatorField` $source(x)$.
 
 -----------
 
@@ -115,10 +125,32 @@ The `PropagatorField` $source(x)$.
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
+
+Generates the source,
+
+$src(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$
+
+where the $\eta(x)$ are independent uniform random numbers in the set ${+/- 1 +/- i}$ 
+
+If `tA` and `tB` are equal then a Z_2 wall source is generated.
+
+However if `tA` and `tB` are unequal a Z_2 band in generated.
 
 ### Parameters
 
+| Parameter   | Type           | Description                                                            $
+|-------------|----------------|------------------------------------------------------------------------$
+|     `tA`    | `unsigned int` | The begin timeslice of the source.
+|     `tB`    | `unsigned int` | The end timeslice of the source.
+
+
 ### Dependencies
 
+This module has no dependancies.
+
 ### Products
+
+The `PropagatorField` $Source(x)$.
