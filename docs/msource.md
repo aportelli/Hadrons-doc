@@ -10,12 +10,19 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Point source is a delta function at a given position.
+Point source is a delta function at a given position $$x_0$$.
+
+$$source(x) = \delta_{x,x_0}$$
+
+This inserts a diagonal spin colour matrix at $$x_0$$.
+
+### Code description
+
 
 ### Parameters
-| Parameter   | Type           | Description                                                            $
-|-------------|----------------|------------------------------------------------------------------------$
-| `position`  | `std::string`  | A space separated integer sequence (e.g. "0 1 1 0")
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+| `position`  | `std::string`  | A space separated integer sequence (e.g. `"0 1 1 0"`)
 
 ### Dependencies
 
@@ -117,13 +124,19 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Generates a source,
 
-$source(x) = delta(x_3 - tW) * exp(i x.mom)$
+$$source(x) = \delta(x_3 - t_W) * exp(i x\cdot p)$$
+
+Where p is $$p = \frac{2\pi}{L_\mu} * mom$$ were mom is the parameter you provide.
+
+The delta function is implimented with a Where the lattice coordinate t is equal the parameter $$t_w$$ there is a source else this is zero.
+
+Where the spin colour matrix inserted is ...
 
 ### Parameters
 
-| Parameter   | Type           | Description                                                            $
-|-------------|----------------|------------------------------------------------------------------------$
-|    `tW`     | `unsigned int` | The source timeslice.
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|    `$$t_W$$`| `unsigned int` | The source timeslice.
 |    `mom`    | `std::string`  | Momentum insertion, spaces separated float sequence (e.g ".1 .2 1. 0.").
 
 
@@ -147,20 +160,20 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Generates a source,
 
-$sourse(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$
+$$source(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$$
 
-where the $\eta(x)$ are independent uniform random numbers in the set ${+/- 1 +/- i}$ 
+where the $\eta(x)$ are independent uniform random numbers in the set $${\pm 1 \pm i}$$ for esch $$x$$. 
 
-If `tA` and `tB` are equal then a Z_2 wall source is generated.
+If `tA` and `tB` are equal then a Z_2 wall source is generated at $$x_3 = t_A = t_B$$. However if `tA` and `tB` are unequal a Z_2 band in generated for $$t_A \leq x_3 \leq t_B$$.
 
-However if `tA` and `tB` are unequal a Z_2 band in generated.
+The matrix spin colour matrix inserted is a...
 
 ### Parameters
 
-| Parameter   | Type           | Description                                                            $
-|-------------|----------------|------------------------------------------------------------------------$
-|     `tA`    | `unsigned int` | The begin timeslice of the source.
-|     `tB`    | `unsigned int` | The end timeslice of the source.
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|     `tA`    | `unsigned int` | The begin timeslice of the source.                                     |
+|     `tB`    | `unsigned int` | The end timeslice of the source.                                       |
 
 
 ### Dependencies
