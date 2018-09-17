@@ -10,11 +10,11 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Point source is a delta function at a given position $$x_0$$.
+Point source is a delta function at a given position $x_0$.
 
 $$source(x) = \delta_{x,x_0}$$
 
-This inserts a diagonal spin colour matrix at $$x_0$$.
+$source(x)$ is a unit matrix in Colour and Dirac space.
 
 ### Code description
 
@@ -124,20 +124,20 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Generates a source,
 
-$$source(x) = \delta(x_3 - t_W) * exp(i x\cdot p)$$
+$$source(x) = \delta(x_3 - t_W) * exp(i x\cdot p)$$,
 
-Where p is $$p = \frac{2\pi}{L_\mu} * mom$$ were mom is the parameter you provide.
+i.e. a Wall source at $t_W$.
 
-The delta function is implimented with a Where the lattice coordinate t is equal the parameter $$t_w$$ there is a source else this is zero.
+Where p is $p_\mu = \frac{2\pi}{L_\mu} * mom_\mu$ were mom is the parameter you provide.
 
-Where the spin colour matrix inserted is ...
+$source(x)$ is a unit matrix in Colour and Dirac space.
 
 ### Parameters
 
 | Parameter   | Type           | Description                                                            |
 |-------------|----------------|------------------------------------------------------------------------|
-|    `$$t_W$$`| `unsigned int` | The source timeslice.
-|    `mom`    | `std::string`  | Momentum insertion, spaces separated float sequence (e.g ".1 .2 1. 0.").
+|    `tW`     | `unsigned int` | The source timeslice.
+|    `mom`    | `std::string`  | Momentum insertion, spaces separated float sequence (e.g `".1 .2 1. 0."`).
 
 
 ### Dependencies
@@ -162,11 +162,11 @@ Generates a source,
 
 $$source(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$$
 
-where the $\eta(x)$ are independent uniform random numbers in the set $${\pm 1 \pm i}$$ for esch $$x$$. 
+where the $\eta(x)$ are independent uniform random numbers in the set $$\frac{1}{\sqrt 2}{\pm 1 \pm i}$$ for each $x$. 
 
-If `tA` and `tB` are equal then a Z_2 wall source is generated at $$x_3 = t_A = t_B$$. However if `tA` and `tB` are unequal a Z_2 band in generated for $$t_A \leq x_3 \leq t_B$$.
+If `tA` and `tB` are equal then a Z_2 wall source is generated at $x_3 = t_A = t_B$. However if `tA` and `tB` are unequal a Z_2 band in generated for $t_A \leq x_3 \leq t_B$.
 
-The matrix spin colour matrix inserted is a...
+$source(x)$ is a unit matrix in Colour and Dirac space.
 
 ### Parameters
 
