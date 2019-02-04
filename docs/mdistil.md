@@ -2,6 +2,8 @@
 
 -----------
 
+This is the documentation to the implementation of Distillation [Peardon et al., 2009, 0905.2160] and stochastic LapH [Morningstar et al., 2011, 1104.3870] in grid.
+
 ## LapEvec
 
 ### Template structure
