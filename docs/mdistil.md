@@ -10,11 +10,11 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Calculates the lowest $$ n_\mathrm{vec} $$ `Laplacian Eigenvectors` $v$ and `Eigenvalues` $\lambda$ by solving the Laplacian eigenvalue equation
+Calculates the lowest $ n_\mathrm{vec} $ `Laplacian eigenvectors` $v$ and `eigenvalues` $\lambda$ by solving the Laplacian eigenvalue equation
 
-$$\sum_{b,\vec{y}}-\nabla^2_{ab}(\vec{x},\vec{y};t) v_{kb}(\vec{y};t) =  \lambda_j(t) v_{ka}(\vec{x};t)$$
+$$\sum_{b,\vec{y}}-\nabla^2_{ab}(\vec{x},\vec{y};t) v_{kb}(\vec{y};t) =  \lambda_k(t) v_{ka}(\vec{x};t)$$
 
-on each timeslice $$ t $$ with the 3-dimensional lattice `Laplacian` 
+on each timeslice $ t $ with the 3-dimensional lattice `Laplacian` 
 
 $$-\nabla^2_{ab}(\vec{x},\vec{y};t) = 6 \delta_{xy} - \sum_{j=1}^3 (\tilde{U}^{ab}_j(\vec{x},t) \delta_{x+\hat{j},y} + \tilde{U}^{ba}_j(\vec{y},t)^* \delta_{x-\hat{j},y} )$$
 
@@ -26,10 +26,12 @@ $$ S_{xy}(t) = \sum_{k=1}^{N_\mathrm{vec}} v_{ka}(\vec{x};t) v_{ka}^\dagger(\vec
 
 ### Parameters
 
-| Parameter     | Type           | Description                                                                            |
-|---------------|----------------|----------------------------------------------------------------------------------------|
-| `gauge field` | `FermionField`  | `gauge field` $U_{\mu}$                                                                        |
-| `stout_params`| `std::vector<int>`  | STOUT smearing parameters ...                                              |
+| Parameter             | Type                     | Description            |
+|-----------------------|--------------------------|------------------------|
+| `gauge field`         | `FermionField`           | $U_{\mu}$              |
+| `StoutParameters`     | `{int,double}`           | steps, parm            |
+| `ChebyshevParameters` | `{int,double,double}`    | PolyOrder, alpha, beta |
+| `LanczosParameters`   | {int,int,int,int,double} | Nvec,Nk,Np,MaxIt,resid |
 
 ### Dependencies
 
@@ -143,11 +145,12 @@ from the eigenvectors and perambulators.
 
 ### Parameters
 
-| Parameter     | Type           | Description                                                                            |
-|---------------|----------------|----------------------------------------------------------------------------------------|
-| `gauge field` | `FermionField`  | `gauge field` $U_{\mu}$                                                                        |
-| `stout_params`| `std::vector<int>`  | STOUT smearing parameters ...                                              |
-
+| Parameter             | Type                     | Description            |
+|-----------------------|--------------------------|------------------------|
+| `gauge field`         | `FermionField`           | $U_{\mu}$              |
+| `StoutParameters`     | `{int,double}`           | steps, parm            |
+| `ChebyshevParameters` | `{int,double,double}`    | PolyOrder, alpha, beta |
+| `LanczosParameters`   | {int,int,int,int,double} | Nvec,Nk,Np,MaxIt,resid |
 
 ### Dependencies
 
