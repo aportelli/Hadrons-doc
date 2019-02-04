@@ -9,3 +9,5 @@
   - [MFermion](mfermion.md)
   - [MScalarSUN](mscalarsun.md)
   - [MSource](msource.md)
+  - [MDistil](mdistil.md)
+
