@@ -6,14 +6,31 @@
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
 
+Point source is a delta function at a given position $x_0$.
+
+$$source(x) = \delta_{x,x_0}$$
+
+$source(x)$ is a unit matrix in Colour and Dirac space.
+
+### Code description
+
+
 ### Parameters
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+| `position`  | `std::string`  | A space separated integer sequence (e.g. `"0 1 1 0"`)
 
 ### Dependencies
 
+This module has no dependancies.
+
 ### Products
 
+The `PropagatorField` $source(x)$.
 
 -----------
 
@@ -101,13 +118,35 @@ The `PropagatorField` $source(x)$.
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
+
+Generates a source,
+
+$$source(x) = \delta(x_3 - t_W) * exp(i x\cdot p)$$,
+
+i.e. a Wall source at $t_W$.
+
+Where p is $p_\mu = \frac{2\pi}{L_\mu} * mom_\mu$ were mom is the parameter you provide.
+
+$source(x)$ is a unit matrix in Colour and Dirac space.
 
 ### Parameters
 
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|    `tW`     | `unsigned int` | The source timeslice.
+|    `mom`    | `std::string`  | Momentum insertion, spaces separated float sequence (e.g `".1 .2 1. 0."`).
+
+
 ### Dependencies
 
+This module has no dependencies
+
 ### Products
+
+The `PropagatorField` $Source(x)$.
 
 -----------
 
@@ -115,10 +154,32 @@ The `PropagatorField` $source(x)$.
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
+
+Generates a source,
+
+$$source(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$$
+
+where the $\eta(x)$ are independent uniform random numbers in the set $$\frac{1}{\sqrt 2}{\pm 1 \pm i}$$ for each $x$. 
+
+If `tA` and `tB` are equal then a Z_2 wall source is generated at $x_3 = t_A = t_B$. However if `tA` and `tB` are unequal a Z_2 band in generated for $t_A \leq x_3 \leq t_B$.
+
+$source(x)$ is a unit matrix in Colour and Dirac space.
 
 ### Parameters
 
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|     `tA`    | `unsigned int` | The begin timeslice of the source.                                     |
+|     `tB`    | `unsigned int` | The end timeslice of the source.                                       |
+
+
 ### Dependencies
 
+This module has no dependencies.
+
 ### Products
+
+The `PropagatorField` $Source(x)$.
