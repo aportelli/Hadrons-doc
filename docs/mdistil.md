@@ -180,22 +180,24 @@ We should probably separate these modules, having one to create the source and o
 
 Calculates the baryon fields
 
-$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v_1,v_2,v_3;t,\vec{p}) = 
-\sum_{\vec{x},a,b,c,\alpha',\beta,\gamma} e^{-i \vec{p} \cdot \vec{x}} \epsilon_{abc} \Gamma_{\alpha \alpha'} v^{[n_1,d_1]}_{1; a \alpha'}(\vec{x},t) \Big( v^{[n_2,d_2]}_{2; b \beta}(\vec{x},t) \Gamma_{\beta \gamma} v^{[n_3,d_3]}_{3; c \gamma}(\vec{x},t) \Big)$$
+$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v^1,v^2,v^3;t,\vec{p}) = 
+\sum_{\vec{x},a,b,c,\alpha',\beta,\gamma} e^{-i \vec{p} \cdot \vec{x}} \epsilon_{abc} (\Gamma P_\pm)_{\alpha \alpha'} v^{1;[n_1,d_1]}_{ a \alpha'}(\vec{x},t) \Big( v^{2;[n_2,d_2]}_{ b \beta}(\vec{x},t) (\Gamma P_\pm)_{\beta \gamma} v^{3;[n_3,d_3]}_{ c \gamma}(\vec{x},t) \Big)$$
 
 where the vectors $v_1,v_2,v_3$ can be either a LapH source ($\varrho$) or sink vector ($\varphi$) or an unsmeared sink ($\phi$).
 
 In the approach used in this module, a diquark 
 
 $$ d^{[n_2,d_2;n_3,d_3]}(v_2,v_3;t,\vec{x}) = 
-\sum_{a,b,c,\beta,\gamma} \epsilon_{abc} \Big( v^{[n_2,d_2]}_{2; b \beta}(\vec{x},t) \Gamma_{\beta \gamma} v^{[n_3,d_3]}_{3; c \gamma}(\vec{x},t) \Big) $$
+\sum_{a,b,c,\beta,\gamma} \epsilon_{abc} \Big( v^{2; [n_2,d_2]}_{ b \beta}(\vec{x},t) (\Gamma P_\pm)_{\beta \gamma} v^{3; [n_3,d_3]}_{ c \gamma}(\vec{x},t) \Big) $$
 
 is computed first and then contracted with the third quark which gives the baryon field its spin component:
 
-$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v_1,v_2,v_3;t,\vec{p}) = 
-\sum_{\vec{x},\alpha'} e^{-i \vec{p} \cdot \vec{x}} \Gamma_{\alpha \alpha'} v^{[n_1,d_1]}_{1; a \alpha'}(\vec{x},t) d^{[n_2,d_2;n_3,d_3]}(v_2,v_3;t,\vec{x}) $$
+$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v^1,v^2,v^3;t,\vec{p}) = 
+\sum_{\vec{x},\alpha'} e^{-i \vec{p} \cdot \vec{x}} (\Gamma P_\pm)_{\alpha \alpha'} v^{1; [n_1,d_1]}_{ a \alpha'}(\vec{x},t) d^{[n_2,d_2;n_3,d_3]}(v^2,v^3;t,\vec{x}) $$
 
 The final baryon field has consequently one free spin component which is contracted along with the other open indices in the final contraction into a correlation function.
+
+The matrices $\Gamma_{\alpha \alpha'}$ and $\Gamma_{\beta \gamma}$ have to be chosen according to the spin $J$ and irrep and polarisation of the baryonic interpolator. $P_\pm$ is the parity operator.
 
 ### Parameters
 
