@@ -44,11 +44,11 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Sequential source with an insertion of a conserved current $J_\mu$ using a `PropagatorField` $S(x)$ for $t_A\leq x_3 \leq t_B$:
 
-$$source(x) = \sum\limits_{\mu=\mu_{min}}^{\mu_{max}} \theta(x_3 - t_A)\theta(t_B - x_3)\exp(i x\cdot p)\,J_\mu S(x)$$
+$$source(x) = \sum\limits_{\mu=\mu_{min}}^{\mu_{max}} \theta(x_3 - t_A)\theta(t_B - x_3)\exp(i x\cdot p)J_\mu S(x)$$
 
 Optionally an `EmField` $A_\mu$ can be inserted in addition:
 
-$$source(x) = \sum\limits_{\mu=\mu_{min}}^{\mu_{max}} \theta(x_3 - t_A)\theta(t_B - x_3)\exp(i x\cdot p)\,A_\mu \,J_\mu S(x)$$
+$$source(x) = \sum\limits_{\mu=\mu_{min}}^{\mu_{max}} \theta(x_3 - t_A)\theta(t_B - x_3)\exp(i x\cdot p)A_\mu J_\mu S(x)$$
 
 To obain the $source$ at $x$ in both terms of the point-split current (see below for examples of point-split currents implemented), one of the terms is shifted, e.g. 
 
@@ -104,13 +104,31 @@ The `PropagatorField` $source(x)$.
 
 ### Template structure
 
+One template argument `FImpl`, expected to be a fermion implementation.
+
 ### Description
+
+Sequential source with an insertion of a gamma matrix $\Gamma$ using a `PropagatorField` $S(x)$ for $t_A\leq x_3 \leq t_B$:
+
+$$source(x) = \theta(x_3 - t_A)\theta(t_B - x_3)\exp(i x\cdot p) \Gamma S(x)$$
 
 ### Parameters
 
+| Parameter   | Type            |Description                                                                         |
+|-------------|-----------------|------------------------------------------------------------------------------------|
+| `q`         | `std::string`   | Name of the input `PropagatorField` $S(x)$                                         |
+| `tA`        | `unsigned int`  | begin timeslice                                                                    |
+| `tB`        | `unsigned int`  | end timeslice                                                                      |
+| `gamma`     | `Gamma::Algebra`| one of the $16$ gamma matrices                                                     |
+| `mom`       | `std::string`   | momentum insertion, space-separated float sequence (e.g `".1 .2 1. 0."`), with $p_\mu=$mom$_\mu$$\cdot 2\pi/L_\mu$ |
+
 ### Dependencies
 
+Input `PropagatorField` $S(x)$, i.e. object named by `q`.
+
 ### Products
+
+The `PropagatorField` $source(x)$.
 
 -----------
 
@@ -124,11 +142,11 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Generates a source,
 
-$$source(x) = \delta(x_3 - t_W) * exp(i x\cdot p)$$,
+$$source(x) = \delta(x_3 - t_W) \cdot exp(i x\cdot p)$$,
 
 i.e. a Wall source at $t_W$.
 
-Where p is $p_\mu = \frac{2\pi}{L_\mu} * mom_\mu$ were mom is the parameter you provide.
+Where p is $p_\mu = \frac{2\pi}{L_\mu} \cdot mom_\mu$ were mom is the parameter you provide.
 
 $source(x)$ is a unit matrix in Colour and Dirac space.
 
@@ -162,7 +180,7 @@ Generates a source,
 
 $$source(x) = \eta(x) \theta(x_3 - t_A) \theta(t_B - x_3)$$
 
-where the $\eta(x)$ are independent uniform random numbers in the set $$\frac{1}{\sqrt 2}{\pm 1 \pm i}$$ for each $x$. 
+where the $\eta(x)$ are independent uniform random numbers in the set $$\frac{1}{\sqrt 2}(\pm 1 \pm i)$$ for each $x$. 
 
 If `tA` and `tB` are equal then a Z_2 wall source is generated at $x_3 = t_A = t_B$. However if `tA` and `tB` are unequal a Z_2 band in generated for $t_A \leq x_3 \leq t_B$.
 
