@@ -95,6 +95,11 @@ $$ \tau_{k\alpha, l\beta}(t',t) = \sum_{a,b,\vec{x},\vec{x}'} v_{ka}(\vec{x}';t'
 
 In this case of exact distillation, the noise vectors are automatically replaced by vectors of ones, but $N_\mathrm{noise}$ has to be $=1$ ior the code will throw an error.
 
+Additionally, this module gives access to unsmeared quark fields [Mastropas, Richards, 2014, 1403.5575, eq. (20)]
+
+$$ \phi_{a\alpha}^{[n,d]}(\vec{x}',t') = \sum_{b,\beta,t,\vec{x}} e^{-i\vec{p} \cdot \vec{x}} D^{-1}_{a\alpha,b\beta}(\vec{x}',t';\vec{x},t) \varrho^{[n,d]}_{b \beta} (\vec{x},t) $$
+
+Unlike in the case of the perambulators, the LapH smearing can not be used to project them into the LapH subspace and consequently these objects are much larger and more expensive to keep on disk.
 
 ### Parameters
 
@@ -114,6 +119,8 @@ In this case of exact distillation, the noise vectors are automatically replaced
 - `perambulator` $\tau$
 
 - `noises` $\rho$
+
+- `unsmeared_sink` $\phi$
 
 -----------
 
