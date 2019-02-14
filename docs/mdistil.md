@@ -174,5 +174,57 @@ We should probably separate these modules, having one to create the source and o
 
 -----------
 
+## BContraction
+
+### Description
+
+Calculates the baryon fields
+
+$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v_1,v_2,v_3;t,\vec{p}) = 
+\sum_{\vec{x},a,b,c,\alpha',\beta,\gamma} e^{-i \vec{p} \cdot \vec{x}} \epsilon_{abc} \Gamma_{\alpha \alpha'} v^{[n_1,d_1]}_{1; a \alpha'}(\vec{x},t) \Big( v^{[n_2,d_2]}_{2; b \beta}(\vec{x},t) \Gamma_{\beta \gamma} v^{[n_3,d_3]}_{3; c \gamma}(\vec{x},t) \Big)$$
+
+where the vectors $v_1,v_2,v_3$ can be either a LapH source ($\varrho$) or sink vector ($\varphi$) or an unsmeared sink ($\phi$).
+
+In the approach used in this module, a diquark 
+
+$$ d^{[n_2,d_2;n_3,d_3]}(v_2,v_3;t,\vec{x}) = 
+\sum_{a,b,c,\beta,\gamma} \epsilon_{abc} \Big( v^{[n_2,d_2]}_{2; b \beta}(\vec{x},t) \Gamma_{\beta \gamma} v^{[n_3,d_3]}_{3; c \gamma}(\vec{x},t) \Big) $$
+
+is computed first and then contracted with the third quark which gives the baryon field its spin component:
+
+$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v_1,v_2,v_3;t,\vec{p}) = 
+\sum_{\vec{x},\alpha'} e^{-i \vec{p} \cdot \vec{x}} \Gamma_{\alpha \alpha'} v^{[n_1,d_1]}_{1; a \alpha'}(\vec{x},t) d^{[n_2,d_2;n_3,d_3]}(v_2,v_3;t,\vec{x}) $$
+
+The final baryon field has consequently one free spin component which is contracted along with the other open indices in the final contraction into a correlation function.
+
+### Parameters
+
+| Parameter          | Type                       | Description                            |
+|--------------------|----------------------------|----------------------------------------|
+| `one`              | `std::string`              | $v^1_{a \alpha}$ - this quark will give the spin to the baryon field!                                  |
+| `two`              | `std::string`              | $v^2_{b \beta}$                        |
+| `three`            | `std::string`              | $v^3_{c \gamma}$                       |
+| `output`           | `std::string`              | output file name                       |
+| `parity`           | `int`                      | Parity:  $1 \rightarrow +$,  $(-1) \rightarrow -$ |
+| `mom`              | `std::vector<std::string>` |   list of momenta                       |
+
+### Dependencies
+
+- `source vectors` $\varrho$
+
+- `sink vectors` $\varphi$
+
+- `unsmeared sinks` $\phi$
+
+
+
+### Products
+
+- `baryon field` $B_\alpha$
+
+
+-----------
+
+
 
 
