@@ -233,39 +233,25 @@ The matrices $\Gamma_{\alpha \alpha'}$ and $\Gamma_{\beta \gamma}$ have to be ch
 
 Contracts two baryon fields into a 2-point function
 
-$$ C_2(t,\vec{p}) = \sum_{\alpha,n,d}  B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v^{1,A},v^{2,B},v^{3,C};t,\vec{p})  \Big( \delta_{ABC}^{\bar{ABC}} B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(w^{1,\bar{A}},w^{2,\bar{B}},w^{3,\bar{C}};t,\vec{p}) $$
-$$  + \delta_{ABC}^{\bar{BCA}} B^{[n_2,d_2;n_3,d_3;n_1,d_1]}_\alpha(w^{2,\bar{B}},w^{3,\bar{C}},w^{1,\bar{A}};t,\vec{p}) $$
-$$  + \delta_{ABC}^{\bar{CAB}} B^{[n_3,d_3;n_1,d_1;n_2,d_2]}_\alpha(w^{3,\bar{C}},w^{1,\bar{A}},w^{2,\bar{B}};t,\vec{p}) $$
-$$  + \delta_{ABC}^{\bar{ACB}} B^{[n_1,d_1;n_3,d_3;n_2,d_2]}_\alpha(w^{1,\bar{A}},w^{3,\bar{C}},w^{2,\bar{B}};t,\vec{p}) $$
-$$  + \delta_{ABC}^{\bar{CBA}} B^{[n_3,d_3;n_2,d_2;n_1,d_1]}_\alpha(w^{3,\bar{C}},w^{2,\bar{B}},w^{1,\bar{A}};t,\vec{p}) $$
-$$  + \delta_{ABC}^{\bar{BAC}} B^{[n_2,d_2;n_1,d_1;n_3,d_3]}_\alpha(w^{2,\bar{B}},w^{1,\bar{A}},w^{3,\bar{C}};t,\vec{p}) \Big)$$
+$$ C_2(t,t_0,\vec{p}) = \sum_{\alpha,n,d}  B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v^{1,A},v^{2,B},v^{3,C};t,\vec{p}) $$
+$$ \times  \Big( \delta_{ABC}^{\bar{A}\bar{B}\bar{C}} B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(w^{1,\bar{A}},w^{2,\bar{B}},w^{3,\bar{C}};t_0,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{B}\bar{C}\bar{A}} B^{[n_2,d_2;n_3,d_3;n_1,d_1]}_\alpha(w^{2,\bar{B}},w^{3,\bar{C}},w^{1,\bar{A}};t_0,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{C}\bar{A}\bar{B}} B^{[n_3,d_3;n_1,d_1;n_2,d_2]}_\alpha(w^{3,\bar{C}},w^{1,\bar{A}},w^{2,\bar{B}};t_0,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{A}\bar{C}\bar{B}} B^{[n_1,d_1;n_3,d_3;n_2,d_2]}_\alpha(w^{1,\bar{A}},w^{3,\bar{C}},w^{2,\bar{B}};t_0,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{C}\bar{B}\bar{A}} B^{[n_3,d_3;n_2,d_2;n_1,d_1]}_\alpha(w^{3,\bar{C}},w^{2,\bar{B}},w^{1,\bar{A}};t_0,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{B}\bar{A}\bar{C}} B^{[n_2,d_2;n_1,d_1;n_3,d_3]}_\alpha(w^{2,\bar{B}},w^{1,\bar{A}},w^{3,\bar{C}};t_0,\vec{p}) \Big)$$
 
-where the vectors $v_1,v_2,v_3$ can be either a LapH source ($\varrho$) or sink vector ($\varphi$) or an unsmeared sink ($\phi$).
-
-In the approach used in this module, a diquark 
-
-$$ d^{[n_2,d_2;n_3,d_3]}(v_2,v_3;t,\vec{x}) = 
-\sum_{a,b,c,\beta,\gamma} \epsilon_{abc} \Big( v^{2; [n_2,d_2]}_{ b \beta}(\vec{x},t) (\Gamma P_\pm)_{\beta \gamma} v^{3; [n_3,d_3]}_{ c \gamma}(\vec{x},t) \Big) $$
-
-is computed first and then contracted with the third quark which gives the baryon field its spin component:
-
-$$ B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v^1,v^2,v^3;t,\vec{p}) = 
-\sum_{\vec{x},\alpha'} e^{-i \vec{p} \cdot \vec{x}} (\Gamma P_\pm)_{\alpha \alpha'} v^{1; [n_1,d_1]}_{ a \alpha'}(\vec{x},t) d^{[n_2,d_2;n_3,d_3]}(v^2,v^3;t,\vec{x}) $$
-
-The final baryon field has consequently one free spin component which is contracted along with the other open indices in the final contraction into a correlation function.
-
-The matrices $\Gamma_{\alpha \alpha'}$ and $\Gamma_{\beta \gamma}$ have to be chosen according to the spin $J$ and irrep and polarisation of the baryonic interpolator. $P_\pm$ is the parity operator.
+where the vectors $v_1,v_2,v_3$ and $w_1,w_2,w_3$ can be either a LapH source ($\varrho$) or sink vector ($\varphi$) or an unsmeared sink ($\phi$). The quark flavours $A,B,C$ and $\bar{A},\bar{B},\bar{C}$ are an input parameter to this modules and the deltas are evaluated automatically.
 
 ### Parameters
 
 | Parameter          | Type                       | Description                            |
 |--------------------|----------------------------|----------------------------------------|
-| `one`              | `std::string`              | $v^1_{a \alpha}$ - this quark will give the spin to the baryon field!                                  |
-| `two`              | `std::string`              | $v^2_{b \beta}$                        |
-| `three`            | `std::string`              | $v^3_{c \gamma}$                       |
+| `inputL`           | `std::string`              | file for Baryon Field left                                  |
+| `inputR`           | `std::string`              | file for Baryon Field right                                  |
 | `output`           | `std::string`              | output file name                       |
-| `parity`           | `int`                      | Parity:  $1 \rightarrow +$,  $(-1) \rightarrow -$ |
-| `mom`              | `std::vector<std::string>` |   list of momenta                       |
+| `quarksL`           | `std::string`                      | string of exactly 3 characters with the quark content of the left field |
+| `quarksR`           | `std::string`                      | string of exactly 3 characters with the quark content of the right field |
 
 ### Dependencies
 
