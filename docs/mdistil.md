@@ -234,7 +234,11 @@ The matrices $\Gamma_{\alpha \alpha'}$ and $\Gamma_{\beta \gamma}$ have to be ch
 Contracts two baryon fields into a 2-point function
 
 $$ C_2(t,\vec{p}) = \sum_{\alpha,n,d}  B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(v^{1,A},v^{2,B},v^{3,C};t,\vec{p})  \Big( \delta_{ABC}^{\bar{ABC}} B^{[n_1,d_1;n_2,d_2;n_3,d_3]}_\alpha(w^{1,\bar{A}},w^{2,\bar{B}},w^{3,\bar{C}};t,\vec{p}) $$
-$$  abc \Big)$$
+$$  + \delta_{ABC}^{\bar{BCA}} B^{[n_2,d_2;n_3,d_3;n_1,d_1]}_\alpha(w^{2,\bar{B}},w^{3,\bar{C}},w^{1,\bar{A}};t,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{CAB}} B^{[n_3,d_3;n_1,d_1;n_2,d_2]}_\alpha(w^{3,\bar{C}},w^{1,\bar{A}},w^{2,\bar{B}};t,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{ACB}} B^{[n_1,d_1;n_3,d_3;n_2,d_2]}_\alpha(w^{1,\bar{A}},w^{3,\bar{C}},w^{2,\bar{B}};t,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{CBA}} B^{[n_3,d_3;n_2,d_2;n_1,d_1]}_\alpha(w^{3,\bar{C}},w^{2,\bar{B}},w^{1,\bar{A}};t,\vec{p}) $$
+$$  + \delta_{ABC}^{\bar{BAC}} B^{[n_2,d_2;n_1,d_1;n_3,d_3]}_\alpha(w^{2,\bar{B}},w^{1,\bar{A}},w^{3,\bar{C}};t,\vec{p}) \Big)$$
 
 where the vectors $v_1,v_2,v_3$ can be either a LapH source ($\varrho$) or sink vector ($\varphi$) or an unsmeared sink ($\phi$).
 
