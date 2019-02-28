@@ -14,7 +14,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Calculates the lowest $ n_\mathrm{vec} $ `Laplacian eigenvectors` $v$ and `eigenvalues` $\lambda$ by solving the Laplacian eigenvalue equation
 
-$$\sum_{b,\vec{y}}-\nabla^2_{ab}(\vec{x},\vec{y};t) \ket{v(\vec{y};t)}_{kb} =  \lambda_k(t) v_{ka}(\vec{x};t)$$
+$$\sum_{b,\vec{y}}-\nabla^2_{ab}(\vec{x},\vec{y};t) |v(\vec{y};t)\rangle_{kb} =  \lambda_k(t) |v(\vec{x};t)\rangle_{ka}$$
 
 on each timeslice $ t $ with the 3-dimensional lattice `Laplacian` 
 
