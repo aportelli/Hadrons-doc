@@ -43,7 +43,9 @@ $$O_{\Lambda_\pm}=\epsilon^{abc} P_\pm \Gamma^A (2s_a (u_b^T \Gamma^B d_c) + d_a
 The two-point function consists of 9 terms, for each of which this module needs to be run separately. Example: The one with $[q^1(q^2q^3)]=[s(ud)]$ (at src) and $[q^4(q^5q^6)]=[u(ds)]$ (at snk) needs  `quarks_snk = "uds"`, `quarks_src = "sud"`, and will have to be multiplied with a factor of $(-2)$ when summed with the other 9 terms.
 
 ### Parameters
+
 | Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
 | `q1_src` | `std::string` | input propagator 1 (at src)|
 | `q2_src` | `std::string` | input propagator 2 (at src)|
 | `q3_src` | `std::string` | input propagator 3 (at src)|
