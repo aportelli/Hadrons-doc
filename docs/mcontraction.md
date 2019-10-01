@@ -14,7 +14,7 @@ $$C_2 = \langle O_B(n)_\rho \bar{O}_B(m)_\rho \rangle$$
 
 of baryon interpolators
 
-$$O_B(n)_\rho &= \epsilon^{a'b'c'} (P_\pm \Gamma^A  q^1_{c'})_\rho ((q^2_{a'})^T \Gamma^B q^3_{b'})$$
+$$O_B(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^A  q^1_{c'})_\rho ((q^2_{a'})^T \Gamma^B q^3_{b'})$$
 
 This module takes three propagators and a source and sink gamma structure.
 
