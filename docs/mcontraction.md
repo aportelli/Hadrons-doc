@@ -14,7 +14,7 @@ $$C_2 = \langle O_B(n)_\rho \bar{O}_B(m)_\rho \rangle$$
 
 of baryon interpolators
 
-$$O_B(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^A)_{\rho \gamma}   q^1_{c',\gamma'} (q^2_{a',\alpha'} \Gamma^B_{\alpha' \beta'} q^3_{b',\beta'}),$$
+$$O_B(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^A)_{\rho \gamma'}   q^1_{c',\gamma'} (q^2_{a',\alpha'} \Gamma^B_{\alpha' \beta'} q^3_{b',\beta'}),$$
 $$\bar{O}_B(m)_\rho = \epsilon^{abc} (\bar{q}^5_{a,\alpha} \Gamma^B_{\alpha \beta} \bar{q}^6_{b,\beta})  \bar{q}^4_{c,\gamma}  (\Gamma^A P_\pm)_{\gamma \rho},$$
 
 which consist of a diquark and a quark which shares its spin components with the interpolator. $\Gamma^A,\Gamma^B$ are projectors into certain total baryon spins $J$. The two-point function ca be evaluated to
@@ -26,6 +26,19 @@ $$+ D^{q^1}(n|m)_{\gamma',c';\beta,b} D^{q^2}(n|m)_{\alpha',a';\gamma,c} D^{q^3}
 $$- D^{q^1}(n|m)_{\gamma',c';\gamma,c} D^{q^2}(n|m)_{\alpha',a';\beta,b} D^{q^3}(n|m)_{\beta',b';\alpha,a} \ \delta_{q^4 q^5 q^6}^{q^1 q^3 q^2}$$
 $$- D^{q^1}(n|m)_{\gamma',c';\beta,b} D^{q^2}(n|m)_{\alpha',a';\alpha,a} D^{q^3}(n|m)_{\beta',b';\gamma,c} \ \delta_{q^4 q^5 q^6}^{q^3 q^2 q^1}$$
 $$- D^{q^1}(n|m)_{\gamma',c';\alpha,a} D^{q^2}(n|m)_{\alpha',a';\gamma,c} D^{q^3}(n|m)_{\beta',b';\beta,b} \ \delta_{q^4 q^5 q^6}^{q^2 q^1 q^3} \Big).$$
+
+In here, the kronecker deltas
+$$\delta^{q^1 q^2 q^3}_{q^4 q^5 q^6} \equiv \delta^{q^1}_{q^4} \delta^{q^2}_{q^5} \delta^{q^3}_{q^6}$$
+arise through the different possible Wick-contractions.
+
+For $J=\frac 12$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5,C ),(1,i \gamma_4 C \gamma_5) \}$.
+For $J=\frac 32$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$.
+
+Example to explain the `quarks_snk` and `quarks_src`: For a nucleon interpolator
+$$O_{N_\pm}=\epsilon^{abc} P_\pm \Gamma^A u_a (u_b^T \Gamma^B d_c),$$
+$[q^1(q^2q^3)]=[u(ud)]$.
+
+
 
 This module takes three propagators and a source and sink gamma structure.
 
