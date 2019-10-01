@@ -10,5 +10,6 @@
   - [MGauge](mgauge.md)
   - [MScalarSUN](mscalarsun.md)
   - [MSource](msource.md)
+  - [MContraction](mcontraction.md)
   - [MDistil](mdistil.md)
 
