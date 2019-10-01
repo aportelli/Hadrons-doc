@@ -36,52 +36,32 @@ For $J=\frac 32$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$.
 
 Example to explain the `quarks_snk` and `quarks_src`: For a nucleon interpolator
 $$O_{N_\pm}=\epsilon^{abc} P_\pm \Gamma^A u_a (u_b^T \Gamma^B d_c),$$
-$[q^1(q^2q^3)]=[u(ud)]$.
+$[q^1(q^2q^3)]=[u(ud)]$ (at src) and $[q^4(q^5q^6)]=[u(ud)]$ (at snk). The correct choice is therefore `quarks_snk = "uud"`, `quarks_src = "uud"`.
 
-
-
-This module takes three propagators and a source and sink gamma structure.
-
-Explain how lists of gamma structures are dealt with and the `all` option.
-
-Define the contraction macro,
-
-$$#define mesonConnected(q1, q2, gSnk, gSrc) (g5*(gSnk))*(q1)*(adj(gSrc)*g5)*adj(q2)$$
-
-
-If has sliced Propagator:
-
-get sliced propagators and gamma matrixes and conntract them. Trace and remove Tensor (TensorRemove).
-
-else:
-
-	if sink parameter is a `MSource` object:
-
-		get the sink object trace over the graph and perform a slice sum.
-
-	else if the sink parameter is a `MSink` object:
-
-		trace over the graph and input this to the sink function.
-
-	Remove the Tensor structures (TensorRemove) and pass to output.
+A more complicated case is the $\Lambda$, with
+$$O_{\Lambda_\pm}=\epsilon^{abc} P_\pm \Gamma^A (2s_a (u_b^T \Gamma^B d_c) + d_a (u_b^T \Gamma^B s_c) - u_a (d_b^T \Gamma^B s_c)),$$
+The two-point function consists of 9 terms, for each of which this module needs to be run separately. Example: The one with $[q^1(q^2q^3)]=[s(ud)]$ (at src) and $[q^4(q^5q^6)]=[u(ds)]$ (at snk) needs  `quarks_snk = "uds"`, `quarks_src = "sud"`, and will have to be multiplied with a factor of $(-2)$ when summed with the other 9 terms.
 
 ### Parameters
 | Parameter   | Type           | Description                                                            |
-| `q1` | `std::string` | input propagator 1|
-| `q2` | `std::string` | input propagator 2|
-| `gammas` | `std::string` | gamma products to insert and source and sink, pairs of gammas seperated by a space in round brackets.
-		      Special value: `all` - perform all possible contractions.|
-| `sink` | `std::string` | module used to compute the sink of the module.|
+| `q1_src` | `std::string` | input propagator 1 (at src)|
+| `q2_src` | `std::string` | input propagator 2 (at src)|
+| `q3_src` | `std::string` | input propagator 3 (at src)|
+| `GammaA` | `std::string` | Gamma matrix for baryon projection |
+| `GammaB` | `std::string` | Gamma matrix for baryon projection |
+| `quarks_src` | `std::string` | quark content (at src) -- see example |
+| `quarks_snk` | `std::string` | quark content (at snk) -- see example |
+| `parity` | `int` | parity - only $+1$ or $-1$ are allowed values |
+| `sink` | `std::string` | module used to compute the sink of the module|
 | `output` | `std::string` | Specify the output location of the correlator that is generated.|
 
 ### Dependencies
 
-This module depends on a pair of propagators being generated and a sink module being specified.
+This module depends on three propagators being generated and a sink module being specified.
 
 ### Products
 
-This module produces a correlator called `meson` that is saved to a hdf5 file at a location of your
-choosing.
+This module produces a correlator called `baryon` that is saved to a hdf5 file at a location of your choosing.
 
 -----------
 
