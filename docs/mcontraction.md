@@ -31,9 +31,9 @@ In here, the kronecker deltas
 $$\delta^{q^1 q^2 q^3}_{q^4 q^5 q^6} \equiv \delta^{q^1}_{q^4} \delta^{q^2}_{q^5} \delta^{q^3}_{q^6}$$
 arise through the different possible Wick-contractions.
 
-For $J=\frac 12$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5,C ),(1,i \gamma_4 C \gamma_5) \}$
-.
-For $J=\frac 32$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$.
+$$J=\frac 12: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5,C ),(1,i \gamma_4 C \gamma_5) \}$$
+
+$$J=\frac 32: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$$
 
 `quarks` is a vector of quark structures, `prefactors` is a vector of their multiplicities in the baryon interpolator. Two examples for the input structure: 
 
