@@ -31,28 +31,36 @@ In here, the kronecker deltas
 $$\delta^{q^1 q^2 q^3}_{q^4 q^5 q^6} \equiv \delta^{q^1}_{q^4} \delta^{q^2}_{q^5} \delta^{q^3}_{q^6}$$
 arise through the different possible Wick-contractions.
 
-For $J=\frac 12$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5,C ),(1,i \gamma_4 C \gamma_5) \}$.
+For $J=\frac 12$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5,C ),(1,i \gamma_4 C \gamma_5) \}$
+.
 For $J=\frac 32$, $(\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$.
 
-Example to explain the `quarks_snk` and `quarks_src`: For a nucleon interpolator
-$$O_{N_\pm}=\epsilon^{abc} P_\pm \Gamma^A u_a (u_b^T \Gamma^B d_c),$$
-$[q^1(q^2q^3)]=[u(ud)]$ (at src) and $[q^4(q^5q^6)]=[u(ud)]$ (at snk). The correct choice is therefore `quarks_snk = "uud"`, `quarks_src = "uud"`.
+`quarks` is a vector of quark structures, `prefactors` is a vector of their multiplicities in the baryon interpolator. Two examples for the input structure: 
 
-A more complicated case is the $\Lambda$, with
+Nucleon interpolator:
+
+$$O_{N_\pm}=\epsilon^{abc} P_\pm \Gamma^A u_a (u_b^T \Gamma^B d_c),$$
+
+Here, `quarks = "uud"`, `prefactors = "1.0"`.
+
+Lambda interpolator:
+
 $$O_{\Lambda_\pm}=\epsilon^{abc} P_\pm \Gamma^A (2s_a (u_b^T \Gamma^B d_c) + d_a (u_b^T \Gamma^B s_c) - u_a (d_b^T \Gamma^B s_c)),$$
-The two-point function consists of 9 terms, for each of which this module needs to be run separately. Example: The one with $[q^1(q^2q^3)]=[s(ud)]$ (at src) and $[q^4(q^5q^6)]=[u(ds)]$ (at snk) needs  `quarks_snk = "uds"`, `quarks_src = "sud"`, and will have to be multiplied with a factor of $(-2)$ when summed with the other 9 terms.
+
+Here, `quarks = "sud dus uds"`, `prefactors = "2.0 1.0 -1.0"`.  The order of the propagators must match the order of the first quark-structure string. In this example, the order is `q1 = s-type`, `q2,q3 = l-type`. 
+
 
 ### Parameters
 
 | Parameter   | Type           | Description                                                            |
 |--------------------|----------------------------|----------------------------------------|
-| `q1_src` | `std::string` | input propagator 1 (at src)|
-| `q2_src` | `std::string` | input propagator 2 (at src)|
-| `q3_src` | `std::string` | input propagator 3 (at src)|
+| `q1` | `std::string` | input propagator 1 (at src)|
+| `q2` | `std::string` | input propagator 2 (at src)|
+| `q3` | `std::string` | input propagator 3 (at src)|
 | `GammaA` | `std::string` | Gamma matrix for baryon projection |
 | `GammaB` | `std::string` | Gamma matrix for baryon projection |
-| `quarks_src` | `std::string` | quark content (at src) -- see example |
-| `quarks_snk` | `std::string` | quark content (at snk) -- see example |
+| `quarks` | `std::string` | quark content - order of first entry must match order of `q1,q2,q3` |
+| `prefactors` | `std::string` | multiplicities of quark contents |
 | `parity` | `int` | parity - only $+1$ or $-1$ are allowed values |
 | `sink` | `std::string` | module used to compute the sink of the module|
 | `output` | `std::string` | Specify the output location of the correlator that is generated.|
