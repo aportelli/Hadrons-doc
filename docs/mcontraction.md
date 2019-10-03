@@ -54,9 +54,9 @@ Here, `quarks = "sud dus uds"`, `prefactors = "2.0 1.0 -1.0"`.  The order of the
 
 | Parameter   | Type           | Description                                                            |
 |--------------------|----------------------------|----------------------------------------|
-| `q1` | `std::string` | input propagator 1 (at src)|
-| `q2` | `std::string` | input propagator 2 (at src)|
-| `q3` | `std::string` | input propagator 3 (at src)|
+| `q1` | `std::string` | input propagator 1 |
+| `q2` | `std::string` | input propagator 2 |
+| `q3` | `std::string` | input propagator 3 |
 | `GammaA` | `std::string` | Gamma matrix for baryon projection |
 | `GammaB` | `std::string` | Gamma matrix for baryon projection |
 | `quarks` | `std::string` | quark content - order of first entry must match order of `q1,q2,q3` |
