@@ -53,17 +53,17 @@ The input parameter `gammas` must be parsed as a list of pairs of pairs of gamma
 
 There are some shorthands for the most common gamma structures:
 
-`"j12" \equiv "(Identity SigmaXZ)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_5)$
+`"j12" = "(Identity SigmaXZ)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_5)$
 
-`"j32X" \equiv "(Identity MinusGammaZGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_1)$
+`"j32X" = "(Identity MinusGammaZGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_1)$
 
-`"j32Y" \equiv "(Identity Gamma4)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$
+`"j32Y" = "(Identity Gamma4)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$
 
-`"j32Z" \equiv "(Identity GammaXGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_3)$
+`"j32Z" = "(Identity GammaXGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_3)$
 
-`"j12_alt1" \equiv "(Gamma5 MinusSigmaYT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(C, \gamma_5)$
+`"j12_alt1" = "(Gamma5 MinusSigmaYT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(C, \gamma_5)$
 
-`"j12_alt2" \equiv "(Identity GammaYGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1, i \gamma_4 C\gamma_5)$
+`"j12_alt2" = "(Identity GammaYGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1, i \gamma_4 C\gamma_5)$
 
 The input for a simple $J=\frac 12$ baryon could therefore be `gammas = "(j12 j12)"`, and for several combinations of $J=\frac 32$ baryon the input `gammas = "(j32X j32X) (j32Y j32Y) (j32Z j32Z) (j32X j32Y) (j32X j32Z) (j32Y j32X) (j32Y j32Z) (j32Z j32X) (j32Z j32Y)"` can be used.
 
