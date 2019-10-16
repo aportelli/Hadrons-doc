@@ -57,7 +57,7 @@ There are some shorthands for the most common gamma structures:
 
 `"j32X" = "(Identity MinusGammaZGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_1)$
 
-`"j32Y" = "(Identity Gamma4)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$
+`"j32Y" = "(Identity GammaT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$
 
 `"j32Z" = "(Identity GammaXGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_3)$
 
