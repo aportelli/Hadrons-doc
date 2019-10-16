@@ -31,7 +31,7 @@ In here, the kronecker deltas
 $$\delta^{q^1 q^2 q^3}_{q^4 q^5 q^6} \equiv \delta^{q^1}_{q^4} \delta^{q^2}_{q^5} \delta^{q^3}_{q^6}$$
 arise through the different possible Wick-contractions.
 
-$$J=\frac 12: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5, C),(1,i \gamma_4 C \gamma_5) \}$$
+$$J=\frac 12: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5, C),(1,\gamma_0 C \gamma_5) \}$$
 
 $$J=\frac 32: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$$
 
@@ -63,7 +63,7 @@ There are some shorthands for the most common gamma structures:
 
 `"j12_alt1" = "(Gamma5 MinusSigmaYT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(C, \gamma_5)$
 
-`"j12_alt2" = "(Identity GammaYGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1, i \gamma_4 C\gamma_5)$
+`"j12_alt2" = "(Identity GammaYGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1, \gamma_0 C\gamma_5)$
 
 The input for a simple $J=\frac 12$ baryon could therefore be `gammas = "(j12 j12)"`, and for several combinations of $J=\frac 32$ baryon the input `gammas = "(j32X j32X) (j32Y j32Y) (j32Z j32Z) (j32X j32Y) (j32X j32Z) (j32Y j32X) (j32Y j32Z) (j32Z j32X) (j32Z j32Y)"` can be used.
 
