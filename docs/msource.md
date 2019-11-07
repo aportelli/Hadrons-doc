@@ -2,6 +2,38 @@
 
 -----------
 
+## MomentumPhase
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Multiplies a given source and multiplies it by a phase $e^{ipx}$ where $p$ is a 3-momentum.
+
+$$source_{out}(x) = source_{in}(x) e^{ipx}$$
+
+(This is useful e.g. for a Z2-wall source, which can then be used to estimate a 2-point correlation function with momentum $p \neq 0$.)
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|     `src`    | `std::string` | The source to be multiplied by a phase                                     |
+|     `mom`    | `std::string` | 3-momentum $p$ of the phase.                                       |
+
+
+### Dependencies
+
+This module has no dependencies.
+
+### Products
+
+The `PropagatorField` $source_{out}(x)$.
+
+-----------
+
 ## Point
 
 ### Template structure
