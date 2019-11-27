@@ -45,6 +45,36 @@ Laplacian eigenvectors, named `eigenPack` (Note: The eigenvectors are 4d-eigenve
 
 -----------
 
+## DistilPar
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Sets the parameters used within distillation and returns them for other modules to use.
+
+### Parameters
+
+| Parameter             | Type                       | Description            |
+|-----------------------|----------------------------|------------------------|
+| `nvec`                | `int`             | $N_{\mathrm{vec}}$              |
+| `nnoise`              | `int`             | $N_{\mathrm{noise}}$              |
+| `tsrc`                | `int`             | $t_{\mathrm{src}}$   (only used for exact distillation)           |
+| `TI`                  | `int`             | time-interlacing for dilution             |
+| `LI`                  | `int`             | eigenvector-interlacing for dilution               |
+| `SI`                  | `int`             | spin-interlacing for dilution              |
+
+### Dependencies
+
+### Products
+
+Distillation Parameters, used as input in other MDistil modules.
+
+-----------
+
+
 ## Noises
 
 ### Template structure
