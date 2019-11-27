@@ -55,6 +55,8 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Sets the parameters used within distillation and returns them for other modules to use.
 
+Exact distillation is used when the dilution interlacing parameters (TI,LI,SI) are set to ($N_t$,$N_{\mathrm{vec}}$,$N_s$). In this case, distillation sources have support only on timeslice $t_{\mathrm{src}}$ and inversions are only computed on this timeslice.
+
 ### Parameters
 
 | Parameter             | Type                       | Description            |
@@ -93,12 +95,15 @@ $$ \langle \rho^{[n_1]}  \rho^{[n_2]} \rangle = \delta^{n_1, n_2} \, ,$$
 
 needed for stochastic perambulator, seeded from a Unique Identifier (string). If exact distillation is chosen ($N_\mathrm{noise}=1$,$TI=N_t$,$SI=4$,$LI=N_\mathrm{vec}$, the noise vector object contains only values of 1.
 
+If `NoiseFileName` is unspecified, the noises are not saved to disk.
+
 
 ### Parameters
 
 | Parameter          | Type                         | Description                            |
 |--------------------|------------------------------|----------------------------------------|
-| `NoisesParameters` | `{int,int,std::string,int,int}`           | nnoise,nvec,UniqueIdentifier,TI,LI |
+| `DistilParams` | `std::string`           | module name for `DistilPar` |
+| `NoiseFileName` | `std::string`           | file name for the noises.  |
 
 ### Dependencies
 
@@ -167,7 +172,7 @@ Unlike in the case of the perambulators, the LapH smearing can not be used to pr
 | `PerambFileName`           | `std::string`                | filestem for the perambulators saved to disk (not saved if empty)                 |
 | `UnsmearedSinkFileName`           | `std::string`                | filestem for the unsmeared sinks saved to disk (not saved if empty)                 |
 | `nvec` | `int`           | Nvec |
-| `DistilParameters` | `std::vector<int>`           | TI,LI,SI,Ns,Nt,nnoise,tsrc,Nt_inv |
+| `DistilParams` | `std::string`           | module name for `DistilPar` |
 
 ### Dependencies
 
