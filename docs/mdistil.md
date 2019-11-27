@@ -171,7 +171,6 @@ Unlike in the case of the perambulators, the LapH smearing can not be used to pr
 | `noise`            | `std::string`                | module name for noises                 |
 | `PerambFileName`           | `std::string`                | filestem for the perambulators saved to disk (not saved if empty)                 |
 | `UnsmearedSinkFileName`           | `std::string`                | filestem for the unsmeared sinks saved to disk (not saved if empty)                 |
-| `nvec` | `int`           | Nvec |
 | `DistilParams` | `std::string`           | module name for `DistilPar` |
 
 ### Dependencies
@@ -192,7 +191,7 @@ Unlike in the case of the perambulators, the LapH smearing can not be used to pr
 -----------
 
 
-## DistilVecs
+## DistilVectors
 
 ### Template structure
 
@@ -214,14 +213,12 @@ from the eigenvectors and perambulators.
 
 | Parameter          | Type                       | Description                            |
 |--------------------|----------------------------|----------------------------------------|
-| `eigenvectors`     | `std::string`                | $v_k$                                  |
-| `perambulator`     | `std::string` | $\tau$                                 |
-| `noise`            | `std::string`     | $\rho$                                 |
-| `source`            | `std::string`     | $\varrho$ filename (don't compute if empty                                 |
-| `sink`            | `std::string`     | $\varphi$ filename (don't compute if empty                                 |
-| `tsrc` | `int`   | source time |
-| `nvec` | `int`   | nvec |
-| `TI` | `int`   | TI |
+| `noise`            | `std::string`     | module name for noises                                 |
+| `perambulator`     | `std::string` | module name for perambulators                                 |
+| `lapevec`     | `std::string`                | module name for eigenvectors                                  |
+| `rho`            | `std::string`     | $\varrho$ filename (don't compute if empty)                                 |
+| `phi`            | `std::string`     | $\varphi$ filename (don't compute if empty)                                 |
+| `DistilParams` | `std::string`           | module name for `DistilPar` |
 
 
 ### Dependencies
