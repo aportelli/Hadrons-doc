@@ -156,15 +156,19 @@ choosing.
 
 ## A2AMesonField
 
+### Note
+
+This module is also used for distillation. Instead of `v` and `w` vectors, the vector inputs are  $\varrho$ and $\varphi$ from `MDistil::DistilVectors` or the unsmeared sinks $\phi$ from `MDistil::Perambulator`.
+
 ### Template Stucture
 
 One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-momentum is $$p = 2\pi/L * mom$$.
+`mom` is the momentum in lattice units, i.e. the full momentum the meson field is projected to is 
 
-give detail of meson field structure.
+$$p = 2\pi/L * mom\, .$$
 
 Detail complex blocking strucutres used to gain performance. discuss with peter and Fionn after a detailed read.
 
@@ -177,14 +181,18 @@ Detail complex blocking strucutres used to gain performance. discuss with peter 
 |     `w`     | `std::string`  | Set of eigen vectors low and high modes                                |
 |    `gammas` | `std::string`  | gamma products to insert and source and sink, pairs of gammas seperated by a space in round brackets.
 		      Special value: `all` - perform all possible contractions. |
-|    `mom`    | `std::vector<std::string>` | what momentum this meson field has e.g `"0 1 0 0"`.        |
+|    `mom`    | `std::vector<std::string>` | three-momentum of the meson field, e.g `"1 0 0"`.        |
 |   `output`  | `std::string`  | name of the output file that the meson field will be saved to.         |
 |   `cacheBlock`| `int`        | performance tuning parameter (give values for various architectures)   |
 |   `block`   |  `int`         | performance tuning parameter (give values for various architectures)   |
 
 ### Dependencies
 
-Theis module depends on the creation of the `v` and `w` eigenvectors being determind.
+This module only works when grid is compiled using hdf5.
+
+This module depends on the creation of the `v` and `w` eigenvectors being determined.
+
+Alternatively, distillation vectors $\varrho$, $\varphi$, $\phi$ can be used.
 
 ### Products
 
