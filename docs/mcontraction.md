@@ -112,32 +112,21 @@ This module computes a meson two-point function
 
 $$C_2 = \langle O_M(n) \bar{O}_{M'}(m) \rangle$$
 
-This module takes a pair of quark propagators and a source and sink gamma structure.
+This module takes a pair of quark propagators $q_1,q_2$ and a source and sink gamma structure $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$.
 
 There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`.
 
-The contraction macro used in this module is
+This module computes the trace
 
-$$#define mesonConnected(q1, q2, gSnk, gSrc) (g5*(gSnk))*(q1)*(adj(gSrc)*g5)*adj(q2)$$
+$$ \gamma_5 \Gamma_{\mathrm{snk}} q_1 (\Gamma_{\mathrm{src}} \gamma_5)^\dagger q_2^\dagger $$
 
-The input propagator can optionally be already a `SlicedPropagator`, i.e. a propagator $D^{-1}(x_1,x_2)$ from one fixed point $x_1$ to another fixed point $x_2$, e.g. an output from the module `MSink::Smear`.
+The `sink` object can either be from the `MSource` namespace or the `MSink` namespace and the module handles this sinking procedure accordingly.
 
-
-
-else:
-
-	if sink parameter is a `MSource` object:
-
-		get the sink object trace over the graph and perform a slice sum.
-
-	else if the sink parameter is a `MSink` object:
-
-		trace over the graph and input this to the sink function.
-
-	Remove the Tensor structures (TensorRemove) and pass to output.
+The input propagator can optionally be already a `SlicedPropagator`, i.e. a propagator $D^{-1}(x_1,x_2)$ from one fixed point $x_1$ to another fixed point $x_2$, e.g. an output from the module `MSink::Smear`. In this case, the `sink` input parameter is not used by the module.
 
 ### Parameters
 | Parameter   | Type   |   Description                       |
+|-------------|----------------|-----------------------------|
 | `q1` | `std::string` | input propagator 1|
 | `q2` | `std::string` | input propagator 2|
 | `gammas` | `std::string` | gamma products to insert and source and sink, pairs of gammas seperated by a space in round brackets.
