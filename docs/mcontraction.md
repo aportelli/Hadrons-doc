@@ -106,8 +106,11 @@ $$C(t)=\sum_{\mathbf{x}}\mathrm{tr}[S(t,\mathbf{x})\gamma_{\mu}] \, .$$
 ### Parameters
 | Parameter   | Type   |   Description                       |
 |-------------|----------------|-----------------------------|
-| `q_loop` | `std::string` | input loop propagator |
-| `gamma` | `Gamma::Algebra` | gamma matrix|
+| `q1` | `std::string` | input propagator 1 (must be sinked already) |
+| `q2` | `std::string` | input propagator 2 |
+| `q3` | `std::string` | input propagator 3 |
+| `gamma` | `std::string` | list of gamma matrices|
+| `tSnk` | `int` | sink time $x_f$|
 | `output` | `std::string` | Specify the output location of the correlator that is generated.|
 
 ### Dependencies
@@ -120,7 +123,36 @@ This module produces a correlator called `disc` that is saved to a hdf5 file (or
 
 ## Gamma3pt
 
------------
+### Template structure
+
+This module takes three `FImpl` template arguments `FImpl1`, `FImpl2`  and `FImpl3`, all of which are expected to be fermion implimentations.
+
+### Description
+
+This module computes the mesonic three-point function
+
+$$C(t)=\langle O^{\gamma_5}_{M_1}(x_i) \bar{O}_{M_2}(x) \bar{O}^{\gamma_5}_{M_3}(x_f) \rangle \, ,$$
+
+where the gamma insertions at source and sink are fixed to $\gamma_5$
+
+This module takes an already sink smeared propagator `q1` with the source at $x_i$ and sinked at $x_f$, as well as two non-sinked propagators `q2` (source at $x_i$), `q3` (source at $x_f$).
+
+The gamma matrices can be a list, seperated by spaces. There is also the option to compute all 16 matrices by specifying the `all` option in the input parameter `gamma`. 
+
+### Parameters
+| Parameter   | Type   |   Description                       |
+|-------------|----------------|-----------------------------|
+| `q_loop` | `std::string` | input loop propagator |
+| `gamma` | `Gamma::Algebra` | gamma matrix|
+| `output` | `std::string` | Specify the output location of the correlator that is generated.|
+
+### Dependencies
+
+This module depends on a propagator being generated.
+
+### Products
+
+This module produces a correlator called `disc` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 ## Meson
 
