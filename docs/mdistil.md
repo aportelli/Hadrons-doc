@@ -194,7 +194,7 @@ Unlike in the case of the perambulators, the LapH smearing can not be used to pr
 
 -----------
 
-## Perambulator
+## PerambFromSolve
 
 ### Template structure
 
