@@ -23,7 +23,7 @@ Loads a (stochastic) perambulator (created e.g. by `MDistil::Perambulator`) from
 
 ### Dependencies
 
-- Distillation parameters `DistilParams`
+- Distillation parameters `MDistil::DistilParams`
 
 ### Products
 
@@ -50,7 +50,7 @@ Loads a distillation noise vector (created e.g. by `MDistil::Noises`) from disk.
 
 ### Dependencies
 
-- Distillation parameters `DistilParams`
+- Distillation parameters `MDistil::DistilParams`
 
 ### Products
 
