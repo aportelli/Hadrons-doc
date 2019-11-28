@@ -148,7 +148,7 @@ The gamma matrices can be a list, seperated by spaces. There is also the option 
 
 ### Dependencies
 
-This module depends on a propagator being generated.
+This module depends on three propagators being generated, one of which has to be sinked already (e.g. using `MSink::Smear`).
 
 ### Products
 
