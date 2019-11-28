@@ -107,6 +107,8 @@ If `NoiseFileName` is unspecified, the noises are not saved to disk.
 
 ### Dependencies
 
+- Distillation parameters `DistilParams`
+
 ### Products
 
 - `noises` $\rho$
@@ -181,12 +183,53 @@ Unlike in the case of the perambulators, the LapH smearing can not be used to pr
 
 - solver
 
+- Distillation parameters `DistilParams`
+
 
 ### Products
 
 - `perambulator` $\tau$
 
 - `unsmeared_sink` $\phi$
+
+-----------
+
+## Perambulator
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Computes the `(stochastic) perambulator` $\tau$ an already computed solve (unsmeared sink) $\phi$ (output from an earlier `MDistil::Perambulator` module).
+
+As an option, theparameters $N_\mathrm{vec}$ and LI can be re-specified to be smaller than the ones used to create $\phi$. This can be useful if one wants to study the signals of correlation functions built from distillation smearings built of a different set of these parameters, without re-computing the inversions. If this is not wanted, `nvec_reduced` and `LI_reduced` should be set to their maximum values, $N_\mathrm{vec}$ and LI. In any case, `DistilParams` need to be the ones used to compute the `solve`.
+
+### Parameters
+
+| Parameter          | Type                         | Description                            |
+|--------------------|------------------------------|----------------------------------------|
+| `eigenPack`     | `std::string`                    | $v_k$                                  |
+| `PerambFileName`           | `std::string`                | filestem for the perambulators saved to disk (not saved if empty)                 |
+| `solve`           | `std::string`                | unsmeared sink / solve                |
+| `nvec_reduced`           | `int`                | $N_\mathrm{vec}$   of the output perambulator       |
+| `LI_reduced`           | `int`                | LI   of the output perambulator       |
+| `DistilParams` | `std::string`           | module name for `DistilPar`, paramaters of the input `solve` |
+
+### Dependencies
+
+- Laplacian eigenPack `eigenPack` 
+
+- `solve` $\phi$
+
+- Distillation parameters `DistilParams`
+
+
+### Products
+
+- `perambulator` $\tau$
+
 
 -----------
 
@@ -229,6 +272,7 @@ from the eigenvectors and perambulators.
 
 - `noises` $\rho$
 
+- Distillation parameters `DistilParams`
 
 
 ### Products
@@ -240,6 +284,10 @@ from the eigenvectors and perambulators.
 -----------
 
 ## BContraction
+
+### NOTE
+
+In development, not yet part of Hadrons
 
 ### Description
 
@@ -293,6 +341,10 @@ The matrices $\Gamma_{\alpha \alpha'}$ and $\Gamma_{\beta \gamma}$ have to be ch
 -----------
 
 ## Baryon2pt
+
+### NOTE
+
+In development, not yet part of Hadrons
 
 ### Description
 
