@@ -152,7 +152,7 @@ This module depends on three propagators being generated, one of which has to be
 
 ### Products
 
-This module produces a correlator called `disc` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+This module produces a correlator called `gamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 ## Meson
 
