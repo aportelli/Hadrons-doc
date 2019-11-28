@@ -87,13 +87,36 @@ This module depends on three propagators being generated and a sink module being
 
 ### Products
 
-This module produces a correlator called `baryon` that is saved to a hdf5 file at a location of your choosing.
+This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 -----------
 
 ## DiscLoop
 
-$$C(t)=\sum_{\mathbf{x}}\mathrm{tr}[S(t,\mathbf{x})\gamma_{\mu}]$$
+### Template structure
+
+This module takes a `FImpl` template argument, which is expected to be a fermion implimentation.
+ 
+### Description
+
+This module computes the disconnected loop
+
+$$C(t)=\sum_{\mathbf{x}}\mathrm{tr}[S(t,\mathbf{x})\gamma_{\mu}] \, .$$
+
+### Parameters
+| Parameter   | Type   |   Description                       |
+|-------------|----------------|-----------------------------|
+| `q_loop` | `std::string` | input loop propagator |
+| `gamma` | `Gamma::Algebra` | gamma matrix|
+| `output` | `std::string` | Specify the output location of the correlator that is generated.|
+
+### Dependencies
+
+This module depends on a propagator being generated.
+
+### Products
+
+This module produces a correlator called `disc` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 ## Gamma3pt
 
@@ -114,7 +137,7 @@ $$C_2 = \langle O_M(n) \bar{O}_{M'}(m) \rangle$$
 
 This module takes a pair of quark propagators $q_1,q_2$ and a source and sink gamma structure $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$.
 
-There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`.
+The gamma matrices have to be specified as pairs of gammas in round brackets, seperated by a space. There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`. 
 
 This module computes the trace
 
@@ -129,8 +152,7 @@ The input propagator can optionally be already a `SlicedPropagator`, i.e. a prop
 |-------------|----------------|-----------------------------|
 | `q1` | `std::string` | input propagator 1|
 | `q2` | `std::string` | input propagator 2|
-| `gammas` | `std::string` | gamma products to insert and source and sink, pairs of gammas seperated by a space in round brackets.
-		      Special value: `all` - perform all possible contractions.|
+| `gammas` | `std::string` | gamma products to insert and source and sink.|
 | `sink` | `std::string` | module used to compute the sink of the module.|
 | `output` | `std::string` | Specify the output location of the correlator that is generated.|
 
@@ -140,8 +162,7 @@ This module depends on a pair of propagators being generated and a sink module b
 
 ### Products
 
-This module produces a correlator called `meson` that is saved to a hdf5 file at a location of your
-choosing.
+This module produces a correlator called `meson` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 -----------
 
@@ -162,17 +183,17 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 $$p = 2\pi/L * mom\, .$$
 
-Detail complex blocking strucutres used to gain performance. discuss with peter and Fionn after a detailed read.
+The gamma matrices have to be specified as pairs of gammas in round brackets, seperated by a space. There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`. 
 
+Detail complex blocking strucutres used to gain performance. discuss with peter and Fionn after a detailed read.
 
 ### Parameters
 
 | Parameter   | Type           | Description                                                            |
 |-------------|----------------|------------------------------------------------------------------------|
-|     `v`     | `std::string`  | Set of eigen vectors low and high modes                                |
-|     `w`     | `std::string`  | Set of eigen vectors low and high modes                                |
-|    `gammas` | `std::string`  | gamma products to insert and source and sink, pairs of gammas seperated by a space in round brackets.
-		      Special value: `all` - perform all possible contractions. |
+|     `v`     | `std::string`  | Set of eigen vectors low and high modes |
+|     `w`     | `std::string`  | Set of eigen vectors low and high modes |
+|    `gammas` | `std::string`  | gamma products to insert and source and sink. |
 |    `mom`    | `std::vector<std::string>` | three-momentum of the meson field, e.g `"1 0 0"`.        |
 |   `output`  | `std::string`  | name of the output file that the meson field will be saved to.         |
 |   `cacheBlock`| `int`        | performance tuning parameter (give values for various architectures)   |
