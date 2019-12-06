@@ -47,7 +47,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Creates a Möbius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and M\"obius parameters $b$ and $c$. [arxiv:1206.5214]
+Creates a Möbius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and Möbius parameters $b$ and $c$. [arxiv:1206.5214]
 
 $$D^\textrm{Möbius}(M_5) \frac{(b+c) D^\mathrm{Wilson}(M_5)}{2+(b-c) D^\mathrm{Wilson}(M_5)} $$
 
@@ -63,8 +63,8 @@ Twist can be i.e. `0. 0. 0. 0.` for no twist
 | `Ls`     | `int`  | domain-wall dimension extent $L_s$      |
 | `mass`     | `double`  | quark mass $m_q$      |
 | `M5`     | `double`  | domain-wall mass $M_5$      |
-| `b`     | `double`  | M\"obius parameter $b$     |
-| `c`     | `double`  | M\"obius parameter $c$      |
+| `b`     | `double`  | Möbius parameter $b$     |
+| `c`     | `double`  | Möbius parameter $c$      |
 | `boundary`     | `std::string`  | boundary conditions, list of four integers $\pm 1$     |
 | `twist`     | `std::string`  | twist on boundary, list of four Reals   |
 
@@ -194,7 +194,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Creates a Zolotarev-M\"obius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and M\"obius parameters $b$ and $c$. [arxiv:0304002]
+Creates a Zolotarev-Möbius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and Möbius parameters $b$ and $c$. [arxiv:0304002]
 
 `omega` are the weights used for the action.
 
@@ -210,9 +210,9 @@ Twist can be i.e. `0. 0. 0. 0.` for no twist
 | `Ls`     | `int`  | domain-wall dimension extent $L_s$      |
 | `mass`     | `double`  | quark mass $m_q$      |
 | `M5`     | `double`  | domain-wall mass $M_5$      |
-| `b`     | `double`  | M\"obius parameter $b$     |
-| `c`     | `double`  | M\"obius parameter $c$      |
-| `omega`     | `std::vector<std::complex<double>>`  | M\"obius parameter $c$      |
+| `b`     | `double`  | Möbius parameter $b$     |
+| `c`     | `double`  | Zolotarev-weights $\omega_s$      |
+| `omega`     | `std::vector<std::complex<double>>`  | Möbius parameter $c$      |
 | `boundary`     | `std::string`  | boundary conditions, list of four integers $\pm 1$     |
 | `twist`     | `std::string`  | twist on boundary, list of four Reals   |
 
