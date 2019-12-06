@@ -6,6 +6,7 @@
 - Module development
 
 - Module reference
+  - [MAction](maction.md)
   - [MContraction](mcontraction.md)
   - [MDistil](mdistil.md)
   - [MFermion](mfermion.md)
