@@ -211,8 +211,8 @@ Twist can be i.e. `0. 0. 0. 0.` for no twist
 | `mass`     | `double`  | quark mass $m_q$      |
 | `M5`     | `double`  | domain-wall mass $M_5$      |
 | `b`     | `double`  | Möbius parameter $b$     |
-| `c`     | `double`  | Zolotarev-weights $\omega_s$      |
-| `omega`     | `std::vector<std::complex<double>>`  | Möbius parameter $c$      |
+| `c`     | `double`  |  Möbius parameter $c$      |
+| `omega`     | `std::vector<std::complex<double>>`  |  Zolotarev-weights $\omega_s$    |
 | `boundary`     | `std::string`  | boundary conditions, list of four integers $\pm 1$     |
 | `twist`     | `std::string`  | twist on boundary, list of four Reals   |
 
