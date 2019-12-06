@@ -173,7 +173,7 @@ Applies Stout-Smearing (arxiv:0311018) to a gauge field using $n_\rho$ `steps` w
 
 ### Products
 
-Stout-smeared `GaugeField` $U_\mu(x)$
+Stout-smeared `GaugeField` $\tilde{U}_\mu(x)$
 
 
 -----------
