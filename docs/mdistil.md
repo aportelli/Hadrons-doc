@@ -168,7 +168,7 @@ Unlike in the case of the perambulators, the LapH smearing can not be used to pr
 
 | Parameter          | Type                         | Description                            |
 |--------------------|------------------------------|----------------------------------------|
-| `eigenvectors`     | `lapevec`                    | $v_k$                                  |
+| `lapevec`          | `std::string`                | $v_k$                                  |
 | `solver`           | `std::string`                | module name for solver                 |
 | `noise`            | `std::string`                | module name for noises                 |
 | `PerambFileName`           | `std::string`                | filestem for the perambulators saved to disk (not saved if empty)                 |
@@ -210,7 +210,7 @@ As an option, theparameters $N_\mathrm{vec}$ and LI can be re-specified to be sm
 
 | Parameter          | Type                         | Description                            |
 |--------------------|------------------------------|----------------------------------------|
-| `eigenPack`     | `std::string`                    | $v_k$                                  |
+| `lapevec`          | `std::string`                    | $v_k$                                  |
 | `PerambFileName`           | `std::string`                | filestem for the perambulators saved to disk (not saved if empty)                 |
 | `solve`           | `std::string`                | unsmeared sink / solve                |
 | `nvec_reduced`           | `int`                | $N_\mathrm{vec}$   of the output perambulator       |
