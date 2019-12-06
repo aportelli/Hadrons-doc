@@ -219,7 +219,7 @@ As an option, theparameters $N_\mathrm{vec}$ and LI can be re-specified to be sm
 
 ### Dependencies
 
-- Laplacian eigenPack `eigenPack` 
+- Laplacian eigenPack `lapevec`
 
 - `solve` $\phi$
 
@@ -266,7 +266,7 @@ from the eigenvectors and perambulators.
 
 ### Dependencies
 
-- Laplacian eigenPack
+- Laplacian eigenPack `lapevec`
 
 - `perambulator` $\tau$
 
