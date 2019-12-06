@@ -49,7 +49,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 Creates a Möbius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and M\"obius parameters $b$ and $c$. [arxiv:1206.5214]
 
-$$D^\textrm{M\"obius}(M_5) \frac{(b+c) D^\mathrm{Wilson}(M_5)}{2+(b-c) D^\mathrm{Wilson}(M_5)} $$
+$$D^\textrm{Möbius}(M_5) \frac{(b+c) D^\mathrm{Wilson}(M_5)}{2+(b-c) D^\mathrm{Wilson}(M_5)} $$
 
 Boundary conditions can be i.e. `1 1 1 -1` for periodic in space, anti-periodic in time.
 
