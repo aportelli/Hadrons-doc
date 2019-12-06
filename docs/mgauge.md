@@ -89,7 +89,7 @@ Fixes the gauge (`coulomb` or `landau`) for an input gauge field.
 
 ### Products
 
-Gauge-fixed `GaugeField` $U^'_\mu(x)$
+Gauge-fixed `GaugeField` $U^{\'}_\mu(x)$
 
 -----------
 
