@@ -105,7 +105,7 @@ Creates a random gauge field.
 
 ### Parameters
 
-No parameters. Random seed is set by the module name and runId tag.
+No parameters. Random seed is set by the module `name` and `runId` tag.
 
 ### Dependencies
 
