@@ -66,6 +66,41 @@ The `PropagatorField` $source(x)$.
 
 -----------
 
+## SeqAslash
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Sequential source with an insertion of a photon field $\slashed{A}$ using a `PropagatorField` $S(x)$ for $t_A\leq x_3 \leq t_B$:
+
+$$source(x) = \theta(x_3 - t_A)\theta(t_B - x_3) i A_\mu \gamma_\mu  \exp(i x\cdot p) S(x)$$
+
+### Parameters
+
+| Parameter   | Type            |Description                                                                         |
+|-------------|-----------------|------------------------------------------------------------------------------------|
+| `q`         | `std::string`   | Name of the input `PropagatorField` $S(x)$                                         |
+| `tA`        | `unsigned int`  | begin timeslice                                                                    |
+| `tB`        | `unsigned int`  | end timeslice                                                                      |
+| `emField`     | `std::string`| `EmField` , input photon field                          |
+| `mom`       | `std::string`   | momentum insertion, space-separated float sequence (e.g `".1 .2 1. 0."`), with $p_\mu=$mom$_\mu$$\cdot 2\pi/L_\mu$ |
+
+### Dependencies
+
+Input `PropagatorField` $S(x)$, i.e. object named by `q`.
+
+Input `EmField` $A_\mu(x)$, i.e. object named by `emField`.
+
+### Products
+
+The `PropagatorField` $source(x)$.
+
+
+-----------
+
 ## SeqConserved
 
 ### Template structure
