@@ -74,7 +74,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Sequential source with an insertion of a photon field $\slashed{A}$ using a `PropagatorField` $S(x)$ for $t_A\leq x_3 \leq t_B$:
+Sequential source with an insertion of a photon field $\not\! A$ using a `PropagatorField` $S(x)$ for $t_A\leq x_3 \leq t_B$:
 
 $$source(x) = \theta(x_3 - t_A)\theta(t_B - x_3) i A_\mu \gamma_\mu  \exp(i x\cdot p) S(x)$$
 
