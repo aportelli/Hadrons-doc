@@ -2,6 +2,51 @@
 
 -----------
 
+## EMLepton
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Calculates two `PropagatorField` objects: 
+
+1) A free lepton propagator with a sequential insertion of $i \gamma_\mu A_\mu$ with a photon field $A_\mu$ 
+
+$$L(x) = \sum_y S(x,y) i*\gamma_\mu*A_\mu S(y,x_l) \delta_{(t_l-x_0),\Delta T}$$
+
+with a wall source for the lepton at $t_l$ and a source-sink separation $\Delta T$.
+
+2) The propagator without photon vertex
+
+$$L^\mathrm{free}(x) =  S(x,xl) \delta_{(t_l-x_0),\Delta T}.$$
+
+$S$ is the Dirac operator corresponding to the `action` which is specified in the `solver` used for the inversion.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                                            |
+|-------------|----------------|-------------------------------------------------------|
+| `action`    | `std::string`  | fermion `action` for the free propagator                                               |
+| `emField`    | `std::string`  | `EmField` $A_\mu$                        |
+| `mass`    | `double`  | input mass for the lepton propagator                       |
+| `boundary`    | `std::string`  | boundary conditions for the lepton propagator, e.g. `"1 1 1 -1"`                       |
+| `twist`    | `std::string`  | twisted boundary conditions for the lepton propagator, e.g. `"0. 0. 0. 0.5"`                       |
+| `deltat`    | `std::vector<unsigned int>`  | list of source-sink separations $\Delta T$         |
+
+### Dependencies
+
+- Fermion action, i.e. object named by `action`.
+
+- photon field, i.e. the `EmField` named by `emField`. 
+
+### Products
+
+The `PropagatorFields` $L(x)$ and $L^\mathrm{free}(x)$.
+
+-----------
+
 ## GaugeProp
 
 ### Template structure
