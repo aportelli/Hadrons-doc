@@ -14,7 +14,7 @@ Calculates two `PropagatorField` objects:
 
 1) A free lepton propagator with a sequential insertion of $i \gamma_\mu A_\mu$ with a photon field $A_\mu$ 
 
-$$L(x) = \sum_y S(x,y) i*\gamma_\mu*A_\mu S(y,x_l) \delta_{(t_l-x_0),\Delta T}$$
+$$L(x) = \sum_y S(x,y) i \gamma_\mu A_\mu S(y,x_l) \delta_{(t_l-x_0),\Delta T}$$
 
 with a wall source for the lepton at $t_l$ and a source-sink separation $\Delta T$.
 
@@ -44,41 +44,6 @@ $S$ is the Dirac operator corresponding to the `action` which is specified in th
 ### Products
 
 The `PropagatorFields` $L(x)$ and $L^\mathrm{free}(x)$.
-
------------
-
-## GaugeProp
-
-### Template structure
-
-One template argument `FImpl`, expected to be a fermion implementation.
-
-### Description
-
-Calculates the `PropagatorField` $S$ using a given `solver` to solve the Dirac equation
-
-$$D\cdot S = \eta$$
-
-with a `PropagatorField` $\eta$ as a source. $D$ is the Dirac operator corresponding to the `action` which is specified in the `solver` used for the inversion.
-
-### Parameters
-
-| Parameter   | Type           | Description                                                                            |
-|-------------|----------------|----------------------------------------------------------------------------------------|
-| `source`    | `std::string`  | `source` $\eta$                                                                        |
-| `solver`    | `std::string`  | `solver` used to solve the Dirac equation                                              |
-
-### Dependencies
-
-- Source, i.e. the `PropagatorField` named by `source`. 
-
-- Solver, i.e. the object named by `solver`.
-
-### Products
-
-The `PropagatorField` $S(x)$.
-
-If the `action` is 5D (e.g. Domain Wall Fermions), the 5D `PropagagtorField` as well as the projected 4D `PropagagtorField` are products of the module.
 
 -----------
 
@@ -123,3 +88,40 @@ The `PropagatorField` $S(x)$.
 If the `action` is 5D (e.g. Domain Wall Fermions), the 5D `PropagagtorField` as well as the projected 4D `PropagagtorField` are products of the module.
 
 
+
+-----------
+
+## GaugeProp
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Calculates the `PropagatorField` $S$ using a given `solver` to solve the Dirac equation
+
+$$D\cdot S = \eta$$
+
+with a `PropagatorField` $\eta$ as a source. $D$ is the Dirac operator corresponding to the `action` which is specified in the `solver` used for the inversion.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                                            |
+|-------------|----------------|----------------------------------------------------------------------------------------|
+| `source`    | `std::string`  | `source` $\eta$                                                                        |
+| `solver`    | `std::string`  | `solver` used to solve the Dirac equation                                              |
+
+### Dependencies
+
+- Source, i.e. the `PropagatorField` named by `source`. 
+
+- Solver, i.e. the object named by `solver`.
+
+### Products
+
+The `PropagatorField` $S(x)$.
+
+If the `action` is 5D (e.g. Domain Wall Fermions), the 5D `PropagagtorField` as well as the projected 4D `PropagagtorField` are products of the module.
+
+------------
