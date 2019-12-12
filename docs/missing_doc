@@ -22,14 +22,6 @@ MGauge:
 
 MIO:
 
-- LoadA2AMatrixDiskVector
-- LoadA2AVectors
-- LoadBinary
-- LoadCoarseEigenPack
-- LoadCosmoHol
-- LoadEigenPack
-- LoadNersc
-
 MNoise:
 
 - all 3
