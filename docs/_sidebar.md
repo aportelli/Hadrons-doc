@@ -13,6 +13,7 @@
   - [MGauge](mgauge.md)
   - [MIO](mio.md)
   - [MScalarSUN](mscalarsun.md)
+  - [MSink](msink.md)
   - [MSource](msource.md)
 
 

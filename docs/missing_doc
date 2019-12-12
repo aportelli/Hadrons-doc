@@ -49,9 +49,6 @@ MScalarSUN:
 
 MSink:
 
-- Point
-- Smear
-
 MSolver:
 
 - all 5
