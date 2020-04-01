@@ -242,3 +242,38 @@ Alternatively, distillation vectors $\varrho$, $\varphi$, $\phi$ can be used.
 ### Products
 
 This module produces a `meson field` that is saved to a hdf5 file at a location of your choosing.
+
+-----------
+
+## A2ASmearedMesonField
+
+### Template Structure
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+This module computes the smeared meson field,
+$$
+M_{ij}(\Gamma,t,\vec p)
+=
+\int\frac{d^3\vec q}{(2\pi)^3}\rho_1(\vec q)\rho_2(\vec q+\vec p)
+w_i^\dagger(t,\vec q)\Gamma v_j(t,\vec q+\vec p)
+\,.
+$$
+
+### Parameters
+|Parameter    |Type                     |Description                                                                                      |
+|-------------|-------------------------|-------------------------------------------------------------------------------------------------|
+|left         |std::string              |A2A vector $w$                                                                                   |
+|right        |std::string              |A2A vector $v$                                                                                   |
+|distributions|std::string              |list of real valued smearing functions $\rho$ or pairs ($\rho_1$ $\rho_2$) of type `ComplexField`|
+|output       |std::string              |filename where the meson field is saved                                                          |
+|gammas       |std::string              |list of gamma structures $\Gamma$                                                                |
+|mom          |std::vector\<std::string>|list of momenta $\vec p$                                                                         |
+
+### Dependencies
+This module works only when grid is compiled with hdf5.
+
+This module depends on the creation of the `v` and `w` A2A vectors and the smearing functions $\rho$.
+
+### Products
+This module produces a `smeared meson field` for each distribution, each gamma, and each `mom` and saves the result in the specified location. (#`gammas`$\times$#`distributions`$\times$#`mom` meson fields are created.)
