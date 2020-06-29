@@ -4,7 +4,7 @@
 
 ### Template structure
 
-This module takes three `FImpl` template arguments `FImpl1`, `FImpl2`  and `FImpl3`, all of which are expected to be fermion implimentations.
+This module takes a `FImpl` template argument which is expected to be fermion implimentations.
  
 ### Description
 
@@ -74,16 +74,117 @@ The input for a simple $J=\frac 12$ baryon could therefore be `gammas = "(j12 j1
 | `q1` | `std::string` | input propagator 1 |
 | `q2` | `std::string` | input propagator 2 |
 | `q3` | `std::string` | input propagator 3 |
+| `quarks` | `std::string` | final state quark content - order must match order of `q1,q2,q3` |
+| `shuffle` | `std::string` | defines the inital state quarks from the final state quarks - must be a permutation of `123` |
+| `sinkq1` | `std::string` | module used to compute the sink of the final state quark q1|
+| `sinkq2` | `std::string` | module used to compute the sink of the final state quark q2|
+| `sinkq3` | `std::string` | module used to compute the sink of the final state quark q3|
+| `sim_sink` | `bool` | flag for use of a simultatious sink - `false` uses the three sinks above separatly - `true` checks `sinkq1`=`sinkq2`=`sinkq3` and uses this to sink the quarks together |
 | `gammas` | `std::string` | Gamma matrices. List of pairs of pairs - see documentation |
-| `quarks` | `std::string` | quark content - order of first entry must match order of `q1,q2,q3` |
-| `prefactors` | `std::string` | multiplicities of quark contents |
 | `parity` | `int` | parity - only $+1$ or $-1$ are allowed values (+1 is default) |
-| `sink` | `std::string` | module used to compute the sink of the module|
 | `output` | `std::string` | Specify the output location of the correlator that is generated.|
 
 ### Dependencies
 
-This module depends on three propagators being generated and a sink module being specified.
+This module depends on three propagators being generated and three sink module being specified.
+
+### Products
+
+This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Baryon
+
+### Template structure
+
+This module takes a `FImpl` template argument which is expected to be fermion implimentations.
+ 
+### Description
+
+This module computes a baryon two-point function
+
+$$C_2 = \langle O_{B'}(n)_\rho \bar{O}_{B}(m)_\rho \rangle$$
+
+of baryon interpolators
+
+$$O_{B'}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'}   {q^R_{1}}_{c',\gamma'} ({q^R_{2}}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {q^R_{3}}_{b',\beta'}),$$
+$$\bar{O}_{B}(m)_\rho = \epsilon^{abc} {\bar{q}^R_{1}}_{c,\gamma}  (\Gamma^A P_\pm)_{\gamma \rho} ({\bar{q}^L_{2}}_{a,\alpha} \Gamma^B_{\alpha \beta} {\bar{q}^R_{3}}_{b,\beta}),$$
+
+The quarks of the final state are given as a module input $(q^R_1,q^R_2,q^R_3) = (q_1,q_2,q_3)$.
+The inintal state quarks are defined as a permuation of the final state via a shuffle $(\sigma_1,\sigma_2,\sigma_3)$, giving the initial state quarks $(q^L_1,q^L_2,q^L_3) = (q_{\sigma_1},q_{\sigma_2},q_{\sigma_3})$.
+
+The propagators $(\Delta_1, \Delta_2 ,\Delta_3)$ are given in the order corresponding to the **final** state quarks. The initial state propagators are then given by $(\Delta^L_1, \Delta^L_2 ,\Delta^L_3) = (\Delta_{\sigma_1}, \Delta_{\sigma_2} ,\Delta_{\sigma_3})$, where $\Delta^L_i$ is inverted on the source for inital state quark $i$.
+
+Sinks $(S_1,S_2,S_3)$ are functions for sinking the corresponding **final** state quarks.
+
+The ouput of the module is then given by
+$$\langle O_{B'}(n)_\rho \bar{O}_{B}(m)_\rho \rangle = \epsilon^{abc}\epsilon^{a'b'c'} P^{\pi}_{\rho \rho'} \Gamma^{A}_{\gamma \rho} \Gamma^{A'}_{\rho' \gamma'} \Gamma^{B}_{\alpha \beta} \Gamma^{B'}_{\alpha' \beta'}$$
+$$\times \left[ + \delta^{q^R_1 q^R_2 q^R_3}_{q^L_1 q^L_2 q^L_3} S_{1}(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_{2}(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_{3}(\Delta^L_3)_{\beta' \beta}^{b' b} \right.$$
+$$+ \delta^{q^R_2 q^R_3 q^R_1}_{q^L_1 q^L_2 q^L_3} S_{2}(\Delta^L_1)_{\alpha \gamma}^{a' c} S_{3}(\Delta^L_2)_{\beta' \alpha}^{b' a} S_{1}(\Delta^L_3)_{\gamma' \beta}^{c' b}$$
+$$+ \delta^{q^R_3 q^R_1 q^R_2}_{q^L_1 q^L_2 q^L_3} S_{3}(\Delta^L_1)_{\beta' \gamma}^{b' c} S_{1}(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_{2}(\Delta^L_3)_{\alpha' \beta}^{a' b}$$
+$$- \delta^{q^R_1 q^R_3 q^R_2}_{q^L_1 q^L_2 q^L_3} S_{1}(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_{3}(\Delta^L_2)_{\beta' \alpha}^{b' a} S_{2}(\Delta^L_3)_{\alpha' \beta}^{a' b}$$
+$$- \delta^{q^R_3 q^R_2 q^R_1}_{q^L_1 q^L_2 q^L_3} S_{3}(\Delta^L_1)_{\beta' \gamma}^{b' c} S_{2}(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_{1}(\Delta^L_3)_{\gamma' \beta}^{c' b}$$
+$$\left. -\delta^{q^R_2 q^R_1 q^R_3}_{q^L_1 q^L_2 q^L_3} S_{2}(\Delta^L_1)_{\alpha' \gamma}^{a' c} S_{1}(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_{3}(\Delta^L_3)_{\beta' \beta}^{b' b} \right]$$
+where each terms corresponds to a wick contraction labelled in order 1-6.
+
+When computing baryons with sums over different interpolators like the $\Lambda$-baryon
+$$O_{\Lambda}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'} \left[  2{s}_{c',\gamma'} ({u}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {d}_{b',\beta'}) + {d}_{c',\gamma'} ({u}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) - {u}_{c',\gamma'} ({d}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) \right]$$
+or the $\Sigma^0$-baryon
+$$O_{\Lambda}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'} \left[ {d}_{c',\gamma'} ({u}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) + {u}_{c',\gamma'} ({d}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) \right]$$
+the module must be run multiple times to get all the combinations. This is 9 and 4 times for the $\Lambda$ and $\Sigma^0$ respectively.
+
+Additionally, since the ordering of the quarks will be different in the intial and final state quarks for some of these combinations, the shuffle parameter will change. For example, the inital state `uds` and a final state `sud` requires a shuffle of `231`.
+
+The input parameter `gammas` must be parsed as a list of pairs of pairs of gamma-Matrices, in the usual naming convention in Grid. The gamma structure for the baryons at source and sink can be chosen differently. The charge conjugation matrix $C=\gamma_0 \gamma_2$ must be multiplied manually. A baron two-point function with $(\Gamma^{A'},\Gamma^{B'})$ = $(1,C \gamma_1)$ at the sink and $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$ at the source needs the input string `gammas = "((Identity MinusGammaZGamma5) (Identity GammaT))"`
+
+There are some shorthands for the most common gamma structures:
+
+`"j12" = "(Identity SigmaXZ)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_5)$
+
+`"j32X" = "(Identity MinusGammaZGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_1)$
+
+`"j32Y" = "(Identity GammaT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$
+
+`"j32Z" = "(Identity GammaXGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_3)$
+
+`"j12_alt1" = "(Gamma5 MinusSigmaYT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(C, \gamma_5)$
+
+`"j12_alt2" = "(Identity GammaYGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1, \gamma_0 C\gamma_5)$
+
+The input for a simple $J=\frac 12$ baryon could therefore be `gammas = "(j12 j12)"`, and for several combinations of $J=\frac 32$ baryon the input `gammas = "(j32X j32X) (j32Y j32Y) (j32Z j32Z) (j32X j32Y) (j32X j32Z) (j32Y j32X) (j32Y j32Z) (j32Z j32X) (j32Z j32Y)"` can be used.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `q1` | `std::string` | input propagator $\Delta_1$ |
+| `q2` | `std::string` | input propagator $\Delta_2$ |
+| `q3` | `std::string` | input propagator $\Delta_3$ |
+| `quarks` | `std::string` | final state quark content - order must match order of `q1,q2,q3` |
+| `shuffle` | `std::string` | defines the inital state quarks from the final state quarks - must be a permutation of `123` |
+| `sinkq1` | `std::string` | module used to compute the sink of the final state quark q1|
+| `sinkq2` | `std::string` | module used to compute the sink of the final state quark q2|
+| `sinkq3` | `std::string` | module used to compute the sink of the final state quark q3|
+| `sim_sink` | `bool` | flag for use of a simultatious sink - `false` uses the three above sinks separatly - `true` checks `sinkq1`=`sinkq2`=`sinkq3` and uses this to sink the quarks together |
+| `gammas` | `std::string` | List of pairs of pairs Gamma matrices. |
+| `parity` | `int` | parity - only $+1$ or $-1$ are allowed values (+1 is default) |
+| `output` | `std::string` | Specify the output location of the correlator that is generated.|
+
+### Dependencies
+
+This module depends on three propagators being generated and three sink module being specified.
 
 ### Products
 
