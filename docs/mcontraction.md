@@ -4,112 +4,7 @@
 
 ### Template structure
 
-This module takes a `FImpl` template argument which is expected to be fermion implimentations.
- 
-### Description
-
-This module computes a baryon two-point function
-
-$$C_2 = \langle O_B(n)_\rho \bar{O}_{B'}(m)_\rho \rangle$$
-
-of baryon interpolators
-
-$$O_B(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'}   q^1_{c',\gamma'} (q^2_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} q^3_{b',\beta'}),$$
-$$\bar{O}_{B'}(m)_\rho = \epsilon^{abc} (\bar{q}^5_{a,\alpha} \Gamma^B_{\alpha \beta} \bar{q}^6_{b,\beta})  \bar{q}^4_{c,\gamma}  (\Gamma^A P_\pm)_{\gamma \rho},$$
-
-which consist of a diquark and a quark which shares its spin components with the interpolator. $\Gamma^A,\Gamma^B$ are projectors into certain total baryon spins $J$. The two-point function ca be evaluated to
-
-$$\langle O_B(n)_\rho \bar{O}_{B'}(m)_\rho \rangle =- \nonumber \langle  \bar{O}_{B'}(m)_\rho  O_B(n)_\rho \rangle =  \epsilon^{abc} \epsilon^{a'b'c'} (\Gamma^A P_\pm \Gamma^{A'})_{\gamma \gamma'} (\Gamma^B)_{\alpha \beta} (\Gamma^{B'})_{\alpha' \beta'}$$
-$$\times \Big( D^{q^1}(n|m)_{\gamma',c';\gamma,c} D^{q^2}(n|m)_{\alpha',a';\alpha,a} D^{q^3}(n|m)_{\beta',b';\beta,b} \ \delta_{q^4 q^5 q^6}^{q^1 q^2 q^3}$$
-$$+ D^{q^1}(n|m)_{\gamma',c';\alpha,a} D^{q^2}(n|m)_{\alpha',a';\beta,b} D^{q^3}(n|m)_{\beta',b';\gamma,c} \ \delta_{q^4 q^5 q^6}^{q^2 q^3 q^1}$$
-$$+ D^{q^1}(n|m)_{\gamma',c';\beta,b} D^{q^2}(n|m)_{\alpha',a';\gamma,c} D^{q^3}(n|m)_{\beta',b';\alpha,a} \ \delta_{q^4 q^5 q^6}^{q^3 q^1 q^2}$$
-$$- D^{q^1}(n|m)_{\gamma',c';\gamma,c} D^{q^2}(n|m)_{\alpha',a';\beta,b} D^{q^3}(n|m)_{\beta',b';\alpha,a} \ \delta_{q^4 q^5 q^6}^{q^1 q^3 q^2}$$
-$$- D^{q^1}(n|m)_{\gamma',c';\beta,b} D^{q^2}(n|m)_{\alpha',a';\alpha,a} D^{q^3}(n|m)_{\beta',b';\gamma,c} \ \delta_{q^4 q^5 q^6}^{q^3 q^2 q^1}$$
-$$- D^{q^1}(n|m)_{\gamma',c';\alpha,a} D^{q^2}(n|m)_{\alpha',a';\gamma,c} D^{q^3}(n|m)_{\beta',b';\beta,b} \ \delta_{q^4 q^5 q^6}^{q^2 q^1 q^3} \Big).$$
-
-In here, the kronecker deltas
-$$\delta^{q^1 q^2 q^3}_{q^4 q^5 q^6} \equiv \delta^{q^1}_{q^4} \delta^{q^2}_{q^5} \delta^{q^3}_{q^6}$$
-arise through the different possible Wick-contractions.
-
-$$J=\frac 12: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_5),(\gamma_5, C),(1,\gamma_0 C \gamma_5) \}$$
-
-$$J=\frac 32: (\Gamma^A,\Gamma^B) \in \{ (1,C \gamma_i)\}$$
-
-`quarks` is a vector of quark structures, `prefactors` is a vector of their multiplicities in the baryon interpolator. Two examples for the input structure: 
-
-Nucleon interpolator:
-
-$$O_{N_\pm}=\epsilon^{abc} P_\pm \Gamma^A u_a (u_b^T \Gamma^B d_c),$$
-
-Here, `quarks = "uud"`, `prefactors = "1.0"`.
-
-Lambda interpolator:
-
-$$O_{\Lambda_\pm}=\epsilon^{abc} P_\pm \Gamma^A (2s_a (u_b^T \Gamma^B d_c) + d_a (u_b^T \Gamma^B s_c) - u_a (d_b^T \Gamma^B s_c)),$$
-
-Here, `quarks = "sud dus uds"`, `prefactors = "2.0 1.0 -1.0"`.  The order of the propagators must match the order of the first quark-structure string. In this example, the order is `q1 = s-type`, `q2,q3 = l-type`. 
-
-The input parameter `gammas` must be parsed as a list of pairs of pairs of gamma-Matrices, in the usual naming convention in Grid. The gamma structure for the baryons at source and sink can be chosen differently. The charge conjugation matrix $C=\gamma_0 \gamma_2$ must be multiplied manually. A $\Lambda$-baron two-point function with $(\Gamma^{A'},\Gamma^{B'})$ = $(1,C \gamma_1)$ at the sink and $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$ at the source needs the input string `gammas = "((Identity MinusGammaZGamma5) (Identity GammaT))"`
-
-There are some shorthands for the most common gamma structures:
-
-`"j12" = "(Identity SigmaXZ)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_5)$
-
-`"j32X" = "(Identity MinusGammaZGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_1)$
-
-`"j32Y" = "(Identity GammaT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$
-
-`"j32Z" = "(Identity GammaXGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_3)$
-
-`"j12_alt1" = "(Gamma5 MinusSigmaYT)"` for $(\Gamma^{A},\Gamma^{B})$ = $(C, \gamma_5)$
-
-`"j12_alt2" = "(Identity GammaYGamma5)"` for $(\Gamma^{A},\Gamma^{B})$ = $(1, \gamma_0 C\gamma_5)$
-
-The input for a simple $J=\frac 12$ baryon could therefore be `gammas = "(j12 j12)"`, and for several combinations of $J=\frac 32$ baryon the input `gammas = "(j32X j32X) (j32Y j32Y) (j32Z j32Z) (j32X j32Y) (j32X j32Z) (j32Y j32X) (j32Y j32Z) (j32Z j32X) (j32Z j32Y)"` can be used.
-
-### Parameters
-
-| Parameter   | Type           | Description                                                            |
-|--------------------|----------------------------|----------------------------------------|
-| `q1` | `std::string` | input propagator 1 |
-| `q2` | `std::string` | input propagator 2 |
-| `q3` | `std::string` | input propagator 3 |
-| `quarks` | `std::string` | final state quark content - order must match order of `q1,q2,q3` |
-| `shuffle` | `std::string` | defines the inital state quarks from the final state quarks - must be a permutation of `123` |
-| `sinkq1` | `std::string` | module used to compute the sink of the final state quark q1|
-| `sinkq2` | `std::string` | module used to compute the sink of the final state quark q2|
-| `sinkq3` | `std::string` | module used to compute the sink of the final state quark q3|
-| `sim_sink` | `bool` | flag for use of a simultatious sink - `false` uses the three sinks above separatly - `true` checks `sinkq1`=`sinkq2`=`sinkq3` and uses this to sink the quarks together |
-| `gammas` | `std::string` | Gamma matrices. List of pairs of pairs - see documentation |
-| `parity` | `int` | parity - only $+1$ or $-1$ are allowed values (+1 is default) |
-| `output` | `std::string` | Specify the output location of the correlator that is generated.|
-
-### Dependencies
-
-This module depends on three propagators being generated and three sink module being specified.
-
-### Products
-
-This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Baryon
-
-### Template structure
-
-This module takes a `FImpl` template argument which is expected to be fermion implimentations.
+This module takes a `FImpl` template argument which is expected to be a fermion implimentation.
  
 ### Description
 
@@ -119,18 +14,18 @@ $$C_2 = \langle O_{B'}(n)_\rho \bar{O}_{B}(m)_\rho \rangle$$
 
 of baryon interpolators
 
-$$O_{B'}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'}   {q^R_{1}}_{c',\gamma'} ({q^R_{2}}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {q^R_{3}}_{b',\beta'}),$$
-$$\bar{O}_{B}(m)_\rho = \epsilon^{abc} {\bar{q}^R_{1}}_{c,\gamma}  (\Gamma^A P_\pm)_{\gamma \rho} ({\bar{q}^L_{2}}_{a,\alpha} \Gamma^B_{\alpha \beta} {\bar{q}^R_{3}}_{b,\beta}),$$
+$$O_{B'}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'}   {q^R_{1}}^{c'}_{\gamma'} ({q^R_{2}}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {q^R_{3}}^{b'}_{\beta'}),$$
+$$\bar{O}_{B}(m)_\rho = \epsilon^{abc} {\bar{q}^R_{1}}^{c}_{\gamma}  (\Gamma^A P_\pm)_{\gamma \rho} ({\bar{q}^L_{2}}^{a}_{\alpha} \Gamma^B_{\alpha \beta} {\bar{q}^R_{3}}^{b}_{\beta}),$$
 
 The quarks of the final state are given as a module input $(q^R_1,q^R_2,q^R_3) = (q_1,q_2,q_3)$.
 The inintal state quarks are defined as a permuation of the final state via a shuffle $(\sigma_1,\sigma_2,\sigma_3)$, giving the initial state quarks $(q^L_1,q^L_2,q^L_3) = (q_{\sigma_1},q_{\sigma_2},q_{\sigma_3})$.
 
-The propagators $(\Delta_1, \Delta_2 ,\Delta_3)$ are given in the order corresponding to the **final** state quarks. The initial state propagators are then given by $(\Delta^L_1, \Delta^L_2 ,\Delta^L_3) = (\Delta_{\sigma_1}, \Delta_{\sigma_2} ,\Delta_{\sigma_3})$, where $\Delta^L_i$ is inverted on the source for inital state quark $i$.
+The propagators $(\Delta_1, \Delta_2 ,\Delta_3)$ are given in the order corresponding to the **final** state quarks. The initial state propagators are then given by $(\Delta^L_1, \Delta^L_2 ,\Delta^L_3) = (\Delta_{\sigma_1}, \Delta_{\sigma_2} ,\Delta_{\sigma_3})$, where $\Delta^L_i$ is inverted on the source for initial state quark $i$.
 
 Sinks $(S_1,S_2,S_3)$ are functions for sinking the corresponding **final** state quarks.
 
 The ouput of the module is then given by
-$$\langle O_{B'}(n)_\rho \bar{O}_{B}(m)_\rho \rangle = \epsilon^{abc}\epsilon^{a'b'c'} P^{\pi}_{\rho \rho'} \Gamma^{A}_{\gamma \rho} \Gamma^{A'}_{\rho' \gamma'} \Gamma^{B}_{\alpha \beta} \Gamma^{B'}_{\alpha' \beta'}$$
+$$\langle O_{B'}(n)_\rho \bar{O}_{B}(m)_\rho \rangle = \epsilon^{abc}\epsilon^{a'b'c'} P^{\pm}_{\rho \rho'} \Gamma^{A}_{\gamma \rho} \Gamma^{A'}_{\rho' \gamma'} \Gamma^{B}_{\alpha \beta} \Gamma^{B'}_{\alpha' \beta'}$$
 $$\times \left[ + \delta^{q^R_1 q^R_2 q^R_3}_{q^L_1 q^L_2 q^L_3} S_{1}(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_{2}(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_{3}(\Delta^L_3)_{\beta' \beta}^{b' b} \right.$$
 $$+ \delta^{q^R_2 q^R_3 q^R_1}_{q^L_1 q^L_2 q^L_3} S_{2}(\Delta^L_1)_{\alpha \gamma}^{a' c} S_{3}(\Delta^L_2)_{\beta' \alpha}^{b' a} S_{1}(\Delta^L_3)_{\gamma' \beta}^{c' b}$$
 $$+ \delta^{q^R_3 q^R_1 q^R_2}_{q^L_1 q^L_2 q^L_3} S_{3}(\Delta^L_1)_{\beta' \gamma}^{b' c} S_{1}(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_{2}(\Delta^L_3)_{\alpha' \beta}^{a' b}$$
@@ -140,12 +35,10 @@ $$\left. -\delta^{q^R_2 q^R_1 q^R_3}_{q^L_1 q^L_2 q^L_3} S_{2}(\Delta^L_1)_{\alp
 where each terms corresponds to a wick contraction labelled in order 1-6.
 
 When computing baryons with sums over different interpolators like the $\Lambda$-baryon
-$$O_{\Lambda}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'} \left[  2{s}_{c',\gamma'} ({u}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {d}_{b',\beta'}) + {d}_{c',\gamma'} ({u}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) - {u}_{c',\gamma'} ({d}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) \right]$$
+$$O_{\Lambda}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'} \left[  2{s}^{c'}_{\gamma'} ({u}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {d}^{b'}_{\beta'}) + {d}^{c'}_{\gamma'} ({u}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}^{b'}_{\beta'}) - {u}^{c'}_{\gamma'} ({d}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}^{b'}_{\beta'}) \right]$$
 or the $\Sigma^0$-baryon
-$$O_{\Lambda}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'} \left[ {d}_{c',\gamma'} ({u}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) + {u}_{c',\gamma'} ({d}_{a',\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}_{b',\beta'}) \right]$$
-the module must be run multiple times to get all the combinations. This is 9 and 4 times for the $\Lambda$ and $\Sigma^0$ respectively.
-
-Additionally, since the ordering of the quarks will be different in the intial and final state quarks for some of these combinations, the shuffle parameter will change. For example, the inital state `uds` and a final state `sud` requires a shuffle of `231`.
+$$O_{\Lambda}(n)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'} \left[ {d}^{c'}_{\gamma'} ({u}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}^{b'}_{\beta'}) + {u}^{c'}_{\gamma'} ({d}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {s}^{b'}_{\beta'}) \right]$$
+the module must be run multiple times with different final states and shuffles to get all the combinations. This is 9 and 4 times for the $\Lambda$ and $\Sigma^0$ respectively. For example, the combination with initial state `uds` and a final state `sud` requires a shuffle of `231`.
 
 The input parameter `gammas` must be parsed as a list of pairs of pairs of gamma-Matrices, in the usual naming convention in Grid. The gamma structure for the baryons at source and sink can be chosen differently. The charge conjugation matrix $C=\gamma_0 \gamma_2$ must be multiplied manually. A baron two-point function with $(\Gamma^{A'},\Gamma^{B'})$ = $(1,C \gamma_1)$ at the sink and $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$ at the source needs the input string `gammas = "((Identity MinusGammaZGamma5) (Identity GammaT))"`
 
@@ -172,15 +65,15 @@ The input for a simple $J=\frac 12$ baryon could therefore be `gammas = "(j12 j1
 | `q1` | `std::string` | input propagator $\Delta_1$ |
 | `q2` | `std::string` | input propagator $\Delta_2$ |
 | `q3` | `std::string` | input propagator $\Delta_3$ |
-| `quarks` | `std::string` | final state quark content - order must match order of `q1,q2,q3` |
-| `shuffle` | `std::string` | defines the inital state quarks from the final state quarks - must be a permutation of `123` |
+| `quarks` | `std::string` | final state quark content - order must match order of q1,q2,q3. Each quark must be only one character e.g. `abc` |
+| `shuffle` | `std::string` | defines the initial state quarks from the final state quarks - must be a permutation of `123` |
 | `sinkq1` | `std::string` | module used to compute the sink of the final state quark q1|
 | `sinkq2` | `std::string` | module used to compute the sink of the final state quark q2|
 | `sinkq3` | `std::string` | module used to compute the sink of the final state quark q3|
-| `sim_sink` | `bool` | flag for use of a simultatious sink - `false` uses the three above sinks separatly - `true` checks `sinkq1`=`sinkq2`=`sinkq3` and uses this to sink the quarks together |
-| `gammas` | `std::string` | List of pairs of pairs Gamma matrices. |
-| `parity` | `int` | parity - only $+1$ or $-1$ are allowed values (+1 is default) |
-| `output` | `std::string` | Specify the output location of the correlator that is generated.|
+| `sim_sink` | `bool` | flag for use of a simultaneous sink - `false` uses the three above sinks separatly - `true` checks `sinkq1`=`sinkq2`=`sinkq3` and uses this to sink the quarks together |
+| `gammas` | `std::string` | List of pairs of pairs Gamma matrices |
+| `parity` | `int` | parity - only `1` or `-1` are allowed values (`1` is default) |
+| `output` | `std::string` | Specify the output location of the correlator that is generated|
 
 ### Dependencies
 
@@ -189,6 +82,96 @@ This module depends on three propagators being generated and three sink module b
 ### Products
 
 This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+
+-----------
+
+## BaryonGamma3pt
+
+### Template structure
+
+This module takes a `FImpl` template argument which is expected to be a fermion implimentation.
+
+### Description
+
+This module computes the baryonic three-point function
+
+$$C_3 = \langle O_{B'}(x_f)_{\rho'} J(x_J) \bar{O}_{B}(x_i)_\rho \rangle$$
+where
+$$O_{B'}(x_f)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'}   {q^R_{1}}^{c'}_{\gamma'} ({q^R_{2}}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {q^R_{3}}^{b'}_{\beta'}),$$
+$$\bar{O}_{B}(x_i)_\rho = \epsilon^{abc} {\bar{q}^R_{1}}^{c}_{\gamma}  (\Gamma^A P_\pm)_{\gamma \rho} ({\bar{q}^L_{2}}^{a}_{\alpha} \Gamma^B_{\alpha \beta} {\bar{q}^R_{3}}^{b}_{\beta}),$$
+$$J(x_J) = {\bar{q}^R_J}^{i}_{\sigma} \gamma {q^L_J}^{i}_{\tau}$$
+
+The quarks for the initial and final state and the current are specified as $(q^L_1,q^L_2,q^L_3)$, $(q^R_1,q^R_2,q^R_3)$ and $(q^L_J,q^R_J)$ respectively. This represents a $q^L_J \to q^R_J$ transition.
+
+The 3 initial propagators $(\Delta^L_1,\Delta^L_2,\Delta^L_3)$ are required and correspond to the initial quarks q1, q2 and q3. 3 final state propagators $(\Delta^R_1,\Delta^R_2,\Delta^R_3)$ can be specified. In gerneral not all of these final propagators will be required depending on the quark flavours. Any propagators not required can be left blank, however, if they are specified a message will be logged naming the propagators that are not used. 
+
+3 sinks $(S_1, S_2, S_3)$ corresponding to the final state quarks must be secified.
+
+
+The resulting contractions of the module are given by
+$$\langle O_{B'}(x_f)_{\rho'} J(x_J) \bar{O}_{B}(x_i)_\rho \rangle = \epsilon^{abc} \epsilon^{a'b'c'} \Gamma^{A_R}_{\rho' \gamma'} \Gamma^{A_L}_{\gamma \rho} \Gamma^{B_R}_{\alpha' \beta'} \Gamma^{B_L}_{\alpha \beta} \gamma_{\sigma \tau} (C_1 + C_2 + C_3 )^{abc,a'b'c'}_{\alpha \beta, \alpha' \beta', \sigma \tau, \gamma \gamma'}$$
+
+where
+
+$$C^{\ \ \cdots}_{1\ \cdots} = \delta^{q^L_J}_{q^L_1} (\Delta^L_1)_{\tau \gamma}^{i c} \left[ - \delta_{q^R_1 q^R_2 q^R_3}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right. $$
+$$ \hspace{8em} - \delta_{q^R_2 q^R_3 q^R_1}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b} $$
+$$\hspace{8em} - \delta_{q^R_3 q^R_1 q^R_2}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b} $$
+$$\hspace{8em} + \delta_{q^R_1 q^R_3 q^R_2}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b} $$
+$$\hspace{8em} + \delta_{q^R_3 q^R_2 q^R_1}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b} $$
+$$\hspace{8em} \left. + \delta_{q^R_2 q^R_1 q^R_3}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right] $$
+
+$$C^{\ \ \cdots}_{2\ \cdots}  =  \delta^{q^L_J}_{q^L_2} (\Delta^L_2)_{\tau \alpha}^{i a} \left[ - \delta_{q^R_1 q^R_2 q^R_3}^{q^L_1 q^R_J q^L_3} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right. $$
+$$\hspace{8em} - \delta_{q^R_2 q^R_3 q^R_1}^{q^L_1 q^R_J q^L_3} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b}$$
+$$\hspace{8em} - \delta_{q^R_3 q^R_1 q^R_2}^{q^L_1 q^R_J q^L_3} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b} $$
+$$\hspace{8em} + \delta_{q^R_1 q^R_3 q^R_2}^{q^L_1 q^R_J q^L_3} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b}$$
+$$\hspace{8em} + \delta_{q^R_3 q^R_2 q^R_1}^{q^L_1 q^R_J q^L_3} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b} $$
+$$\hspace{8em} \left. + \delta_{q^R_2 q^R_1 q^R_3}^{q^L_1 q^R_J q^L_3} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right] $$
+
+
+$$C^{\ \ \cdots}_{3\ \cdots} = \delta^{q^L_J}_{q^L_3} (\Delta^L_3)_{\tau \beta}^{i b} \left[ - \delta_{q^R_1 q^R_2 q^R_3}^{q^L_1 q^L_2 q^R_J} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} \right. $$
+$$\hspace{8em} - \delta_{q^R_2 q^R_3 q^R_1}^{q^L_1 q^L_2 q^R_J} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} $$
+$$\hspace{8em} - \delta_{q^R_3 q^R_1 q^R_2}^{q^L_1 q^L_2 q^R_J} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} $$
+$$\hspace{8em} + \delta_{q^R_1 q^R_3 q^R_2}^{q^L_1 q^L_2 q^R_J} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} $$
+$$\hspace{8em} + \delta_{q^R_3 q^R_2 q^R_1}^{q^L_1 q^L_2 q^R_J} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} $$
+$$\hspace{8em} \left. + \delta_{q^R_2 q^R_1 q^R_3}^{q^L_1 q^L_2 q^R_J} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} \right] $$
+where the three groups of 6 contractions are named the wick groups 1-3. For currents where $q^L_J = q^R_J$, there is an additional disconnected part that is not included in this module.
+
+
+
+The internal baryon diquark gamma structures `gammaLR` take the same format of the baryon 2pt function above (i.e. a list of pairs of pairs of gamma matrices).
+
+The current gamma structure `gammaJ` is a list of gamma matrices in the usual Grid notation. Additionally the keyword `all` can be used to contract using all 16 gamma structures. 
+
+The momentum parameter adds a 3-momentum phase to the current operator before summing over all space.
+
+### Parameters
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `quarksL` | `std::string` | initial state quark content (e.g. `abc`) |
+| `quarksR` | `std::string` | final state quark content (e.g. `abd`) |
+| `quarksJ` | `std::string` | current quark content (e.g. `cd` for a $c \to d$ transition) |
+| `qL1` | `std::string` | initial state propagator $\Delta^L_1$ |
+| `qL2` | `std::string` | initial state propagator $\Delta^L_2$ |
+| `qL3` | `std::string` | initial state propagator $\Delta^L_3$ |
+| `qR1` | `std::string` | final state propagator $\Delta^R_1$ |
+| `qR2` | `std::string` | final state propagator $\Delta^R_2$ |
+| `qR3` | `std::string` | final state propagator $\Delta^R_3$ |
+| `sink1` | `std::string` | module used to compute the sink of the final state quark qR1|
+| `sink2` | `std::string` | module used to compute the sink of the final state quark qR2|
+| `sink3` | `std::string` | module used to compute the sink of the final state quark qR3|
+| `gammaLR` | `std::string` | list of pairs of pairs Gamma matrices |
+| `gammaJ` | `std::string` | list of Gamma matrices |
+| `mom` | `std::string` | 3-momentum transfer of the current insertion |
+| `tf` | `int` | time of the final state |
+| `output` | `std::string` | specify the output location of the correlator that is generated |
+
+### Dependencies
+
+This module depends on three insital state propagators being generated, and up to three final state propagators as well as three sink functions.
+
+### Products
+
+This module produces a correlator called `gamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 -----------
 
@@ -254,6 +237,7 @@ This module depends on three propagators being generated, one of which has to be
 ### Products
 
 This module produces a correlator called `gamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+
 
 ## Meson
 
