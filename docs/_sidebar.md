@@ -1,5 +1,7 @@
 - Getting started
   - [Installation](install.md)
+  - [Building Hadrons applications](apptutorial.md)
+  - [More information](moreinfo.md)
 
 - Workflow description
 
