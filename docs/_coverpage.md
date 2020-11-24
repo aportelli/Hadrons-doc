@@ -2,7 +2,8 @@
 
 > __[Grid](https://github.com/paboyle/Grid)__-based Workflow Management System<br> for lattice field theory simulations
 
-[GitHub](https://github.com/aportelli/Hadrons)
 [Get Started](#docsify)
+[GitHub](https://github.com/aportelli/Hadrons)
+[Zenodo](https://doi.org/10.5281/zenodo.4063666)
 
 ![color](#b0d2e8)
