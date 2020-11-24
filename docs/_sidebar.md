@@ -2,11 +2,6 @@
   - [Installation](install.md)
   - [Building Hadrons applications](apptutorial.md)
   - [More information](moreinfo.md)
-
-- Workflow description
-
-- Module development
-
 - Module reference
   - [MAction](maction.md)
   - [MContraction](mcontraction.md)
@@ -17,5 +12,6 @@
   - [MScalarSUN](mscalarsun.md)
   - [MSink](msink.md)
   - [MSource](msource.md)
-
-
+- **Links**
+- [Github](https://github.com/aportelli/Hadrons)
+- [Zenodo](https://doi.org/10.5281/zenodo.4063666)
