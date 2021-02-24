@@ -49,13 +49,25 @@ $$O_{\Lambda_\pm}=\epsilon^{abc} P_\pm \Gamma^A (2s_a (u_b^T \Gamma^B d_c) + d_a
 
 Here, for the full contraction we need 9 module executions:
 
-`quarks = "sud"`, `shuffle = "1 2 3"` ($4 \times (sud)(sud)$)
+`quarks = "sud"`, `shuffle = "1 2 3"` ($(sud)(sud)$) (\times 4)
+
+`quarks = "sud"`, `shuffle = "3 2 1"` ($(dus)(sud)$) (\times 2)
+
+`quarks = "sud"`, `shuffle = "2 3 1"` ($(uds)(sud)$) (\times (-2))
 
 `quarks = "dus"`, `shuffle = "1 2 3"` ($(dus)(dus)$)
 
+`quarks = "dus"`, `shuffle = "3 2 1"` ($(sud)(dus)$) (\times 2)
+
+`quarks = "dus"`, `shuffle = "2 1 3"` ($(uds)(dus)$) (\times (-1))
+
 `quarks = "uds"`, `shuffle = "1 2 3"` ($(uds)(uds)$)
 
-`quarks = "sud"`, `shuffle = "3 2 1"` ($(dus)(sud)$)
+`quarks = "uds"`, `shuffle = "3 1 2"` ($(sud)(uds)$) (\times (-2))
+
+`quarks = "uds"`, `shuffle = "2 1 3"` ($(dus)(uds)$) (\times (-1))
+
+The correlator outputs from these 9 modules need to be multiplied by the numbers given in the last bracked in the above list and then summed.
 
 The input parameter `gammas` must be parsed as a list of pairs of pairs of gamma-Matrices, in the usual naming convention in Grid. The gamma structure for the baryons at source and sink can be chosen differently. The charge conjugation matrix $C=\gamma_0 \gamma_2$ must be multiplied manually. A $\Lambda$-baron two-point function with $(\Gamma^{A'},\Gamma^{B'})$ = $(1,C \gamma_1)$ at the sink and $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$ at the source needs the input string `gammas = "((Identity MinusGammaZGamma5) (Identity GammaT))"`
 
