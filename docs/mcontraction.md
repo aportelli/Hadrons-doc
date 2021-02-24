@@ -95,9 +95,60 @@ If `trace = true`, this correlator has a `Complex` value for each timeslice, if 
 
 ### Template structure
 
-This module takes a `FImpl` template argument, expected to be a fermion implimentation.
- 
+This module takes a `FImpl` template argument which is expected to be a fermion implimentation.
+
 ### Description
+
+This module computes the baryonic three-point function
+
+$$C_3 = \langle O_{B'}(x_f)_{\rho'} J(x_J) \bar{O}_{B}(x_i)_\rho \rangle$$
+where
+$$O_{B'}(x_f)_\rho = \epsilon^{a'b'c'} (P_\pm \Gamma^{A'})_{\rho \gamma'}   {q^R_{1}}^{c'}_{\gamma'} ({q^R_{2}}^{a'}_{\alpha'} \Gamma^{B'}_{\alpha' \beta'} {q^R_{3}}^{b'}_{\beta'}),$$
+$$\bar{O}_{B}(x_i)_\rho = \epsilon^{abc} {\bar{q}^R_{1}}^{c}_{\gamma}  (\Gamma^A P_\pm)_{\gamma \rho} ({\bar{q}^L_{2}}^{a}_{\alpha} \Gamma^B_{\alpha \beta} {\bar{q}^R_{3}}^{b}_{\beta}),$$
+$$J(x_J) = {\bar{q}^R_J}^{i}_{\sigma} \gamma {q^L_J}^{i}_{\tau}$$
+
+The quarks for the initial and final state and the current are specified as $(q^L_1,q^L_2,q^L_3)$, $(q^R_1,q^R_2,q^R_3)$ and $(q^L_J,q^R_J)$ respectively. This represents a $q^L_J \to q^R_J$ transition.
+
+The 3 initial propagators $(\Delta^L_1,\Delta^L_2,\Delta^L_3)$ are required and correspond to the initial quarks q1, q2 and q3. 3 final state propagators $(\Delta^R_1,\Delta^R_2,\Delta^R_3)$ can be specified. In gerneral not all of these final propagators will be required depending on the quark flavours. Any propagators not required can be left blank, however, if they are specified a message will be logged naming the propagators that are not used. 
+
+3 sinks $(S_1, S_2, S_3)$ corresponding to the final state quarks must be secified.
+
+
+The resulting contractions of the module are given by
+$$\langle O_{B'}(x_f)_{\rho'} J(x_J) \bar{O}_{B}(x_i)_\rho \rangle = \epsilon^{abc} \epsilon^{a'b'c'} \Gamma^{A_R}_{\rho' \gamma'} \Gamma^{A_L}_{\gamma \rho} \Gamma^{B_R}_{\alpha' \beta'} \Gamma^{B_L}_{\alpha \beta} \gamma_{\sigma \tau} (C_1 + C_2 + C_3 )^{abc,a'b'c'}_{\alpha \beta, \alpha' \beta', \sigma \tau, \gamma \gamma'}$$
+
+where
+
+$$C^{\ \ \cdots}_{1\ \cdots} = \delta^{q^L_J}_{q^L_1} (\Delta^L_1)_{\tau \gamma}^{i c} \left[ - \delta_{q^R_1 q^R_2 q^R_3}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right. $$
+$$ \hspace{8em} - \delta_{q^R_2 q^R_3 q^R_1}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b} $$
+$$\hspace{8em} - \delta_{q^R_3 q^R_1 q^R_2}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b} $$
+$$\hspace{8em} + \delta_{q^R_1 q^R_3 q^R_2}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b} $$
+$$\hspace{8em} + \delta_{q^R_3 q^R_2 q^R_1}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b} $$
+$$\hspace{8em} \left. + \delta_{q^R_2 q^R_1 q^R_3}^{q^R_J q^L_2 q^L_3} \ \  (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right] $$
+
+$$C^{\ \ \cdots}_{2\ \cdots}  =  \delta^{q^L_J}_{q^L_2} (\Delta^L_2)_{\tau \alpha}^{i a} \left[ - \delta_{q^R_1 q^R_2 q^R_3}^{q^L_1 q^R_J q^L_3} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right. $$
+$$\hspace{8em} - \delta_{q^R_2 q^R_3 q^R_1}^{q^L_1 q^R_J q^L_3} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b}$$
+$$\hspace{8em} - \delta_{q^R_3 q^R_1 q^R_2}^{q^L_1 q^R_J q^L_3} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b} $$
+$$\hspace{8em} + \delta_{q^R_1 q^R_3 q^R_2}^{q^L_1 q^R_J q^L_3} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} S_2(\Delta^L_3)_{\alpha' \beta}^{a' b}$$
+$$\hspace{8em} + \delta_{q^R_3 q^R_2 q^R_1}^{q^L_1 q^R_J q^L_3} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} S_1(\Delta^L_3)_{\gamma' \beta}^{c' b} $$
+$$\hspace{8em} \left. + \delta_{q^R_2 q^R_1 q^R_3}^{q^L_1 q^R_J q^L_3} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} S_3(\Delta^L_3)_{\beta' \beta}^{b' b} \right] $$
+
+
+$$C^{\ \ \cdots}_{3\ \cdots} = \delta^{q^L_J}_{q^L_3} (\Delta^L_3)_{\tau \beta}^{i b} \left[ - \delta_{q^R_1 q^R_2 q^R_3}^{q^L_1 q^L_2 q^R_J} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} \right. $$
+$$\hspace{8em} - \delta_{q^R_2 q^R_3 q^R_1}^{q^L_1 q^L_2 q^R_J} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} $$
+$$\hspace{8em} - \delta_{q^R_3 q^R_1 q^R_2}^{q^L_1 q^L_2 q^R_J} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} $$
+$$\hspace{8em} + \delta_{q^R_1 q^R_3 q^R_2}^{q^L_1 q^L_2 q^R_J} \ \ S_1(\Delta^L_1)_{\gamma' \gamma}^{c' c} S_3(\Delta^L_2)_{\beta' \alpha}^{b' a} (\gamma_5 (\Delta^R_2)^{\dagger} \gamma_5)_{\alpha' \sigma}^{a' i} $$
+$$\hspace{8em} + \delta_{q^R_3 q^R_2 q^R_1}^{q^L_1 q^L_2 q^R_J} \ \ S_3(\Delta^L_1)_{\beta' \gamma}^{b' c} S_2(\Delta^L_2)_{\alpha' \alpha}^{a' a} (\gamma_5 (\Delta^R_1)^{\dagger} \gamma_5)_{\gamma' \sigma}^{c' i} $$
+$$\hspace{8em} \left. + \delta_{q^R_2 q^R_1 q^R_3}^{q^L_1 q^L_2 q^R_J} \ \ S_2(\Delta^L_1)_{\alpha' \gamma}^{a' c} S_1(\Delta^L_2)_{\gamma' \alpha}^{c' a} (\gamma_5 (\Delta^R_3)^{\dagger} \gamma_5)_{\beta' \sigma}^{b' i} \right] $$
+where the three groups of 6 contractions are named the wick groups 1-3. For currents where $q^L_J = q^R_J$, there is an additional disconnected part that is not included in this module.
+
+
+
+The internal baryon diquark gamma structures `gammaLR` take the same format of the baryon 2pt function above (i.e. a list of pairs of pairs of gamma matrices).
+
+The current gamma structure `gammaJ` is a list of gamma matrices in the usual Grid notation. Additionally the keyword `all` can be used to contract using all 16 gamma structures. 
+
+The momentum parameter adds a 3-momentum phase to the current operator before summing over all space.
 
 ### Parameters
 | Parameter   | Type   |   Description                       |
