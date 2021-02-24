@@ -499,7 +499,7 @@ The module autoamtically computes these correlators for all insertions $\Gamma_{
 
 | Parameter   | Type           | Description                                                            |
 |-------------|----------------|------------------------------------------------------------------------|
-|     `qLeft`     | `std::string`  | input propagator $\q_l$ |
+|     `qLeft`     | `std::string`  | input propagator $q_l$ |
 |     `qBarLeft`     | `std::string`  | input propagator $\bar{q}_l$ |
 |     `qRight`     | `std::string`  | input propagator $q_r$ |
 |     `qBarRight`     | `std::string`  | input propagator $\bar{q}_r$ |
