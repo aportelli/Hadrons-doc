@@ -284,7 +284,7 @@ This module depends on a pair of propagators being generated and a sink module b
 
 ### Products
 
-This module produces a correlator called `meson` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+This module produces a $4 \times 4$ `SpinMatrix` correlator called `sigmaToNucleonEye` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
 
 -----------
 
@@ -314,29 +314,26 @@ Computes the Sigma-to-nucleon 3pt-diagrams, eye topologies.
          \                      /        |       \                        /
           \---------->---------/         |        \----------->----------/
                    quSpec                |                 quSpec
-
-
+ 
+  analogously to the rare-kaon naming, the left diagram is named 'one-trace' and
+  the diagram on the right 'two-trace'
 ```
 
 ### Parameters
 
 | Parameter   | Type           | Description                                                            |
 |-------------|----------------|------------------------------------------------------------------------|
-|     `v`     | `std::string`  | Set of eigen vectors low and high modes |
-|     `w`     | `std::string`  | Set of eigen vectors low and high modes |
-|    `gammas` | `std::string`  | gamma products to insert and source and sink. |
-|    `mom`    | `std::vector<std::string>` | three-momentum of the meson field, e.g `"1 0 0"`.        |
-|   `output`  | `std::string`  | name of the output file that the meson field will be saved to.         |
-|   `cacheBlock`| `int`        | performance tuning parameter (give values for various architectures)   |
-|   `block`   |  `int`         | performance tuning parameter (give values for various architectures)   |
+|     `qqLoop`     | `std::string`  | $u/c$-quark loop propagator |
+|     `quSpec`     | `std::string`  | already sinked $u$-quark propagator (source at $t_i$, sink at $t_f$) |
+|     `qdTf`     | `std::string`  | $d$-quark propagator (source at $t_f$) |
+|     `qsTi`     | `std::string`  | $s$-quark propagator (source at $t_i$) |
+|    `tf` | `unsigned int`  | time $t_f$ |
+|    `sink`    | `std::string` | module used to compute the sink of the final state |
+|   `output`  | `std::string`  | Specify the output location of the correlator that is generated.  |
 
 ### Dependencies
 
-This module only works when grid is compiled using hdf5.
-
-This module depends on the creation of the `v` and `w` eigenvectors being determined.
-
-Alternatively, distillation vectors $\varrho$, $\varphi$, $\phi$ can be used.
+This module depends on four specific propagators being generated and a sink module being specified. One of the propagators has to be sinked already (e.g. using `MSink::Smear`).
 
 ### Products
 
