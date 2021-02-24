@@ -211,6 +211,8 @@ This module depends on a propagator being generated.
 
 This module produces a correlator called `disc` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
+-----------
+
 ## Gamma3pt
 
 ### Template structure
@@ -243,6 +245,36 @@ This module depends on three propagators being generated, one of which has to be
 ### Products
 
 This module produces a correlator called `gamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+
+-----------
+
+## Loop
+
+### Template structure
+
+This module takes a `FImpl` template argument, which is expected to be a fermion implimentation.
+ 
+### Description
+
+This module computes the loop propagator
+
+$$q_\mathrm{loop}(x) = q(x) \eta^\dagger(x)$$
+
+### Parameters
+| Parameter   | Type   |   Description                       |
+|-------------|----------------|-----------------------------|
+| `q` | `std::string` | input propagator, result of inversion on noise source $\eta$ |
+| `eta` | `std::string` | noise source $\eta$ |
+
+### Dependencies
+
+This module depends on a noise source $\eta$ propagator being generated from an inversion on the noise source.
+
+### Products
+
+This module returns the loop propagator $q_\mathrm{loop}$
+
+-----------
 
 ## Meson
 
