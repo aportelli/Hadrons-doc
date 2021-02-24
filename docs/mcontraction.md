@@ -50,9 +50,12 @@ $$O_{\Lambda_\pm}=\epsilon^{abc} P_\pm \Gamma^A (2s_a (u_b^T \Gamma^B d_c) + d_a
 Here, for the full contraction we need 9 module executions:
 
 `quarks = "sud"`, `shuffle = "1 2 3"` ($4 \times (sud)(sud)$)
-`quarks = "dus"`, `shuffle = "1 2 3"` ((dus)(dus))
-`quarks = "uds"`, `shuffle = "1 2 3"` ((uds)(uds))
-`quarks = "sud"`, `shuffle = "3 2 1"` ((dus)(sud))
+
+`quarks = "dus"`, `shuffle = "1 2 3"` ($(dus)(dus)$)
+
+`quarks = "uds"`, `shuffle = "1 2 3"` ($(uds)(uds)$)
+
+`quarks = "sud"`, `shuffle = "3 2 1"` ($(dus)(sud)$)
 
 The input parameter `gammas` must be parsed as a list of pairs of pairs of gamma-Matrices, in the usual naming convention in Grid. The gamma structure for the baryons at source and sink can be chosen differently. The charge conjugation matrix $C=\gamma_0 \gamma_2$ must be multiplied manually. A $\Lambda$-baron two-point function with $(\Gamma^{A'},\Gamma^{B'})$ = $(1,C \gamma_1)$ at the sink and $(\Gamma^{A},\Gamma^{B})$ = $(1,C \gamma_2)$ at the source needs the input string `gammas = "((Identity MinusGammaZGamma5) (Identity GammaT))"`
 
