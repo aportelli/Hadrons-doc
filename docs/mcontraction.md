@@ -288,6 +288,61 @@ This module produces a correlator called `meson` that is saved to a hdf5 file (o
 
 -----------
 
+## SigmaToNucleonEye
+
+
+### Template Stucture
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Computes the Sigma-to-nucleon 3pt-diagrams, eye topologies.
+
+```
+  Schematics:      qqLoop                |                  
+                  /->-¬                  |                             
+                 /     \                 |          qsTi      G     qdTf
+                 \     /                 |        /---->------*------>----¬         
+           qsTi   \   /    qdTf          |       /          /-*-¬          \
+        /----->-----* *----->----¬       |      /          /  G  \          \
+       *            G G           *      |     *           \     /  qqLoop  * 
+       |\                        /|      |     |\           \-<-/          /|   
+       | \                      / |      |     | \                        / |      
+       |  \---------->---------/  |      |     |  \----------->----------/  |      
+        \          quSpec        /       |      \          quSpec          /        
+         \                      /        |       \                        /
+          \---------->---------/         |        \----------->----------/
+                   quSpec                |                 quSpec
+
+
+```
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|     `v`     | `std::string`  | Set of eigen vectors low and high modes |
+|     `w`     | `std::string`  | Set of eigen vectors low and high modes |
+|    `gammas` | `std::string`  | gamma products to insert and source and sink. |
+|    `mom`    | `std::vector<std::string>` | three-momentum of the meson field, e.g `"1 0 0"`.        |
+|   `output`  | `std::string`  | name of the output file that the meson field will be saved to.         |
+|   `cacheBlock`| `int`        | performance tuning parameter (give values for various architectures)   |
+|   `block`   |  `int`         | performance tuning parameter (give values for various architectures)   |
+
+### Dependencies
+
+This module only works when grid is compiled using hdf5.
+
+This module depends on the creation of the `v` and `w` eigenvectors being determined.
+
+Alternatively, distillation vectors $\varrho$, $\varphi$, $\phi$ can be used.
+
+### Products
+
+This module produces a `meson field` that is saved to a hdf5 file at a location of your choosing.
+
+-----------
 
 ## A2AMesonField
 
