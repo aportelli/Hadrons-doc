@@ -395,6 +395,59 @@ This module depends on five specific propagators being generated and a sink modu
 
 This module produces a $4 \times 4$ `SpinMatrix` correlator called `sigmaToNucleonNonEye` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
 
+-----------
+
+## WeakEye3pt
+
+
+### Template Stucture
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Weak Hamiltonian meson 3-pt diagrams, eye topologies.
+
+```
+  Schematics:       loop                 |                  
+                   /-<-¬                 |                             
+                  /     \                |            qbl     G     qbr
+                  \     /                |        /----<------*------<----¬         
+             qbl   \   /    qbr          |       /          /-*-¬          \
+        /-----<-----* *-----<----¬       |      /          /  G  \          \
+   gIn *            G G           * gOut | gIn *           \     /  loop    * gOut
+        \                        /       |      \           \->-/          /   
+         \                      /        |       \                        /       
+          \---------->---------/         |        \----------->----------/        
+                    qs                   |                   qs                  
+                                         |
+                 one trace               |                two traces
+```
+
+One trace diagram:
+
+$$\mathrm{Tr}(\bar{q}_r \Gamma_{\mathrm{out}} q_\mathrm{spec} \Gamma^\dagger_{\mathrm{in}} \gamma_5 \bar{q}^\dagger_l \gamma_5 \Gamma_{\mathrm{op}} q_\mathrm{loop} \Gamma_{\mathrm{op}}$$
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|     `qqLoop`     | `std::string`  | $u/c$-quark loop propagator |
+|     `quSpec`     | `std::string`  | already sinked $u$-quark propagator (source at $t_i$, sink at $t_f$) |
+|     `qdTf`     | `std::string`  | $d$-quark propagator (source at $t_f$) |
+|     `qsTi`     | `std::string`  | $s$-quark propagator (source at $t_i$) |
+|    `tf` | `unsigned int`  | time $t_f$ |
+|    `sink`    | `std::string` | module used to compute the sink of the final state |
+|   `output`  | `std::string`  | Specify the output location of the correlator that is generated.  |
+
+### Dependencies
+
+This module depends on four specific propagators being generated and a sink module being specified. One of the propagators has to be sinked already (e.g. using `MSink::Smear`).
+
+### Products
+
+This module produces a $4 \times 4$ `SpinMatrix` correlator called `sigmaToNucleonEye` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
+
 
 -----------
 
