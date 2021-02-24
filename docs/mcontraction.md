@@ -4,7 +4,7 @@
 
 ### Template structure
 
-This module takes three `FImpl` template arguments `FImpl1`, `FImpl2`  and `FImpl3`, all of which are expected to be fermion implimentations.
+This module takes a `FImpl` template argument, expected to be a fermion implimentation.
  
 ### Description
 
@@ -121,7 +121,7 @@ If `trace = true`, this correlator has a `Complex` value for each timeslice, if 
 
 ### Template structure
 
-This module takes three `FImpl` template arguments `FImpl1`, `FImpl2`  and `FImpl3`, all of which are expected to be fermion implimentations.
+This module takes a `FImpl` template argument, expected to be a fermion implimentation.
  
 ### Description
 

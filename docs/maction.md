@@ -194,7 +194,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Creates a Zolotarev-Möbius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and Möbius parameters $b$ and $c$. [arxiv:0304002]
+Creates a zMöbius domain-wall action based on the gauge field `gauge` with quark mass $m_q$, lattice extent $L_s$ in domain-wall 5-dimension and domain-wall mass parameter $M_5$, and Möbius parameters $b$ and $c$.
 
 `omega` are the weights used for the action.
 
