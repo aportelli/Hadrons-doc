@@ -111,7 +111,9 @@ This module depends on three propagators being generated and a sink module being
 
 ### Products
 
-This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. 
+
+If `trace = true`, this correlator has a `Complex` value for each timeslice, if `trace = false` the correlator is a $4 \times 4$ `SpinMatrix` on each timeslice.
 
 -----------
 
@@ -166,8 +168,22 @@ The gamma matrices can be a list, seperated by spaces. There is also the option 
 ### Parameters
 | Parameter   | Type   |   Description                       |
 |-------------|----------------|-----------------------------|
-| `q_loop` | `std::string` | input loop propagator |
-| `gamma` | `Gamma::Algebra` | gamma matrix|
+| `quarksL` | `std::string` | ordered triplet of single character quark types |
+| `quarksR` | `std::string` | ordered triplet of single character quark types |
+| `quarksJ` | `std::string` | ordered doublet of single character quark types |
+| `qL1` | `std::string` | propagator with source at i |
+| `qL2` | `std::string` | propagator with source at i |
+| `qL3` | `std::string` | propagator with source at i |
+| `qR1` | `std::string` | propagator with source at f |
+| `qR2` | `std::string` | propagator with source at f |
+| `qR3` | `std::string` | propagator with source at f |
+| `sinkq1` | `std::string` | sink corresponding to qR1 source |
+| `sinkq2` | `std::string` | sink corresponding to qR2 source |
+| `sinkq3` | `std::string` | sink corresponding to qR3 source |
+| `gammaLR` | `std::string` | list or pairs of pairs of gamma matricies, e.g. `((Identity MinusGammaZGamma5) (Identity GammaT))` |
+| `gammaJ` | `std::string` | gamma matricies to insert, space-separated strings e.g. `GammaT GammaX GammaY` |
+| `mom` | `std::string` | 3-momentum componenets, space-separated strings e.g. `0 0 0` |
+| `tf` | `unsigned int` | sink position for spectator propagators |
 | `output` | `std::string` | Specify the output location of the correlator that is generated.|
 
 ### Dependencies
