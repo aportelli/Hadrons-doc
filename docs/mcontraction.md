@@ -426,27 +426,95 @@ Weak Hamiltonian meson 3-pt diagrams, eye topologies.
 
 One trace diagram:
 
-$$\mathrm{Tr}(\bar{q}_r \Gamma_{\mathrm{out}} q_\mathrm{spec} \Gamma^\dagger_{\mathrm{in}} \gamma_5 \bar{q}^\dagger_l \gamma_5 \Gamma_{\mathrm{op}} q_\mathrm{loop} \Gamma_{\mathrm{op}}$$
+$$\mathrm{Tr}(\bar{q}_r \Gamma_{\mathrm{out}} q_\mathrm{spec} \Gamma^\dagger_{\mathrm{in}} \gamma_5 \bar{q}^\dagger_l \gamma_5 \Gamma_{\mathrm{op}} q_\mathrm{loop} \Gamma_{\mathrm{op}})$$
+
+Two trace diagram:
+
+$$\mathrm{Tr}(\bar{q}_r \Gamma_{\mathrm{out}} q_\mathrm{spec} \Gamma^\dagger_{\mathrm{in}} \gamma_5 \bar{q}^\dagger_l \gamma_5 \Gamma_{\mathrm{op}}) \mathrm{Tr}( q_\mathrm{loop} \Gamma_{\mathrm{op}})$$
+
+The module autoamtically computes these correlators for all insertions $\Gamma_{\mathrm{op}}$.
 
 ### Parameters
 
 | Parameter   | Type           | Description                                                            |
 |-------------|----------------|------------------------------------------------------------------------|
-|     `qqLoop`     | `std::string`  | $u/c$-quark loop propagator |
-|     `quSpec`     | `std::string`  | already sinked $u$-quark propagator (source at $t_i$, sink at $t_f$) |
-|     `qdTf`     | `std::string`  | $d$-quark propagator (source at $t_f$) |
-|     `qsTi`     | `std::string`  | $s$-quark propagator (source at $t_i$) |
-|    `tf` | `unsigned int`  | time $t_f$ |
-|    `sink`    | `std::string` | module used to compute the sink of the final state |
+|     `qBarLeft`     | `std::string`  | input propagator $\bar{q}_l$ |
+|     `qBarRight`     | `std::string`  | input propagator $\bar{q}_r$ |
+|     `qSpectator`     | `std::string`  | already sinked input propagator $q_\mathrm{spec}$ |
+|     `loop`     | `std::string`  | input loop propagator $q_\mathrm{loop}$ |
+|    `tOut` | `unsigned int`  | time $t_\mathrm{out}$ |
+|    `gammaIn`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{in}}|
+|    `gammaOut`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{out}}|
 |   `output`  | `std::string`  | Specify the output location of the correlator that is generated.  |
 
 ### Dependencies
 
-This module depends on four specific propagators being generated and a sink module being specified. One of the propagators has to be sinked already (e.g. using `MSink::Smear`).
+This module depends on four propagators being generated and a sink module being specified. One of the propagators has to be sinked already (e.g. using `MSink::Smear`) and one of them has to be a loop propagator.
 
 ### Products
 
-This module produces a $4 \times 4$ `SpinMatrix` correlator called `sigmaToNucleonEye` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
+This module produces a correlator called `weakEye3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
+
+-----------
+
+## WeakNonEye3pt
+
+
+### Template Stucture
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Weak Hamiltonian meson 3-pt diagrams, eye topologies.
+
+```
+  Schematics:                             |                  
+             qbl           qbr            |            qbl             qbr
+           /--<--¬       /--<--¬          |          /--<--¬         /--<--¬       
+          /       \     /       \         |         /       \       /       \      
+         /         \   /         \        |        /         \     /         \     
+        /           \ /           \       |       /           \   /           \    
+   gIn *             * G           * gOut |  gIn *           G * * G           * gOut
+       \             * G           |      |       \           /   \           /
+        \           / \           /       |        \         /     \         /    
+         \         /   \         /        |         \       /       \       /  
+          \       /     \       /         |          \-->--/         \-->--/      
+           \-->--/       \-->--/          |            ql              qr 
+             ql            qr             |
+                one trace                 |              two traces
+```
+
+One trace diagram:
+
+$$\mathrm{Tr}(q_l \Gamma^\dagger_{\mathrm{in}} \gamma_5 \bar{q}^\dagger_l \gamma_5 \Gamma_{\mathrm{op}} \bar{q}_r \Gamma_{\mathrm{out}} \gamma_5 q^\dagger_r \gamma_5 \Gamma_{\mathrm{op}})$$
+
+Two trace diagram:
+
+$$\mathrm{Tr}(q_l \Gamma^\dagger_{\mathrm{in}} \gamma_5 \bar{q}^\dagger_l \gamma_5 \Gamma_{\mathrm{op}} ) \mathrm{Tr}(  \bar{q}_r \Gamma_{\mathrm{out}} \gamma_5 q^\dagger_r \gamma_5 \Gamma_{\mathrm{op}})$$
+
+The module autoamtically computes these correlators for all insertions $\Gamma_{\mathrm{op}}$.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|-------------|----------------|------------------------------------------------------------------------|
+|     `qLeft`     | `std::string`  | input propagator $\q_l$ |
+|     `qBarLeft`     | `std::string`  | input propagator $\bar{q}_l$ |
+|     `qRight`     | `std::string`  | input propagator $q_r$ |
+|     `qBarRight`     | `std::string`  | input propagator $\bar{q}_r$ |
+|    `gammaIn`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{in}}|
+|    `gammaOut`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{out}}|
+|   `output`  | `std::string`  | Specify the output location of the correlator that is generated.  |
+
+### Dependencies
+
+This module depends on four propagators being generated.
+
+### Products
+
+This module produces a correlator called `weakNonEye3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
+
 
 
 -----------
