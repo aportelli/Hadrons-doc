@@ -443,8 +443,8 @@ The module autoamtically computes these correlators for all insertions $\Gamma_{
 |     `qSpectator`     | `std::string`  | already sinked input propagator $q_\mathrm{spec}$ |
 |     `loop`     | `std::string`  | input loop propagator $q_\mathrm{loop}$ |
 |    `tOut` | `unsigned int`  | time $t_\mathrm{out}$ |
-|    `gammaIn`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{in}}|
-|    `gammaOut`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{out}}|
+|    `gammaIn`    | `Gamma::Algebra` | gamma Matrix  $\Gamma_{\mathrm{in}}$|
+|    `gammaOut`    | `Gamma::Algebra` | gamma Matrix  $\Gamma_{\mathrm{out}}$|
 |   `output`  | `std::string`  | Specify the output location of the correlator that is generated.  |
 
 ### Dependencies
@@ -503,8 +503,8 @@ The module autoamtically computes these correlators for all insertions $\Gamma_{
 |     `qBarLeft`     | `std::string`  | input propagator $\bar{q}_l$ |
 |     `qRight`     | `std::string`  | input propagator $q_r$ |
 |     `qBarRight`     | `std::string`  | input propagator $\bar{q}_r$ |
-|    `gammaIn`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{in}}|
-|    `gammaOut`    | `Gamma::Algebra` | gamma Matrix  \Gamma_{\mathrm{out}}|
+|    `gammaIn`    | `Gamma::Algebra` | gamma Matrix $\Gamma_{\mathrm{in}}$|
+|    `gammaOut`    | `Gamma::Algebra` | gamma Matrix  $\Gamma_{\mathrm{out}}$|
 |   `output`  | `std::string`  | Specify the output location of the correlator that is generated.  |
 
 ### Dependencies
