@@ -131,7 +131,7 @@ Computes the perambulator $\tau^{r I}_{\alpha l}(t)$ from Laplacian eigenvectors
 
 Same as above, but additionally computes the full solves [Mastropas, Richards, 2014, 1403.5575, eq. (20)]
 
-$$ \phi^{rI}_{a\alpha}(\pmb x,t)  = \sum_{b,\beta,t',\pmb x'} e^{-i \pmb p \cdot \pmb x'} D^{-1}_{a\alpha,b\beta}(\pmb x,t;\pmb x', t') \varrho^{rI}_{b \beta} (\pmb x',t') $$
+$$ \phi^{rI}_{a\alpha}(\pmb x,t)  = \sum_{b,\beta,\pmb x', t'} D^{-1}_{a\alpha,b\beta}(\pmb x,t;\pmb x', t') \varrho^{rI}_{b \beta} (\pmb x',t') $$
 
 Unlike the perambulators, the full solves are unsmeared at the sink and so not projected into the distillation basis. This makes them lattice-sized objects and therefore much larger.
 
