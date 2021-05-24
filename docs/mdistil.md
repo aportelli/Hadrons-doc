@@ -101,7 +101,7 @@ The values for each noise hit $r$ are seeded from a Unique Identifier (string) (
 | `si`               | `unsigned int`               | number of spin dilution partitions |
 | `nNoise`           | `unsigned int`               | number of noise hits |
 | `lapEigenPack`     | `lapEigenPack`               | Laplacian eigenvectors/eigenvalues (`LapPack`) |
-| `fileName`         | `std::string`                | if non-empty, saves noise to that location on disk (pending) |
+| `fileName`         | `std::string`                | file name for the noise saved to disk; not saved if empty |
 
 ### Dependencies
 
@@ -121,7 +121,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-This module has an enum variable `perambMode` that specifies $3$ different behaviors:
+This module has an enum variable `perambMode` that switches between $3$ different behaviors:
 
 #### pMode::perambOnly (default behavior)
 
@@ -148,9 +148,9 @@ In this mode the perambulators are reconstructed from a `fullSolve` by smearing 
 | `solver`              | `std::string`     | solver implementation                                                                                 |
 | `distilNoise`         | `std::string`     | `DistillationNoise` implementation (noise policy)                                                                   |
 | `timeSources`         | `std::string`     | desired list of time sources to be inverted over; uses all if empty                                           |
-| `perambFileName`      | `std::string`     | filestem for the perambulators saved to disk; not saved if empty                                      |
+| `perambFileName`      | `std::string`     | file name for the perambulators saved to disk; not saved if empty                                      |
 | `perambMode`          | `pMode`           | mode switch between `perambOnly: 0`, `inputSolve: 1`, `outputSolve: 2` (`perambOnly` if empty)        |
-| `fullSolveFileName`   | `std::string`     | filestem for full solve saved to disk; not saved if empty (`outputSolve` mode only)  |
+| `fullSolveFileName`   | `std::string`     | file name for full solve saved to disk; not saved if empty (`outputSolve` mode only)  |
 | `multiFileFullSolve`  | `std::string`     | if true saves full solve as multiple files  (`outputSolve` mode only)                                 |
 | `fullSolve`           | `std::string`     | full solve loaded from disk (`inputSolve` mode only)                                 |
 | `nVec`                | `std::string`     | $N_{vec}$ to be used from `fullSolve`(`inputSolve` mode only)                                         |
