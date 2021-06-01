@@ -231,7 +231,7 @@ where $N_t^{sparse} \le N_t$ is a minimal time extension accounting for non-zero
 Distillation meson field (saved to disk).
 
 ### File specification
-Folder tree in the format `outPath/{mesonFieldType}/{gamma}_{momentum}_{noisepair}.h5` is created.
+Folder tree in the format `outPath/{mesonFieldType}/{gamma}_p{momentum}_n{noisepair}.h5` is created.
 
 #### Data description
 The data section of the file is organized in $(I_T,J_T)$ pairs: each dataset named `{I_T}-{J_T}` contains the correspondent 3D array $B^{I_T J_T}$. The pairs `{I_T}-{J_T}` are listed in `/DistilMesonField/Metadata/TimeDilutionPairs`.
@@ -246,9 +246,9 @@ For example, on a lattice with $N_t=64$ we could have `TimeSlices={0,4}` for a c
 
 
 #### Metadata description
-The metadata is found at the H5 group `/DistilMesonField/Metadata/`
+The metadata is found at the HDF5 group `/DistilMesonField/Metadata/`
 
-| Parameter             | H5 Type                          | Description            |
+| Parameter             | HDF5 Type                          | Description            |
 |-----------------------|-------------------------------|------------------------|
 |`Nt` 			        | H5T_STD_U32LE | attribute identifying original time extension  |
 |`Nvec` 			    | H5T_STD_U32LE | attribute identifying total number of 3D-Laplacian eigenvectors used for smearing   |
@@ -256,14 +256,15 @@ The metadata is found at the H5 group `/DistilMesonField/Metadata/`
 |`Momentum` 			| H5T_STRING | attribute identifying 3d momentum  |
 |`MesonFieldType` 	    | H5T_STRING | attribute identifying combination of distillation vectors  |
 |`TimeDilutionPairs` 	| H5T_STD_U32LE | list of time-dilution blocks saved in the data section |
-|`NoiseHPair`		    | H5T_STRING | attribute containing noise pair used |
-|`NoiseHashes`		    | H5T_STRING | attribute containing pair of hashes of used noises	(pending implementation)    |
-|`TimeDilutionLeft`	    | H5T_STD_U32LE | attribute identifying the complete time-dilution scheme of the left vector  |
-|`TimeDilutionRight`	| same as above for right vector    |
-|`SpinDilutionLeft`	    | analogue to above for spin dilution and left vector   |
-|`SpinDilutionRight`	| same as above for right vector    |
-|`LapDilutionLeft`	    | analogue to above for laplacian dilution and left vector  |
-|`LapDilutionRight`	    | same as above for right vector    |
+|`NoisePair`		    | H5T_STRING | attribute containing noise pair used |
+|`NoiseHashesLeft/NoiseHashesLeft_{idx}`		| H5T_STRING | attribute containing the hash corresponding to the noise hit `idx`|
+|`NoiseHashesRight/NoiseHashesRight_{idx}`		| same as above for right noise |
+|`DilutionSchemes/TimeDilutionLeft`	    | H5T_STD_U32LE | attribute identifying the complete time-dilution scheme of the left vector as a 2d array  |
+|`DilutionSchemes/TimeDilutionRight`	| same as above for right vector    |
+|`DilutionSchemes/SpinDilutionLeft`	    | analogue to above for spin dilution and left vector   |
+|`DilutionSchemes/SpinDilutionRight`	| same as above for right vector    |
+|`DilutionSchemes/LapDilutionLeft`	    | analogue to above for laplacian dilution and left vector  |
+|`DilutionSchemes/LapDilutionRight`	    | same as above for right vector    |
 
 -----------
 
