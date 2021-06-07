@@ -13,9 +13,9 @@ $$ - \nabla^2 v_l(t) = \lambda_l(t) v_l(t), \qquad l=1, 2, \ldots, N_{vec}$$
 
 with eigenvalues $\lambda_l$. Here, the color index was omitted in $v$. The 3D Laplace operator is
 
-$$ -\nabla^2_{ab}(\pmb{x},\pmb{y},t) = 6 \delta_{xy} - \sum_{j=1}^3 (\tilde{U}^{ab}_j(\pmb{x},t) \delta_{x+\hat{j},y} + \tilde{U}^{ba}_j(\pmb{y},t)^* \delta_{x-\hat{j},y} ) $$
+$$ -\nabla^2_{ab}(\pmb{x},\pmb{y},t) = 6 \delta_{xy} - \sum_{j=1}^3 (U^{ab}_j(\pmb{x},t) \delta_{x+\hat{j},y} + U^{ba}_j(\pmb{y},t)^* \delta_{x-\hat{j},y} ) $$
 
-where the gauge links are stout smeared.
+where $U$ is a gauge fields.
 
 For generality purposes, the high-level language is that of stochastic-diluted distillation. We then define time-Laplacian-spin noises with the properties 
 
@@ -31,7 +31,7 @@ We can further introduce intermediate objects to facilitate computations and sim
 
 $$ \varrho^{rI}_{a \alpha}(\pmb x,t) = \sum_l v_{a l}(\pmb x, t) \eta^{rI}_{\alpha l}(t) .$$
 
-The Dirac inverse information is contained in the perambulator
+The inversion information is contained in the perambulator
 
 $$ \tau^{r I}_{\alpha l}(t) = \sum_{\pmb x', a'} v_{a' l} (\pmb x' ,t)^* \sum_{\beta',t'} \sum_{\pmb y', b'} D^{-1}_{\alpha \beta',a' b'}(\pmb x',t ; \pmb y' , t') \varrho^{rI}_{b' \beta'}(\pmb y',t'). $$
 Another important intermediate object is the solve (or sink) vector
@@ -80,7 +80,7 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-Generates a ($Z_2$) `DistillationNoise` embedded in an interlaced dilution scheme over time-Laplacian-spin indices. The dilution projectors can be explicitly written as $ P^I = P^{I_T} P^{I_L} P^{I_S}$ with 
+Generates a ($Z_2$) `DistillationNoise<FImpl>` embedded in an interlaced dilution scheme over time-Laplacian-spin indices. The dilution projectors can be explicitly written as $ P^I = P^{I_T} P^{I_L} P^{I_S}$ with 
 
 $$ P_{tt'}^{I_T}            = \delta_{tt'} \delta_{I_T,t \text{ mod } TI}, \qquad I_T=0,\ldots,TI-1, $$
 $$ P_{lk}^{I_L}             = \delta_{lk} \delta_{I_L,l \text{ mod } LI}, \qquad I_L=0,\ldots,LI-1, $$
@@ -90,7 +90,7 @@ and the diluted noise is
 
 $$  \eta^{rI}_{l\alpha}(t) = \sum_{t'}^{I_T} \sum_{k}^{I_L} \sum_{\beta}^{I_S} P_{tt'}^{I_T} P_{lk}^{I_L} P_{\alpha\beta}^{I_S} \eta^{r}_{k\beta}(t'). $$
 
-The values for each noise hit $r$ are seeded from a Unique Identifier (string) (???????). If `fileName` is unspecified, the noises are not saved to disk.
+The values for each noise hit $r$ are seeded from a Unique Identifier (string). If `fileName` is unspecified, the noises are not saved to disk.
 
 ### Parameters
 
@@ -110,6 +110,35 @@ The values for each noise hit $r$ are seeded from a Unique Identifier (string) (
 ### Products
 
 `DistillationNoise<FImpl>` $\eta^{rI}_{l\alpha}(t)$. This object is used by `Perambulator` and `DistilMesonField` to specify the distillation scheme.
+
+-----------
+
+## ExactDistillation
+
+### Template structure
+
+One template argument `FImpl`, expected to be a fermion implementation.
+
+### Description
+
+Generates a `DistillationNoise<FImpl>` playing the role of noise policy in other modules, using the fact that exact distillation is a limit case of diluted distillation.
+
+The noise policy values are all set to `1`, since there is no stochasticity.
+
+### Parameters
+
+| Parameter          | Type                         | Description                            |
+|--------------------|------------------------------|----------------------------------------|
+| `nVec`             | `unsigned int`               | number of Laplacian eigenvectors |
+| `lapEigenPack`     | `lapEigenPack`               | Laplacian eigenvectors/eigenvalues (`LapPack`) |
+
+### Dependencies
+
+- Laplacian eigenvectors and eigenvalues (`LapPack`)
+
+### Products
+
+`DistillationNoise<FImpl>` $\eta^{r=1,I}_{l\alpha}(t)$, with $I$ being a full dilution index. This object is used by `Perambulator` and `DistilMesonField` to specify the exact distillation scheme.
 
 -----------
 
@@ -146,7 +175,7 @@ In this mode the perambulators are reconstructed from a `fullSolve` by smearing 
 |-----------------------|-------------------|-------------------------------------------------------------------------------------------------------|
 | `lapEigenPack`        | `std::string`     | Laplacian eigenvectors/eigenvalues (`LapPack`)                                                        |
 | `solver`              | `std::string`     | solver implementation                                                                                 |
-| `distilNoise`         | `std::string`     | `DistillationNoise` implementation (noise policy)                                                                   |
+| `distilNoise`         | `std::string`     | `DistillationNoise<FImpl>` implementation (noise policy)                                                                   |
 | `timeSources`         | `std::string`     | desired list of time sources to be inverted over; uses all if empty                                           |
 | `perambFileName`      | `std::string`     | file name for the perambulators saved to disk; not saved if empty                                      |
 | `perambMode`          | `pMode`           | mode switch between `perambOnly: 0`, `inputSolve: 1`, `outputSolve: 2` (`perambOnly` if empty)        |
@@ -159,7 +188,7 @@ In this mode the perambulators are reconstructed from a `fullSolve` by smearing 
 
 - Laplacian eigenvectors/eigenvalues (`LapPack`) 
 
-- `DistillationNoise` implementation (e.g., [`InterlacedDistillation`](localhost:3000/#/mdistil?id=interlaceddistillation))
+- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation`](localhost:3000/#/mdistil?id=interlaceddistillation))
 
 - solver
 
@@ -170,6 +199,22 @@ In this mode the perambulators are reconstructed from a `fullSolve` by smearing 
 - perambulator $\tau^{r I}_{\alpha l}(t)$
 
 - full solve (`outputSolve` mode only)
+
+### File specification
+#### Perambulator
+Folder tree in the format `perambFileName/iDT_{t_idx}.{traj}.h5` is created.
+
+##### Data description
+Each file contains inversion information corresponding to a single time source `t_idx`. The data section of the file is a single HDF5 Dataset `/Perambulator` of complex (implementation dependent). The Dataspace has rank $6$ with sizes $( N_t, N_{vec}, N_{D_L}, N_{noise}, N_{D_S} , N_{spin} )$, where $N_{spin}$ is the number of spin degrees of freedom.
+
+##### Metadata description
+| Parameter                     | HDF5 Type     | Description            |
+|-------------------------------|---------------|------------------------|
+|`/GridDimensions`              | H5T_STD_U64LE | attribute identifying dimensions of the underlying Grid object  |
+|`/TensorDimensions` 	        | H5T_STD_U64LE | attribute identifying original `NamedTensor` dimensions  |
+|`/Metadata/Version` 			| H5T_STRING    | attribute identifying code version  |
+|`/Metadata/TimeDilutionIndex`  | H5T_STD_I32LE | attribute identifying time source  |
+|`/Metadata/NoiseHash_{idx}` 	| H5T_STD_I32LE | attribute containing the hash corresponding to the noise hit `idx`; `0` if exact distillation  |
 
 -----------
 
@@ -210,8 +255,8 @@ where $N_t^{sparse} \le N_t$ is a minimal time extension accounting for non-zero
 | `momenta`             | `std::vector<std::string>`    | list of 3D momenta |
 | `leftTimeSources`     | `std::string`                 | desired list of time-dilution indices chosen to be inverted over on left, e.g. `"0 2 4 6"` (if blank, uses all available)|
 | `rightTimeSources`    | `std::string`                 | same as above for right side|
-| `leftNoise`           | `std::string`                 | left `DistillationNoise` implementation (noise policy) |
-| `rightNoise`          | `std::string`                 | right `DistillationNoise` implementation (noise policy) |
+| `leftNoise`           | `std::string`                 | left `DistillationNoise<FImpl>` implementation (noise policy) |
+| `rightNoise`          | `std::string`                 | right `DistillationNoise<FImpl>` implementation (noise policy) |
 | `noisePairs`          | `std::vector<std::string>`    | desired list of "left right" noise index pairs available on the noise policies, e.g. `{"0 1" , "1 0"}`; can be left blank if using exact distillation |
 | `leftPeramb`          | `std::string`                 | left perambulator (only when type is `"phi-..."`) |
 | `rightPeramb`         | `std::string`                 | right perambulator (only when type is `...-phi"`) |
@@ -223,7 +268,7 @@ where $N_t^{sparse} \le N_t$ is a minimal time extension accounting for non-zero
 ### Dependencies
 
 - Laplacian eigenvectors/eigenvalues (`LapPack`)
-- `DistillationNoise` implementation (e.g., [`InterlacedDistillation`](localhost:3000/#/mdistil?id=interlaceddistillation))
+- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation`](localhost:3000/#/mdistil?id=interlaceddistillation))
 - perambulator $\tau^{r I}_{\alpha l}(t)$
 
 ### Products
@@ -231,12 +276,12 @@ where $N_t^{sparse} \le N_t$ is a minimal time extension accounting for non-zero
 Distillation meson field (saved to disk).
 
 ### File specification
-Folder tree in the format `outPath/{mesonFieldType}/{gamma}_p{momentum}_n{noisepair}.h5` is created.
+Folder tree in the format `outPath/{mesonFieldType}/{gamma}_p{momentum}_n{noisepair}.{traj}.h5` is created.
 
 #### Data description
 The data section of the file is organized in $(I_T,J_T)$ pairs: each dataset named `{I_T}-{J_T}` contains the correspondent 3D array $B^{I_T J_T}$. The pairs `{I_T}-{J_T}` are listed in `/DistilMesonField/Metadata/TimeDilutionPairs`.
 
-- `/DistilMesonField/{I_T}-{J_T}` : Dataset of complex (implementation dependent) type containing a time-dilution block $B^{I_T J_T}$. The Dataspace has rank 3 with sizes $( N_t^{sparse}, N^{left}_{D_L} N^{left}_{D_S}, N^{right}_{D_L} N^{right}_{D_S} )$.
+- `/DistilMesonField/{I_T}-{J_T}` : Dataset of complex (implementation dependent) type containing a time-dilution block $B^{I_T J_T}$. The Dataspace has rank $3$ with sizes $( N_t^{sparse}, N^{left}_{D_L} N^{left}_{D_S}, N^{right}_{D_L} N^{right}_{D_S} )$.
 
 $N_t^{sparse}$ is potentially different for each dataset and the content of the time dimension is described by `TimeSlices` (next item).
 
@@ -246,25 +291,24 @@ For example, on a lattice with $N_t=64$ we could have `TimeSlices={0,4}` for a c
 
 
 #### Metadata description
-The metadata is found at the HDF5 group `/DistilMesonField/Metadata/`
 
 | Parameter             | HDF5 Type                          | Description            |
 |-----------------------|-------------------------------|------------------------|
-|`Nt` 			        | H5T_STD_U32LE | attribute identifying original time extension  |
-|`Nvec` 			    | H5T_STD_U32LE | attribute identifying total number of 3D-Laplacian eigenvectors used for smearing   |
-|`Operator` 			| H5T_STRING | attribute identifying gamma matrix |
-|`Momentum` 			| H5T_STRING | attribute identifying 3d momentum  |
-|`MesonFieldType` 	    | H5T_STRING | attribute identifying combination of distillation vectors  |
-|`TimeDilutionPairs` 	| H5T_STD_U32LE | list of time-dilution blocks saved in the data section |
-|`NoisePair`		    | H5T_STRING | attribute containing noise pair used |
-|`NoiseHashesLeft/NoiseHashesLeft_{idx}`		| H5T_STRING | attribute containing the hash corresponding to the noise hit `idx`|
-|`NoiseHashesRight/NoiseHashesRight_{idx}`		| same as above for right noise |
-|`DilutionSchemes/TimeDilutionLeft`	    | H5T_STD_U32LE | attribute identifying the complete time-dilution scheme of the left vector as a 2d array  |
-|`DilutionSchemes/TimeDilutionRight`	| same as above for right vector    |
-|`DilutionSchemes/SpinDilutionLeft`	    | analogue to above for spin dilution and left vector   |
-|`DilutionSchemes/SpinDilutionRight`	| same as above for right vector    |
-|`DilutionSchemes/LapDilutionLeft`	    | analogue to above for laplacian dilution and left vector  |
-|`DilutionSchemes/LapDilutionRight`	    | same as above for right vector    |
+|`/Metadata/Nt` 			        | H5T_STD_U32LE | attribute identifying original time extension  |
+|`/Metadata/Nvec` 			    | H5T_STD_U32LE | attribute identifying total number of 3D-Laplacian eigenvectors used for smearing   |
+|`/Metadata/Operator` 			| H5T_STRING | attribute identifying gamma matrix |
+|`/Metadata/Momentum` 			| H5T_STRING | attribute identifying 3d momentum  |
+|`/Metadata/MesonFieldType` 	    | H5T_STRING | attribute identifying combination of distillation vectors  |
+|`/Metadata/TimeDilutionPairs` 	| H5T_STD_U32LE | list of time-dilution blocks saved in the data section |
+|`/Metadata/NoisePair`		    | H5T_STRING | attribute containing noise pair used |
+|`/Metadata/NoiseHashLeft/NoiseHashLeft_{idx}`		| H5T_STRING | attribute containing the hash corresponding to the noise hit `idx`; `0` if exact distillation |
+|`/Metadata/NoiseHashRight/NoiseHashRight_{idx}`		| same as above for right noise |
+|`/Metadata/DilutionSchemes/TimeDilutionLeft`	    | H5T_STD_U32LE | attribute identifying the complete time-dilution scheme of the left vector as a 2d array  |
+|`/Metadata/DilutionSchemes/TimeDilutionRight`	| same as above for right vector    |
+|`/Metadata/DilutionSchemes/SpinDilutionLeft`	    | analogue to above for spin dilution and left vector   |
+|`/Metadata/DilutionSchemes/SpinDilutionRight`	| same as above for right vector    |
+|`/Metadata/DilutionSchemes/LapDilutionLeft`	    | analogue to above for laplacian dilution and left vector  |
+|`/Metadata/DilutionSchemes/LapDilutionRight`	    | same as above for right vector    |
 
 -----------
 
