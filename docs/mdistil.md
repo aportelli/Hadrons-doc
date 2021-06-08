@@ -210,8 +210,6 @@ Each file contains inversion information corresponding to a single time source `
 ##### Metadata description
 | Parameter                     | HDF5 Type     | Description            |
 |-------------------------------|---------------|------------------------|
-|`/GridDimensions`              | H5T_STD_U64LE | attribute identifying dimensions of the underlying Grid object  |
-|`/TensorDimensions` 	        | H5T_STD_U64LE | attribute identifying original `NamedTensor` dimensions  |
 |`/Metadata/Version` 			| H5T_STRING    | attribute identifying code version  |
 |`/Metadata/TimeDilutionIndex`  | H5T_STD_I32LE | attribute identifying time source  |
 |`/Metadata/NoiseHash_{idx}` 	| H5T_STD_I32LE | attribute containing the hash corresponding to the noise hit `idx`; `0` if exact distillation  |
