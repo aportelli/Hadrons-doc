@@ -146,8 +146,8 @@ Each file contains inversion information corresponding to a single time source `
 | Parameter                     | HDF5 Type     | Description            |
 |-------------------------------|---------------|------------------------|
 |`/GridDimensions` 				| H5T_STD_U64LE | underlying `Grid` object dimensions	|
-|`/TensorDimensions` 			| H5T_STD_U64LE | `NamedTensor` dimensions 	|
-|`/IndexNames/IndexNames_{idx}` | H5T_STRING    | name of `NamedTensor` indices `\{ nT, nVec, nDL, nNoise, nDS \}` |
+|`/TensorDimensions` 			| H5T_STD_U64LE | underlying `NamedTensor` dimensions 	|
+|`/IndexNames/IndexNames_{idx}` | H5T_STRING    | names of `NamedTensor` indices `{ nT, nVec, nDL, nNoise, nDS }` |
 |`/Metadata/Version` 			| H5T_STRING    | attribute identifying code version  |
 |`/Metadata/TimeDilutionIndex`  | H5T_STD_I32LE | attribute identifying time source  |
 |`/Metadata/NoiseHash_{idx}` 	| H5T_STD_I32LE | attribute containing the hash corresponding to the noise hit `idx`; `0` if exact distillation  |
@@ -196,10 +196,10 @@ The parameters $\mathbf p, \Gamma$ are fixed on each meson field.
 | `rightPeramb`         | `std::string`                 | same as above for right side |
 | `leftVectorStem`         | `std::string`              | full solve stem to be read from disk and used as the `phi` field instead of computing it from the `leftPeramb`; if empty, `phi` is computed from `leftPeramb`|
 | `rightVectorStem`         | `std::string`             | same as above for right-hand side |
-| `deltaT`              | `std::string`     			| $\Delta t$ to be used (see below), e.g., `"0 1 2 3"`; if blank, uses all possible $\Delta t$ (full meson field) 			|
-| `relativeSide`             | `std::string`     		| `left` or `right` (see below); if blank, assumes `left` if there is at least one `rho` field and `right` otherwise 	|
 | `cacheSize`           | `std::string`                 | size of the cache blocks (along spin-Laplacian axes) passed to meson field kernel (`<= blockSize`)|
 | `blockSize`           | `std::string`                 | size of IO blocks that are obtained from cache blocks by copy ($\le N_{D_L} N_{D_S}$)|
+| `deltaT`              | `std::string`     			| $\Delta t$ to be used (see below), e.g., `"0 1 2 3"`; if blank, uses all possible $\Delta t$ (full meson field) 			|
+| `relativeSide`             | `std::string`     		| `left` or `right` (see below); if blank, assumes `left` if there is at least one `rho` field and `right` otherwise 	|
 
 ### Dependencies
 
@@ -297,7 +297,7 @@ Distillation meson field (saved to disk).
 
 ### Diagonal and $\Delta T$ parameters
 
-Following the notation stablished on `DistilMesonFieldRelative`, the `onlyDiagonal` mode computes $ \tilde{\mathcal{M}}^{I_T J_T}(t) $ for $I_T=J_T$ and all $t$. If a `phi-phi` field is being computed, `deltaT` ($\Delta T$) is not empty and the diagonal mode is on, the subdiagonal blocks $I_T=J_T+\Delta T$ are computed (it will periodically wrap around the dilution extension $N_{D_T}$ if necessary).
+Following the notation stablished on `DistilMesonFieldRelative`, the `onlyDiagonal` mode computes $ \tilde{\mathcal{M}}^{I_T J_T}(t) $ for $I_T=J_T$ and all $t$. If a `phi-phi` field is being computed, `deltaT` ($\Delta T$) is not empty and the diagonal mode is on, the subdiagonal blocks $I_T=J_T+\Delta T$ are computed instead (it will periodically wrap around the dilution extension $N_{D_T}$ if necessary).
 
 
 ### File specification
