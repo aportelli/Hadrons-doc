@@ -6,6 +6,7 @@
   - [MAction](maction.md)
   - [MContraction](mcontraction.md)
   - [MDistil](mdistil.md)
+  - [MNoise](mnoise.md)
   - [MFermion](mfermion.md)
   - [MGauge](mgauge.md)
   - [MIO](mio.md)
