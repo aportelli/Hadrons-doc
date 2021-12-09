@@ -94,7 +94,7 @@ Same as above, but additionally computes the full solves [Mastropas, Richards, 2
 
 $$ \phi^{rI}_{a\alpha}(\pmb x,t)  = \sum_{b,\beta,\pmb x', t'} D^{-1}_{a\alpha,b\beta}(\pmb x,t;\pmb x', t') \varrho^{rI}_{b \beta} (\pmb x',t') $$
 
-Unlike the perambulators, the full solves are unsmeared at the sink and so not projected into the distillation basis. This makes them lattice-sized objects and therefore much larger. The `outputSolve` mode only hand in the `solve` to the environment and does not write it to disk.
+Unlike the perambulators, the full solves are unsmeared at the sink and so not projected into the distillation basis. This makes them lattice-sized objects and therefore much larger. The `outputSolve` mode only hands in the `solve` to the environment and does not write it to disk.
 
 #### pMode::saveSolve
 
@@ -102,7 +102,7 @@ Same as above, but saves full solve to disk instead of handling it to the enviro
 
 #### pMode::inputSolve
 
-In this mode the perambulators are reconstructed from a `fullSolve` by smearing the sink with a potentially different number of Laplacian eigenvectors, instead of using a solver. The input `nVec` specifies the number Laplacian eigenvectors to smear the sink, which of course needs to be less or equal the original number present at the source.
+In this mode the perambulators are reconstructed from a `fullSolve` (read from `Hadrons` environment) by smearing the sink with a potentially different number of Laplacian eigenvectors, instead of using a solver. The input `nVec` specifies the number Laplacian eigenvectors to smear the sink, which of course needs to be less or equal the original number present at the source.
 
 
 ### Parameters
@@ -116,7 +116,7 @@ In this mode the perambulators are reconstructed from a `fullSolve` by smearing 
 | `perambFileName`      | `std::string`     | file name for the perambulators saved to disk; not saved if empty                                      |
 | `perambMode`          | `pMode`           | mode switch between `perambOnly: 0`, `inputSolve: 1`, `outputSolve: 2`, `saveSolve: 3` (`perambOnly` if empty)        |
 | `fullSolveFileName`   | `std::string`     | file name for full solve saved to disk; not saved if empty (`saveSolve` mode only)  |
-| `fullSolve`           | `std::string`     | full solve loaded from disk (`inputSolve` mode only)                                 |
+| `fullSolve`           | `std::string`     | full solve read from environment (`inputSolve` mode only)                                 |
 | `nVec`                | `std::string`     | $N_{vec}$ to be used from `fullSolve`(`inputSolve` mode only)                                           				|
 
 ### Dependencies
