@@ -1,9 +1,9 @@
 # MDistil
 
 -----------
-## Intoduction and Notation
+## Introduction and Notation
 
-This is the documentation to the implementation of Distillation [Peardon et al., 2009, 0905.2160] and stochastic LapH [Morningstar et al., 2011, 1104.3870] in grid. The smearing kernel of distillation is
+This is the documentation to the implementation of Distillation [Peardon et al., 2009, 0905.2160] and stochastic LapH [Morningstar et al., 2011, 1104.3870] in Hadrons and Grid. The smearing kernel of distillation is
 
 $$ \mathcal{S}_{}(\pmb x,\pmb y, t)  = \sum_{l=1}^{N_{vec}} v_l (\pmb x,t)  v^{\dagger}_l (\pmb y,t), $$
 
@@ -86,58 +86,59 @@ This module has an enum variable `perambMode` that switches between $3$ differen
 
 #### pMode::perambOnly (default behavior)
 
-Computes the perambulator $\tau^{r I}_{\alpha l}(t)$ from Laplacian eigenvectors, distillation noise and a solver. The dependency `distilNoise` dictates the structure on the noise and dilution indices ($r,I$). For example, passing a [`InterlacedDistillation<FImpl>`](localhost:3000/#/mnoise?id=interlaceddistillation) noise to `distilNoise` will specify the perambulator to be evaluated stochastically and with the interlaced dilution.
+Computes the perambulator $\tau^{r I}_{\alpha l}(t)$ from Laplacian eigenvectors, distillation noise and a solver. The dependency `distilNoise` dictates the structure on the noise and dilution indices ($r,I$). For example, passing a [`InterlacedDistillation<FImpl>`](https://aportelli.github.io/Hadrons-doc/#/mnoise?id=interlaceddistillation) will specify the perambulator to be evaluated stochastically and with a interlaced dilution scheme.
 
 #### pMode::outputSolve
 
-Same as above, but additionally computes the full solves [Mastropas, Richards, 2014, 1403.5575, eq. (20)]
+Same as above, but additionally computes the unsmeared solves (or generalised perambulators) [Mastropas, Richards, 2014, 1403.5575, eq. (20)]
 
-$$ \phi^{rI}_{a\alpha}(\pmb x,t)  = \sum_{b,\beta,\pmb x', t'} D^{-1}_{a\alpha,b\beta}(\pmb x,t;\pmb x', t') \varrho^{rI}_{b \beta} (\pmb x',t') $$
+$$ \phi^{rI}_{a\alpha}(\pmb x,t)  = \sum_{b,\beta,\pmb x', t'} D^{-1}_{a\alpha,b\beta}(\pmb x,t;\pmb x', t') \varrho^{rI}_{b \beta} (\pmb x',t'). $$
 
-Unlike the perambulators, the full solves are unsmeared at the sink and so not projected into the distillation basis. This makes them lattice-sized objects and therefore much larger. The `outputSolve` mode only hand in the `solve` to the environment and does not write it to disk.
+Unlike the usual perambulators, these objects are unsmeared at the sink and so not projected into the distillation basis at the sink side. This makes them lattice-sized objects and therefore much larger. The `outputSolve` mode hands in the unsmeared solves to Hadrons environment and writes it to disk in case `unsmSolveOutFileName` is not empty. This object can be retrieved later by other modules by accessing `[name of perambulator module]_unsm_solve`.
 
-#### pMode::saveSolve
+#### pMode::saveSolveOnly
 
-Same as above, but saves full solve to disk instead of handling it to the environment.
+Same as `pMode::perambOnly` and saves unsmeared solves to disk ( does not handle it to the environment).
 
 #### pMode::inputSolve
 
-In this mode the perambulators are reconstructed from a `fullSolve` by smearing the sink with a potentially different number of Laplacian eigenvectors, instead of using a solver. The input `nVec` specifies the number Laplacian eigenvectors to smear the sink, which of course needs to be less or equal the original number present at the source.
+In this mode the perambulators are reconstructed from the appropriate elements of `unsmSolve` (read from `Hadrons` environment as `[name of perambulator module]_unsm_solve`) by smearing the sink with a potentially different number of Laplacian eigenvectors less than or equal to the original one, instead of using a solver to compute Dirac matrix inversions. The input `nVec` specifies the number Laplacian eigenvectors to smear the sink, which of course needs to be less or equal the original number present at `lapEigenPack`.
 
 
 ### Parameters
 
-| Parameter             | Type              | Description                                                                                           |
-|-----------------------|-------------------|-------------------------------------------------------------------------------------------------------|
-| `lapEigenPack`        | `std::string`     | Laplacian eigenvectors/eigenvalues (`LapPack`)                                                        |
-| `solver`              | `std::string`     | solver implementation                                                                                 |
-| `distilNoise`         | `std::string`     | `DistillationNoise<FImpl>` implementation (noise policy)                                                                   |
-| `timeSources`         | `std::string`     | desired list of time sources to be inverted over; uses all if empty                                           |
-| `perambFileName`      | `std::string`     | file name for the perambulators saved to disk; not saved if empty                                      |
-| `perambMode`          | `pMode`           | mode switch between `perambOnly: 0`, `inputSolve: 1`, `outputSolve: 2`, `saveSolve: 3` (`perambOnly` if empty)        |
-| `fullSolveFileName`   | `std::string`     | file name for full solve saved to disk; not saved if empty (`saveSolve` mode only)  |
-| `fullSolve`           | `std::string`     | full solve loaded from disk (`inputSolve` mode only)                                 |
-| `nVec`                | `std::string`     | $N_{vec}$ to be used from `fullSolve`(`inputSolve` mode only)                                           				|
+| Parameter             | Type              | Description                                                                                               |
+|-----------------------|-------------------|--------------------------------------------------------------------------------------------------------|
+| `lapEigenPack`        | `std::string`     | Laplacian eigenvectors/eigenvalues (`LapPack`)                        |
+| `solver`              | `std::string`     | solver implementation                                                 |
+| `distilNoise`         | `std::string`     | `DistillationNoise<FImpl>` implementation (noise policy) - should correspond to $N_{vec}$ in `lapEigenPack`           |
+| `timeSources`         | `std::string`     | desired list of time sources to be inverted over; uses all if empty   |
+| `perambOutFileName`   | `std::string`     | file stem for the perambulators saved to disk; not saved if empty     |
+| `perambMode`          | `pMode`           | mode switch between `perambOnly: 0`, `inputSolve: 1`, `outputSolve: 2`, `saveSolveOnly: 3` (`perambOnly` if empty) |
+| `unsmSolveOutFileName`| `std::string`     | file stem for full solve saved to disk; not saved if empty (`saveSolveOnly` or `outputSolve` modes only)        |
+| `unsmSolve`           | `std::string`     | unsmeared solve read from environment (`inputSolve` mode only)    |
+| `nVec`                | `std::string`     | $N_{vec}$ to be used from `unsmSolve`(`inputSolve` mode only)     |
+| `sourceBatchSize`     | `int`             | number of batched sources passed to guesser modules (`1` for no deflation or non-batched deflation)              |
 
 ### Dependencies
 
-- Laplacian eigenvectors/eigenvalues (`LapPack`) 
+- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation<FImpl>`](https://aportelli.github.io/Hadrons-doc/#/mdistil?id=interlaceddistillation))
 
-- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation<FImpl>`](localhost:3000/#/mdistil?id=interlaceddistillation))
+- `lapEigenPack` (Laplacian eigenvectors/eigenvalues)
 
-- solver
+- `solver`
 
-- full solve (`inputSolve` mode only)
+- `unsmSolve`  (`inputSolve` mode only)
 
 ### Products
 
 - perambulator $\tau^{r I}_{\alpha l}(t)$
 
-- full solve (`outputSolve` mode only)
+- unsmeared solves (`outputSolve` or `saveSolveOnly` modes only)
 
 ### File specification
 #### Perambulator
-Folder tree in the format `perambFileName/iDT_{t_idx}.{traj}.h5` is created.
+Folder tree in the format `perambFileName.{traj}/iDT_{t_idx}.{traj}.h5` is created.
 
 ##### Data description
 Each file contains inversion information corresponding to a single time source `t_idx`. The data section of the file is a single HDF5 Dataset `/Perambulator` of complex (implementation dependent). The Dataspace has rank $6$ with sizes $( N_t, N_{vec}, N_{D_L}, N_{noise}, N_{D_S} , N_{spin} )$, where $N_{spin}$ is the number of spin degrees of freedom.
@@ -196,15 +197,15 @@ The parameters $\mathbf p, \Gamma$ are fixed on each meson field.
 | `rightPeramb`         | `std::string`                 | same as above for right side |
 | `leftVectorStem`         | `std::string`              | full solve stem to be read from disk and used as the `phi` field instead of computing it from the `leftPeramb`; if empty, `phi` is computed from `leftPeramb`|
 | `rightVectorStem`         | `std::string`             | same as above for right-hand side |
-| `cacheSize`           | `std::string`                 | size of the cache blocks (along spin-Laplacian axes) passed to meson field kernel (`<= blockSize`)|
-| `blockSize`           | `std::string`                 | size of IO blocks that are obtained from cache blocks by copy ($\le N_{D_L} N_{D_S}$)|
+| `cacheSize`           | `std::string`                 | size of the cache blocks (along spin-Laplacian axes) passed to meson field kernel (required `<= blockSize`)|
+| `blockSize`           | `std::string`                 | size of IO blocks that are obtained from cache blocks by cache copying ($\le N_{D_L} N_{D_S}$)|
 | `deltaT`              | `std::string`     			| $\Delta t$ to be used (see below), e.g., `"0 1 2 3"`; if blank, uses all possible $\Delta t$ (full meson field) 			|
 | `relativeSide`             | `std::string`     		| `left` or `right` (see below); if blank, assumes `left` if there is at least one `rho` field and `right` otherwise 	|
 
 ### Dependencies
 
 - Laplacian eigenvectors/eigenvalues (`LapPack`)
-- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation<FImpl>`](localhost:3000/#/mdistil?id=interlaceddistillation))
+- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation<FImpl>`](https://aportelli.github.io/Hadrons-doc/#/mdistil?id=interlaceddistillation))
 - perambulator $\tau^{r I}_{\alpha l}(t)$
 
 ### Products
@@ -288,7 +289,7 @@ In principle, this module performs the same as `DistilMesonFieldRelative`, but w
 ### Dependencies
 
 - Laplacian eigenvectors/eigenvalues (`LapPack`)
-- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation<FImpl>`](localhost:3000/#/mdistil?id=interlaceddistillation))
+- `DistillationNoise<FImpl>` implementation (e.g., [`InterlacedDistillation<FImpl>`](https://aportelli.github.io/Hadrons-doc/#/mdistil?id=interlaceddistillation))
 - perambulator $\tau^{r I}_{\alpha l}(t)$
 
 ### Products
