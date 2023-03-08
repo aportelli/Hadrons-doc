@@ -88,6 +88,8 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
+Creates a Möbius domain-wall action based on the gauge field `gauge` with `b=(scale+1)/2` and `c=(scale-1)/2`. `scale=2` is equivalent to a Möbius domain-wall action with $b=1.5$ and $c=0.5$.
+
 ### Parameters
 
 | Parameter   | Type           | Description                                    |
