@@ -320,6 +320,180 @@ This module produces a correlator called `meson` that is saved to a hdf5 file (o
 
 -----------
 
+## QEDBurgerLong
+
+### Template structure
+
+- A `FImpl` template argument, expected to be a fermion implementation.
+- A `VType` template argument, expected to be the vectorised type of an EmField.
+ 
+### Description
+
+This module partially evaluates the QED Burger diagram with local currents
+$$ \sum_{x,y} i^2 \mathrm{Tr}(q(x,y) \gamma_\mu q(y,x) \gamma_\nu) G_{\mu\nu}(x-y), $$
+which appears at first order in the Rome 123 method for computing isospin-breaking effects. The precise expression computed by this module is
+$$ \sum_{r} i^2 \mathrm{Tr}\{q(0,r) \gamma_\mu q(r,0) \gamma_\nu\} G_{\mu\nu}(r), $$
+for all $|r|^2 > R^2$, where $R$ is a radial distance from the lattice origin. $R^2$ may be negative, in which case no sites are dropped from the sum. This module is intended to be used with point-source propagators, such that this distance-splitting is well-defined. 
+
+This distance-splitting is performed because this trace is short-distance dominated. This module is therefore intended to be a cheap estimator for the sub-dominant contributions to this trace, which can be less precisely estimated due to its small size. This is the strategy outlined in \[1\].
+
+This module is complementary to `MContraction::QEDBurgerShort`, which computes
+$$ \sum_{x,r} i^2 Tr(q(x,x+r) \gamma_\mu q(x+r,x) \gamma_\nu) G_{\mu\nu}(r). $$
+for $|r|^2 \leq R^2$, where $R$ is again an input distance limit. Since `MContraction::QEDBurgerLong` performs the contraction on the spatial complement of the domain of `MContraction::QEDBurgerShort` for a given $R$, combining the results of these two modules for the same $R$ input recovers the full Burger diagram.
+
+Note that `MContraction::QEDBurgerLong` assumes that the propagators it receives are solved on a point-source at the origin. In order to improve the statistical estimation of this diagram, it is necessary to average over results computed for multiple randomly-chosen point sources. This means that input propagators must be C-Shifted to the origin before being given to this module, _e.g._ using `MUtilities::CShiftPropagatorField`.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `q` | `std::string` | A `PropagatorField` solved on a point source, centred on the lattice origin. |
+| `photonProp` | `std::string` | A  momentum-space photon propagator, _e.g._ created with `MGauge::PhotonPropQedL`. |
+| `rSq` | `int` | The radial distance squared outside of which to perform the site sum. |
+| `output` | `std::string` | The filestem to use for the output file.  |
+
+### Dependencies
+
+- The point-source propagator `q`.
+- The photon propagator `photonProp`.
+
+### Products
+
+`Grid::Real`, corresponding to the expression $$ \sum_{r} i^2 \mathrm{Tr}\{q(0,r) \gamma_\mu q(r,0) \gamma_\nu\} G_{\mu\nu}(r), $$
+for $|r| > R$. Saved to the environment as a `HadronsSerializable` with the same name as the module.
+
+### References
+
+\[1\] Harris et al., PoS LATTICE2022 (2023) 013 \[[https://inspirehep.net/literature/2621889](https://inspirehep.net/literature/2621889)\]
+
+-----------
+
+## QEDBurgerShort
+
+### Template structure
+
+- A `FImpl` template argument, expected to be a fermion implementation.
+- A `Field` template argument, expected to be the type of the input fermion objects and noise sources.
+- A `VType` template argument, expected to be the vectorised type of an EmField.
+ 
+### Description
+
+This module partially evaluates the QED Burger diagram using local currents,
+$$ \sum_{x,y} i^2 \mathrm{Tr} \{ q(x,y) \gamma_\mu q(y,x) \gamma_\nu \} G_{\mu\nu}(x-y), $$
+which appears at first order in the Rome 123 method for computing isospin-breaking effects. The precise expression evaluated by this module is
+$$ \sum_{x,r} i^2 \mathrm{Tr} \{ q(x,x+r) \gamma_\mu q(x+r,x) \gamma_\nu \} G_{\mu\nu}(r), $$
+where $y$ is replaced by $x+r$. This is evaluated for each $r$ satisfying $|r|^2 \leq R^2$, where $R$ is a distance limit taken as an input to the module. The volume-average over $x$ provides a precise estimate for the contribution from each $r$, but since each $r$ must be individually estimated, the cost of the module grows as $\sim \mathcal{O}(R^4)$.
+
+The burger diagram is short-distance dominated, and this module therefore provides a precise estimate of the short-distance contribution to the overall trace. The module `MContraction::QEDBurgerLong` provides a complementary estimate for the long-distance contribution using a cheaper and less-precise estimator. The value of $R^2$ chosen is then available as a trade-off parameter between cost and precision, with larger $R^2$ giving exponentially diminishing returns.
+
+The cost of the contraction can be considerably reduced by exploiting symmetries in the burger diagram. In the continuum, the diagram is radially symmetric, which breaks to (at most) an octahedral symmetry on a discrete lattice. Factors such as boundary conditions and other asymmetries may reduce the symmetry further. One can then perform the contraction for only a subset of unique shift-vectors $r$ that can be mapped to the full set under a particular symmetry.
+
+However, since this module assumes stochastic estimation for diagram in order to implement the volume-average, there is a cost to choosing a stronger symmetry: replacing (for example) two symmetric vectors with a single vector effectively halves the noise hits on that vector. There is therefore a trade-off between precision and contraction time that can be balanced by choosing how strong the symmetry condition is.
+
+It is important to also bear in mind that the diagram exponentially falls off with distance, and the total shift-vector count grows as $\sim \mathcal{O}(R^4)$: therefore one might want to use a less restrictive symmetry for small distances, where the largest contributions from the fewest shifts are, and a stronger symmetry at larger distances, where there are many more shifts, but the overall contribution to the sum is suppressed. This module provides an option to specify a particular symmetry for each shell corresponding to a particular $|r|^2$ to enable this.
+
+The symmetries available to impose on each $|r|^2$ shell are:
+- `none`: Compute all sites.
+- `parity`: Divide the shift vectors into two sets, such that each set contains the negative of the shifts in the other. For $G_{\mu\nu}(r) = G_{\nu\mu}(r)$, these halves contain identical information, and therefore using the `none` symmetry over `parity` symmetry is a waste of resources.
+- `orthant`: Only compute the shifts with all coordinates $\geq$ 0, and duplicate the contraction values to the corresponding shifts in the other (in 4D) 15 orthants. This requires a little over 1/16 of the shift vectors.
+- `octahedral3D`: Use octahedral symmetry in the spatial components of the lattice and parity symmetry in the temporal dimension, which requires approximately 1/96 of the full shifts.
+- `octahedral`: Use octahedral symmetry in all four spacetime coordinates, which requires approximately 1/384 of the full shifts.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `sources` | `std::string` | A `std::vector` of `Field`-valued noise sources. |
+| `qs` | `std::string` | A `std::vector` of `Field`-valued fermions. |
+| `photonProps` | `std::vector<std::string>` | A vector of momentum-space photon propagator names, _e.g._ created with `MGauge::PhotonPropQedL`. |
+| `rSq` | `int` | The squared radius within which to calculate the shift vectors. |
+| `shellSymmetries` | `std::vector<SymmetryMode>` | The shift-vector-reduction method used on each $\|r\|^2$ shell. If fewer symmetries are specified than computed shells, the final symmetry is used for all larger shells. Options are `none`, `parity`, `orthant`, `octahedral3D`, and `octahedral`. |
+| `output` | `std::string` | The filestem to use for the output file.  |
+
+### Dependencies
+
+- The noise fields `sources`.
+- The stochastic propagators `qs`.
+- The photon propagators in `photonProps`.
+
+### Products
+
+This module produces an $(n_{sources} * n_{radii})$ vectors of real numbers for the unbiased burger, biased burger, and for the bias terms, for increase numbers of hits.
+
+-----------
+
+## QEDSpecs
+
+### Template structure
+
+- A `FImpl` template argument, expected to be a fermion implementation.
+- A `VType` template argument, expected to be the vectorised type of an EmField.
+ 
+### Description
+
+This module computes the contraction
+$$ \sum_{x,y} i^2 \; \mathrm{Tr}\{S_1(x,x) \gamma_\mu\} \; \mathrm{Tr}\{S_2(y,y) \gamma_\nu\} \; G_{\mu\nu}(x-y), $$
+the quark-disconnected 'specs' diagram appearing at first order in the Rome 123 method for computing isospin-breaking effects.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `q1` | `std::string` | A loop propagator. |
+| `q2` | `std::string` | A loop propagator. |
+| `photonProp` | `std::string` | A momentum-space photon propagator, _e.g._ created with MGauge::PhotonPropQedL. |
+| `output` | `std::string` | Specify the output location of the correlator that is generated.|
+
+### Dependencies
+
+- The loop propagator `q1`
+- The loop propagator `q2`
+- The photon propagator `photonProp`, _e.g._ created with MGauge::PhotonPropQedL.
+
+### Products
+
+This module produces a single real number that is the result of the 'specs' contraction.
+
+-----------
+
+## QEDTadpole
+
+### Template structure
+
+- A `FImpl` template argument, expected to be a fermion implementation.
+- A `VType` template argument, expected to be the vectorised type of an EmField.
+ 
+### Description
+
+This module computes the position-space QED tadpole contraction
+$$ \sum_{x} i \mathrm{Tr}\{S(x,x) \gamma_\mu\} G_{\mu\nu}(x-y). $$
+appearing at first order in the Rome 123 method for computing isospin-breaking effects. The tadpole field is then intended to be used with _e.g._ `MSource::SeqAslash` in order to insert the tadpole field on a propagator.
+The element $ \mathrm{Tr}\{S(x,x) \gamma_\mu\}$ is passed to the module as four separate Lorentz components.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `loop_x` | `std::string` | The trace of a loop propagator with a GammaX insertion, _e.g._ created with `MContraction::DiscLoopTrace`. |
+| `loop_y` | `std::string` | The trace of a loop propagator with a GammaY insertion, _e.g._ created with `MContraction::DiscLoopTrace`. |
+| `loop_z` | `std::string` | The trace of a loop propagator with a GammaZ insertion, _e.g._ created with `MContraction::DiscLoopTrace`. |
+| `loop_t` | `std::string` | The trace of a loop propagator with a GammaT insertion, _e.g._ created with `MContraction::DiscLoopTrace`. |
+| `photonProp` | `std::string` | A momentum-space photon propagator, _e.g._ created with `MGauge::PhotonPropQedL`. |
+
+### Dependencies
+
+- The loop propagator trace `loop_x`
+- The loop propagator trace `loop_y`
+- The loop propagator trace `loop_z`
+- The loop propagator trace `loop_t`
+- The photon propagator `photonProp`, _e.g._ created with `MGauge::PhotonPropQedL`.
+
+### Products
+
+This module produces a position-space `photonProp` taking the value of a tadpole field.
+
+-----------
+
 ## SigmaToNucleonEye
 
 
@@ -426,6 +600,43 @@ This module depends on five specific propagators being generated and a sink modu
 ### Products
 
 This module produces a $4 \times 4$ `SpinMatrix` correlator called `sigmaToNucleonNonEye` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. The two topologies are saved using the axis label `trace = 0` or `trace = 1`.
+
+-----------
+
+## SplitEvenLoop
+
+### Template structure
+
+This module takes a `FImpl` template argument, expected to be a fermion implementation.
+ 
+### Description
+
+This module is intended to be used to calculate the difference of two single-propagator loops using a 'split-even' estimator.
+The module takes two propagators solved on the same noise source and, assuming Spin-Colour-Diagonal noise, computes the loop
+$$ (m_2 - m_1) * \{S_1 \eta \}(x) * \{\eta^\dagger S_2\}(x), $$
+which is an alternative estimator for
+$$ \{S_1 \eta\}(x) * \eta^\dagger(x) - \{S_2 \eta\}(x) * \eta^\dagger(x) $$
+and is valid for Wilson and Domain Wall fermions.
+
+This module will compute this contraction for inputs of `PropagatorField`s, `std::vector<PropagatorField>`s, and `std::vector<PropagatorField*>`s.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `q1` | `std::string` | A propagator solved on a spin-colour-diagonal noise source.  |
+| `q2` | `std::string` | A propagator solved on a spin-colour-diagonal noise source.  |
+| `m1` | `std::string` | The mass of q1.  |
+| `m2` | `std::string` | The mass of q2.  |
+
+### Dependencies
+
+- `q1`, which is either a PropagatorField, std::vector<PropagatorField>, or std::vector<PropagatorField*>.
+- `q2`, which is the same type as `q1`.
+
+### Products
+
+This module produces a `PropagatorField`-valued split-even estimator $(m_2 - m_1) * \{S_1 \eta \}(x) * \{\eta^\dagger S_2\}(x)$, or a `std::vector<PropagatorField>` of multiple estimators.
 
 -----------
 

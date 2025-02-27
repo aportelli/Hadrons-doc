@@ -93,6 +93,34 @@ Gauge-fixed `GaugeField` $U^{\'}_\mu(x)$
 
 -----------
 
+
+## PhotonPropQedL
+
+### Template structure
+
+This module takes a `VType` template argument, expected to be the vectorised type of the EmField.
+ 
+### Description
+
+This module creates an analytic IR-improved QEDL photon propagator in momentum-space. This is exported as a ScalarField data structure.
+Currently this module only produces a propagator in the Feynman gauge.
+
+### Parameters
+
+| Parameter   | Type           | Description                                                            |
+|--------------------|----------------------------|----------------------------------------|
+| `improvement` | `std::string` | A space-separated list of real improvement coefficients. |
+
+### Dependencies
+
+This module has no dependencies.
+
+### Products
+
+This module produces a QEDL photon propagator in momentum-space.
+
+-----------
+
 ## Random
 
 ### Template structure
