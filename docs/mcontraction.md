@@ -5,7 +5,7 @@
 ### Template structure
 
 This module takes a `FImpl` template argument, expected to be a fermion implimentation.
- 
+
 ### Description
 
 This module computes a baryon two-point function
@@ -85,7 +85,7 @@ This module depends on three propagators being generated and sink modules being 
 
 ### Products
 
-This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. 
+This module produces a correlator called `baryon` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 If `trace = true`, this correlator has a `Complex` value for each timeslice, if `trace = false` the correlator is a $4 \times 4$ `SpinMatrix` on each timeslice.
 
@@ -109,7 +109,7 @@ $$J(x_J) = {\bar{q}^R_J}^{i}_{\sigma} \gamma {q^L_J}^{i}_{\tau}$$
 
 The quarks for the initial and final state and the current are specified as $(q^L_1,q^L_2,q^L_3)$, $(q^R_1,q^R_2,q^R_3)$ and $(q^L_J,q^R_J)$ respectively. This represents a $q^L_J \to q^R_J$ transition.
 
-The 3 initial propagators $(\Delta^L_1,\Delta^L_2,\Delta^L_3)$ are required and correspond to the initial quarks q1, q2 and q3. 3 final state propagators $(\Delta^R_1,\Delta^R_2,\Delta^R_3)$ can be specified. In gerneral not all of these final propagators will be required depending on the quark flavours. Any propagators not required can be left blank, however, if they are specified a message will be logged naming the propagators that are not used. 
+The 3 initial propagators $(\Delta^L_1,\Delta^L_2,\Delta^L_3)$ are required and correspond to the initial quarks q1, q2 and q3. 3 final state propagators $(\Delta^R_1,\Delta^R_2,\Delta^R_3)$ can be specified. In gerneral not all of these final propagators will be required depending on the quark flavours. Any propagators not required can be left blank, however, if they are specified a message will be logged naming the propagators that are not used.
 
 3 sinks $(S_1, S_2, S_3)$ corresponding to the final state quarks must be secified.
 
@@ -146,7 +146,7 @@ where the three groups of 6 contractions are named the wick groups 1-3. For curr
 
 The internal baryon diquark gamma structures `gammaLR` take the same format of the baryon 2pt function above (i.e. a list of pairs of pairs of gamma matrices).
 
-The current gamma structure `gammaJ` is a list of gamma matrices in the usual Grid notation. Additionally the keyword `all` can be used to contract using all 16 gamma structures. 
+The current gamma structure `gammaJ` is a list of gamma matrices in the usual Grid notation. Additionally the keyword `all` can be used to contract using all 16 gamma structures.
 
 The momentum parameter adds a 3-momentum phase to the current operator before summing over all space.
 
@@ -177,7 +177,7 @@ This module depends on three initial state propagators being generated, and up t
 
 ### Products
 
-This module produces a $4 \times 4$ `SpinMatrix` correlator called `baryonGamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing. 
+This module produces a $4 \times 4$ `SpinMatrix` correlator called `baryonGamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
 
 -----------
 
@@ -186,7 +186,7 @@ This module produces a $4 \times 4$ `SpinMatrix` correlator called `baryonGamma3
 ### Template structure
 
 This module takes a `FImpl` template argument, which is expected to be a fermion implimentation.
- 
+
 ### Description
 
 This module computes the disconnected loop
@@ -217,26 +217,60 @@ This module produces a correlator called `disc` that is saved to a hdf5 file (or
 
 ### Template structure
 
-This module takes three `FImpl` template arguments `FImpl1`, `FImpl2`  and `FImpl3`, all of which are expected to be fermion implimentations.
+This module takes three `FImpl` template arguments `FImpl1`, `FImpl2`  and `FImpl3`, all of which are expected to be fermion implementations.
 
 ### Description
 
-This module computes the mesonic three-point function
+This module computes the mesonic quark-connected three-point function
 
-$$C(t)=\langle O^{\gamma_5}_{M_1}(x_i) \bar{O}_{M_2}(x) \bar{O}^{\gamma_5}_{M_3}(x_f) \rangle \, ,$$
+```
+Schematics
+                                q2           q3
+                           /----<------*------<----\
+                          /          y, vtx         \
+                         /                           \
+                 x, src *                             * z, snk
+                         \                           /
+                          \                         /
+                           \----------->-----------/
+                                       q1
+```
 
-where the gamma insertions at source and sink are fixed to $\gamma_5$
+Starting from the correlator in position space
 
-This module takes an already sink smeared propagator `q1` with the source at $x_i$ and sinked at $x_f$, as well as two non-sinked propagators `q2` (source at $x_i$), `q3` (source at $x_f$).
+$$C(x,y,z) = \langle A^{\Gamma_\text{src}}(x)~\bar{B}^{\Gamma_\text{vtx}}(y) ~\bar{C}^{\Gamma_\text{snk}}(z) \rangle \, ,$$
 
-The gamma matrices can be a list, seperated by spaces. There is also the option to compute all 16 matrices by specifying the `all` option in the input parameter `gamma`. 
+where
+ $$A^{\Gamma_\text{src}}(x) = \bar{q}_2(x) \Gamma_\text{src} q_1(x) \qquad B^{\Gamma_\text{vtx}}(y) = \bar{q}_3(y) \Gamma_\text{vtx} q_2(y) \qquad C^{\Gamma_\text{snk}}(z) = \bar{q}_1(z) \Gamma_\text{snk} q_3(z)$$
+
+The module projects $y$ to a set of 3-momenta, and the particular behavior depends on the `momProjector` provided.
+1. If `momProjector` is the name of a `MUtilities::MomentumProjectorSphere` module, then $C$ is projected to the list of momenta $\vec{k}$ specified by the `getName() + "_momList"` of that module.
+2. If `momProjector` is an empty string, then $C$ is projected to zero momentum only, $\vec{k}=\vec{0}$.
+
+The source and sink are not Fourier-transformed. Thus, the source should be already projected to a 3-momentum $\vec{p}$, and the sink must be a point source at $\vec{z}=\vec{0}$, for example. Otherwise, momentum conservation will make the expectation value vanish.
+
+Then, the object computed by the module is the correlator
+$$C(\vec{p},t_\text{src};\vec{k},t_\text{vtx};t_\text{snk}) = \sum_{\vec{x},\vec{y}} e^{i\vec{k} \cdot \vec{x}} e^{-i\vec{p} \cdot \vec{z}} \text{tr}(\Gamma_\text{snk} * Q_1(x,z) * \Gamma_\text{src}^\dagger \gamma_5 * Q_2^\dagger(y,x) * \gamma_5 \Gamma_\text{vtx} * Q_3(z,y))$$
+
+where $Q_1$, $Q_2$, and $Q_3$ are the quark propagators.
+
+#### Gamma matrices
+
+The spin structure $\Gamma_\text{src}$, $\Gamma_\text{vtx}$, and $\Gamma_\text{snk}$ are arbitrary. The parameter `gamma` determines them. A use example is
+gamma = {"GammaT GammaX GammaY", "Gamma5 all Gamma5"} where the matrices are ordered as "$\Gamma_\text{snk}$ $\Gamma_\text{vtx}$ $\Gamma_\text{src}$".
+
+If the option `all` is given in any position, all possible combinations of gamma matrices are computed. For example, the case "Gamma5 all Gamma5" in the previous vector expands to {"Gamma5 GammaX Gamma5", "Gamma5 GammaY Gamma5", "Gamma5 GammaZ Gamma5", ...} and is concatenated to "GammaT GammaX GammaY".
 
 ### Parameters
-| Parameter   | Type   |   Description                       |
-|-------------|----------------|-----------------------------|
-| `q_loop` | `std::string` | input loop propagator |
-| `gamma` | `Gamma::Algebra` | gamma matrix|
-| `output` | `std::string` | Specify the output location of the correlator that is generated.|
+| Parameter      | Type                       |Description                       |
+|----------------|----------------------------|-----------------------------|
+| `q1`           | `std::string`              | sinked propagator with source at $x$ and sink at $z$ |
+| `q2`           | `std::string`              | point-to-all propagator with source at $x$ |
+| `q3`           | `std::string`              | point-to-all propagator with source at $z$ |
+| `gamma`        | `std::vector<std::string>` | gamma matrices to compute |
+| `tSnk`         | `unsigned int`             | sink timeslice |
+| `momProjector` | `std::string`, `optional`  | name of momentum projector module. If an empty string, project to zero momentum only
+| `output`       | `std::string`, `optional`  | name of output file. If an empty string, no output is produced
 
 ### Dependencies
 
@@ -244,7 +278,7 @@ This module depends on three propagators being generated, one of which has to be
 
 ### Products
 
-This module produces a correlator called `gamma3pt` that is saved to a hdf5 file (or xml if grid is compiled without hdf5) at a location of your choosing.
+The module returns the momentum-projected correlator, which can also be saved to an hdf5 file (or xml if grid is compiled without hdf5) at the location `output`.
 
 -----------
 
@@ -253,7 +287,7 @@ This module produces a correlator called `gamma3pt` that is saved to a hdf5 file
 ### Template structure
 
 This module takes a `FImpl` template argument, which is expected to be a fermion implimentation.
- 
+
 ### Description
 
 This module computes the loop propagator
@@ -280,9 +314,9 @@ This module returns the loop propagator $q_\mathrm{loop}$
 
 ### Template structure
 
-This module takes two `FImpl` template arguments `FImpl1` and `FImpl2,` both are expected to be 
+This module takes two `FImpl` template arguments `FImpl1` and `FImpl2,` both are expected to be
 fermion implimentations.
- 
+
 ### Description
 
 This module computes a meson two-point function
@@ -291,7 +325,7 @@ $$C_2 = \langle O_M(n) \bar{O}_{M'}(m) \rangle$$
 
 This module takes a pair of quark propagators $q_1,q_2$ and a source and sink gamma structure $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$.
 
-The gamma matrices have to be specified as pairs of gammas in round brackets, seperated by a space. There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`. 
+The gamma matrices have to be specified as pairs of gammas in round brackets, seperated by a space. There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`.
 
 This module computes the trace
 
@@ -506,21 +540,21 @@ One template argument `FImpl`, expected to be a fermion implementation.
 Computes the Sigma-to-nucleon 3pt-diagrams, eye topologies.
 
 ```
-  Schematics:      qqLoop                |                  
-                  /->-¬                  |                             
+  Schematics:      qqLoop                |
+                  /->-¬                  |
                  /     \                 |          qsTi      G     qdTf
-                 \     /                 |        /---->------*------>----¬         
+                 \     /                 |        /---->------*------>----¬
            qsTi   \   /    qdTf          |       /          /-*-¬          \
         /----->-----* *----->----¬       |      /          /  G  \          \
-       *            G G           *      |     *           \     /  qqLoop  * 
-       |\                        /|      |     |\           \-<-/          /|   
-       | \                      / |      |     | \                        / |      
-       |  \---------->---------/  |      |     |  \----------->----------/  |      
-        \          quSpec        /       |      \          quSpec          /        
+       *            G G           *      |     *           \     /  qqLoop  *
+       |\                        /|      |     |\           \-<-/          /|
+       | \                      / |      |     | \                        / |
+       |  \---------->---------/  |      |     |  \----------->----------/  |
+        \          quSpec        /       |      \          quSpec          /
          \                      /        |       \                        /
           \---------->---------/         |        \----------->----------/
                    quSpec                |                 quSpec
- 
+
   analogously to the rare-kaon naming, the left diagram is named 'one-trace' and
   the diagram on the right 'two-trace'
 ```
@@ -559,17 +593,17 @@ One template argument `FImpl`, expected to be a fermion implementation.
 Computes the Sigma-to-nucleon 3pt-diagrams, non-eye topologies.
 
 ```
-  Schematics:     
+  Schematics:
              qsTi          quTf           |            qsTi            qdTf
-           /-->--¬       /-->--¬          |          /-->--¬         /-->--¬       
-          /       \     /       \         |         /       \       /       \      
-         /         \   /         \        |        /         \     /         \     
-        /           \ /           \       |       /           \   /           \    
-       *             * G           *      |       *           G * * G          * 
+           /-->--¬       /-->--¬          |          /-->--¬         /-->--¬
+          /       \     /       \         |         /       \       /       \
+         /         \   /         \        |        /         \     /         \
+        /           \ /           \       |       /           \   /           \
+       *             * G           *      |       *           G * * G          *
       |\             * G           |      |      |\           /   \           /|
-      | \           / \           /|      |      | \         /     \         / |   
+      | \           / \           /|      |      | \         /     \         / |
       |  \         /   \         / |      |      |  \       /       \       /  |
-      |   \       /     \       /  |      |      |   \-->--/         \-->--/   |   
+      |   \       /     \       /  |      |      |   \-->--/         \-->--/   |
        \   \-->--/       \-->--/  /       |       \   quTi            quTf    /
         \    quTi          qdTf  /        |        \                         /
          \                      /         |         \                       /
@@ -652,17 +686,17 @@ One template argument `FImpl`, expected to be a fermion implementation.
 Weak Hamiltonian meson 3-pt diagrams, eye topologies.
 
 ```
-  Schematics:       loop                 |                  
-                   /-<-¬                 |                             
+  Schematics:       loop                 |
+                   /-<-¬                 |
                   /     \                |            qbl     G     qbr
-                  \     /                |        /----<------*------<----¬         
+                  \     /                |        /----<------*------<----¬
              qbl   \   /    qbr          |       /          /-*-¬          \
         /-----<-----* *-----<----¬       |      /          /  G  \          \
    gIn *            G G           * gOut | gIn *           \     /  loop    * gOut
-        \                        /       |      \           \->-/          /   
-         \                      /        |       \                        /       
-          \---------->---------/         |        \----------->----------/        
-                    qs                   |                   qs                  
+        \                        /       |      \           \->-/          /
+         \                      /        |       \                        /
+          \---------->---------/         |        \----------->----------/
+                    qs                   |                   qs
                                          |
                  one trace               |                two traces
 ```
@@ -712,18 +746,18 @@ One template argument `FImpl`, expected to be a fermion implementation.
 Weak Hamiltonian meson 3-pt diagrams, eye topologies.
 
 ```
-  Schematics:                             |                  
+  Schematics:                             |
              qbl           qbr            |            qbl             qbr
-           /--<--¬       /--<--¬          |          /--<--¬         /--<--¬       
-          /       \     /       \         |         /       \       /       \      
-         /         \   /         \        |        /         \     /         \     
-        /           \ /           \       |       /           \   /           \    
+           /--<--¬       /--<--¬          |          /--<--¬         /--<--¬
+          /       \     /       \         |         /       \       /       \
+         /         \   /         \        |        /         \     /         \
+        /           \ /           \       |       /           \   /           \
    gIn *             * G           * gOut |  gIn *           G * * G           * gOut
        \             * G           |      |       \           /   \           /
-        \           / \           /       |        \         /     \         /    
-         \         /   \         /        |         \       /       \       /  
-          \       /     \       /         |          \-->--/         \-->--/      
-           \-->--/       \-->--/          |            ql              qr 
+        \           / \           /       |        \         /     \         /
+         \         /   \         /        |         \       /       \       /
+          \       /     \       /         |          \-->--/         \-->--/
+           \-->--/       \-->--/          |            ql              qr
              ql            qr             |
                 one trace                 |              two traces
 ```
@@ -774,11 +808,11 @@ One template argument `FImpl`, expected to be a fermion implementation.
 
 ### Description
 
-`mom` is the momentum in lattice units, i.e. the full momentum the meson field is projected to is 
+`mom` is the momentum in lattice units, i.e. the full momentum the meson field is projected to is
 
 $$p = 2\pi/L * mom\, .$$
 
-The gamma matrices have to be specified as pairs of gammas in round brackets, seperated by a space. There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`. 
+The gamma matrices have to be specified as pairs of gammas in round brackets, seperated by a space. There is also the option to compute all 256 combinations of $\Gamma_{\mathrm{src}},\Gamma_{\mathrm{snk}}$ by specifying the `all` option in the input parameter `gammas`.
 
 Detail complex blocking strucutres used to gain performance. discuss with peter and Fionn after a detailed read.
 
